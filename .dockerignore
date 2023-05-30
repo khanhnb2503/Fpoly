@@ -1,0 +1,19 @@
+# config files
+.github/
+.husky/
+.jest/
+.vscode/
+.git
+.gitignore
+.prettierignore
+.prettierrc
+Dockerfile
+docker-compose.yml
+
+# documentation
+LICENSE
+CHANGELOG.md
+README.md
+
+# build files
+node_modules/
