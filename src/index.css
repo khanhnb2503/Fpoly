@@ -1,0 +1,16 @@
+/* Global */
+body {
+  letter-spacing: -0.5px;
+}
+
+/* border radius form input và button */
+.ant-input-affix-wrapper,
+.ant-btn.ant-btn-lg {
+  border-radius: 5px;
+}
+
+/* error form input */
+.ant-form-item-explain-error {
+  font-size: 13px;
+  letter-spacing: -0.4px;
+}
