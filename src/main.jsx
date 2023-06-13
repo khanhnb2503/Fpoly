@@ -8,6 +8,7 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './App.jsx';
 import './index.css';
 import { store } from './store';
+import './styles/style.scss';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <BrowserRouter>
