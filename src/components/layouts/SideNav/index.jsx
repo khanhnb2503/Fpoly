@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 import { RoutesList } from '../../../routes';
 
 function SideNav() {
-  const [active, setActive] = useState(1);
-
+  const [active, setActive] = useState(1)
+  console.log(active);
   return (
     <div className="wrapper__sidenav">
       <ul>

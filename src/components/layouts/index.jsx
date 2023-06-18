@@ -1,7 +1,8 @@
 import { Col, Row } from 'antd';
 
 import Header from './Headers';
-import SideNav from './SideNav';
+import SideNav from './SideNav'
+import Footers from './Footers'
 
 function LayoutPublic({ children }) {
   return (
@@ -13,6 +14,7 @@ function LayoutPublic({ children }) {
           <Col>{children}</Col>
         </Row>
       </div>
+      <Footers />
     </div>
   );
 }
