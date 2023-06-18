@@ -6,21 +6,11 @@
 
   .footer-logo{
     margin-bottom: 10px;
-    //display: flex;
-    //align-items: center;
     img{
       height: 60px;
       border-radius: 5px;
       object-fit: cover;
     }
-    //&:after {
-    //  content: '';
-    //  flex: 1;
-    //  margin-left: 1rem;
-    //  height: 3px;
-    //  background-color: #009DA6;
-    //  max-width: 70%;
-    //}
   }
     .footer-description{
     max-width: 65%;
