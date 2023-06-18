@@ -9,3 +9,15 @@
   font-size: 13px;
   letter-spacing: -0.4px;
 }
+
+/* error popover */
+.ant-popover-title {
+
+  .title-notification {
+    font-size: 19px;
+  }
+}
+
+.ant-popover-inner {
+  box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.05), 0 3px 3px -4px rgba(0, 0, 0, 0.12), 0 3px 28px 3px rgba(0, 0, 0, 0.05) !important;
+}

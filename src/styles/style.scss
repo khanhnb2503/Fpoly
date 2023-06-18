@@ -4,7 +4,12 @@
 
 
 /* -----COMPONENTS----- */
+@import './partials/components/layout';
 @import './partials/components/header';
+@import './partials/components/sidenav';
+@import './partials/components/drawer-comment';
+@import './partials/components/user-menu';
+@import './partials/components/footer';
 
 
 /* -----PAGES----- */
