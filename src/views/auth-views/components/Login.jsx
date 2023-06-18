@@ -6,8 +6,8 @@ import { FcGoogle } from 'react-icons/fc';
 import { Link } from 'react-router-dom';
 import BackgroundAuth from '../../../../public/images/auth.jpg';
 import { Rules } from '../../../common/validator';
-import { RoutesConstant } from '../../../constants/routes';
 import { auth, githubAuthProvider, googleAuthProvider } from '../../../firebase/auth/FirebaseAuth';
+import { RoutesConstant } from '../../../routes';
 const { Title, Text } = Typography;
 
 function Login() {

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import BackgroundAuth from '../../../../public/images/auth.jpg';
 import { Rules } from '../../../common/validator';
-import { RoutesConstant } from '../../../constants/routes';
+import { RoutesConstant } from '../../../routes';
 const { Title, Text } = Typography;
 
 function Register() {
