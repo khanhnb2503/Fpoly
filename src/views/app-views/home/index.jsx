@@ -1,8 +1,13 @@
+import Banner from "../../../components/shared/Banner";
+import Courses from "../../../components/shared/Courses";
 
 function HomePage() {
   return (
     <div className='wrapper__homepage'>
-      <h4>Hello word</h4>
+      <Banner />
+      <div className="containers">
+        <Courses />
+      </div>
     </div>
   );
 }

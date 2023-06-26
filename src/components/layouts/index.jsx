@@ -1,8 +1,8 @@
 import { Col, Row } from 'antd';
 
+import Footers from './Footers';
 import Header from './Headers';
-import SideNav from './SideNav'
-import Footers from './Footers'
+import SideNav from './SideNav';
 
 function LayoutPublic({ children }) {
   return (
@@ -10,8 +10,8 @@ function LayoutPublic({ children }) {
       <Header />
       <div className='layout__header'>
         <Row className='layout__content'>
-          <Col><SideNav /></Col>
-          <Col>{children}</Col>
+          <Col flex='94px'><SideNav /></Col>
+          <Col flex='auto' className='content-right'>{children}</Col>
         </Row>
       </div>
       <Footers />
