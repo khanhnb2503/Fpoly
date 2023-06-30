@@ -1,4 +1,6 @@
-import { Col, Row } from "antd";
+import { Button, Col, Row } from "antd";
+import { HiUserGroup } from 'react-icons/hi';
+import { Link } from "react-router-dom";
 
 import { useGetAllCoursesQuery } from '../../../services/courses';
 
@@ -14,13 +16,23 @@ function Courses() {
             <Row justify='start' align='middle' gutter={[50, 30]}>
               {course.courses.map((item) => (
                 <Col key={item.id} xl={6} className="less-item">
-                  <img src={item.image} alt={`lesson-${item.id}`} />
+                  <Link className="thumbnail-link">
+                    <img src={item.image} alt={`lesson-${item.id}`} />
+                    <div className="overlay">
+                      <Button shape="round" className="btn-action-views">Xem khóa học</Button>
+                    </div>
+                  </Link>
                   <Row justify='space-between' align='middle' className="horizontal-info">
-                    <Col>
-                      <h6>{item.title}</h6>
+                    <Col xl={19}>
+                      <h6>
+                        <Link to={`oke`}>{item.title}</Link>
+                      </h6>
                     </Col>
-                    <Col>
-                      <span>{item.subcribe}</span>
+                    <Col xl={3}>
+                      <div className="subcribe">
+                        <HiUserGroup size={18} />
+                        <span>{item.subcribe}</span>
+                      </div>
                     </Col>
                   </Row>
                 </Col>

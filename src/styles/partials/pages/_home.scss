@@ -1,8 +1,15 @@
 .wrapper__homepage {
 
   .containers {
-    margin-top: 50px;
+    margin-top: 40px;
     padding: 0 70px 0 60px;
+  }
+
+  .video-title {
+    h5 {
+      font-size: 23px;
+      padding-bottom: 8px;
+    }
   }
 
 }
