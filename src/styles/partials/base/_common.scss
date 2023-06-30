@@ -1,0 +1,22 @@
+.btn-hover-visible {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  font-weight: $font-weight-600;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  z-index: 1;
+}
+
+.overlay-visible {
+  position: absolute;
+  top: 90%;
+  left: 0;
+  right: 0;
+  overflow: hidden;
+  width: 100%;
+  height: 0;
+  transition: .5s ease;
+  border-radius: $border-radius-5;
+  background-color: rgba(0, 0, 0, 0.04);
+}

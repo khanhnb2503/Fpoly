@@ -1,6 +1,7 @@
 /* -----BASE----- */
 @import './partials/base/variables';
 @import './partials/base/antd';
+@import './partials/base/common';
 
 
 /* -----COMPONENTS----- */
@@ -9,6 +10,7 @@
 @import './partials/components/sidenav';
 @import './partials/components/banner';
 @import './partials/components/course';
+@import './partials/components/video';
 @import './partials/components/drawer-comment';
 @import './partials/components/user-menu';
 @import './partials/components/footer';
