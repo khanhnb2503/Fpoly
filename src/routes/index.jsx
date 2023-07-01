@@ -22,7 +22,7 @@ export const RoutesList = [
   },
   {
     id: 2,
-    path: '',
+    path: 'khoa-hoc',
     name: 'Học',
     icon: <IoMdBulb size={30} />,
   },
