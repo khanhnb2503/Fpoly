@@ -1,0 +1,116 @@
+.wrapper__lessons {
+
+  .header {
+    padding: 7px 50px;
+    position: sticky;
+    right: 0;
+    left: 0;
+    top: 0;
+    z-index: 20;
+    border-bottom: 1px solid $border-bottom-color;
+    background-color: #b3b3b3;
+
+    .btn-come-back {
+      display: flex;
+      justify-content: start;
+      align-items: center;
+      padding: 0;
+
+      svg,
+      span {
+        color: $black-color;
+        font-weight: $font-weight-700;
+      }
+    }
+
+    .progress-learn {
+      span {
+        font-weight: $font-weight-700;
+      }
+    }
+  }
+
+  .side-left-video {
+    width: 100%;
+    max-height: 100%;
+    overflow-x: hidden;
+    overflow-y: scroll;
+  }
+
+  .video-scroll {
+    background-color: $success-light-color;
+  }
+
+  .video-player {
+    width: 85% !important;
+    height: 670px !important;
+  }
+
+  .video-info-bio {
+    padding: 18px 106px;
+
+    h3 {
+      font-size: 20px;
+      font-weight: $font-weight-600;
+      font-family: sans-serif;
+      color: #464646
+    }
+  }
+
+  .btn-action-comment {
+    @extend .flex-box;
+    background-color: #D9D9D9;
+    font-weight: $font-weight-500;
+  }
+
+  .action-next {
+    padding-top: 20px;
+
+    button {
+      @extend .flex-box;
+
+      span {
+        padding: 0 5px;
+      }
+    }
+  }
+
+  .side-right-box {
+    position: fixed;
+    z-index: 2;
+    top: 0;
+    right: 0;
+    margin-top: 55px;
+    padding: 5px 5px;
+    border-left: 1px solid #b2b2b2;
+  }
+
+  .carousel-theory {
+    h4 {
+      padding: 0 0 10px 0;
+      font-size: 20px;
+      text-transform: uppercase;
+    }
+
+    .slider-control-centerleft,
+    .slider-control-centerright,
+    .slider-control-bottomcenter {
+      display: none;
+    }
+  }
+
+  .content-box {
+    background-color: #D9EEE1;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 15px;
+  }
+
+  .content-lesson {
+    h4 {
+      padding: 10px 0;
+      font-size: 20px;
+      text-transform: uppercase;
+    }
+  }
+}
