@@ -3,6 +3,7 @@ import Lessons from "./components/shared/Lessons";
 import { RoutesConstant } from "./routes";
 import Login from './views/auth-views/components/Login';
 import Register from './views/auth-views/components/Register';
+import DetailCoursePage from './views/app-views/detailCourse/index.jsx';
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
         <Routes>
           <Route path='/' element={<HomePage />} />
           <Route path='/khoa-hoc' element={<CoursePage />} />
+          <Route path='/thong-tin-khoa-hoc' element={ <DetailCoursePage />} />
         </Routes>
       </LayoutPublic> */}
       <Routes>

@@ -1,0 +1,22 @@
+.community{
+  .community-input {
+    width: 380px;
+    .ant-select-selector {
+      align-items: center;
+      border-radius: $border-radius-40;
+      border: 1px solid $border-gray-color;
+      height: 50px;
+      padding: 0 15px;
+    }
+    &:hover {
+      cursor: pointer;
+    }
+  }
+  .community__button{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    button {
+      background-color: #FFA500;
+    }
+  }
+}

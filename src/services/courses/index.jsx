@@ -7,11 +7,16 @@ export const courseApi = createApi({
   }),
   tagTypes: ['Courses'],
   endpoints: (builder) => ({
-    getAllCourses: builder.query({
+    getCourses: builder.query({
       query: () => 'categories',
+      providesTags: ['Courses']
+    }),
+
+    getCourse: builder.query({
+      query: () => `course`,
       providesTags: ['Courses']
     }),
   })
 });
 
-export const { useGetAllCoursesQuery } = courseApi;
+export const { useGetCoursesQuery, useGetCourseQuery } = courseApi;

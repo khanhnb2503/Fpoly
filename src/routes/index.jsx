@@ -4,7 +4,7 @@ import { IoIosAddCircle, IoMdBulb, IoMdHome } from 'react-icons/io';
 // List routes
 export const RoutesConstant = {
   LOGIN: '/login',
-  REGISTER: '/register'
+  REGISTER: '/register',
 };
 
 export const RoutesList = [
