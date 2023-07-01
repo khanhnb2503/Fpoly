@@ -1,0 +1,11 @@
+.layout__header {
+  margin: 0 25px;
+
+  .layout__content {
+    flex-flow: row;
+  }
+
+  .content-right {
+    max-width: 94% !important;
+  }
+}

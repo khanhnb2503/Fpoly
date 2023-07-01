@@ -1,0 +1,60 @@
+.wrapper__banner {
+  padding: 10px 25px;
+
+  // hide button carousel
+  .slider-control-centerright,
+  .slider-control-centerleft {
+    display: none;
+  }
+
+  .slide-show {
+    background: rgb(0, 157, 166);
+    background: linear-gradient(90deg, rgba(0, 157, 166, 1) 0%, rgba(177, 214, 216, 1) 100%, rgba(9, 9, 121, 1) 100%);
+    border: 1px solid rgb(0, 157, 166);
+    border-radius: $border-radius-5;
+    padding: 10px;
+  }
+
+  .slide-show-left {
+    padding: 20px 0 20px 10px;
+
+    h3 {
+      font-size: 30px;
+      font-weight: 700;
+      color: $white-color;
+    }
+
+    p {
+      padding: 20px 0;
+      font-size: 16px;
+      color: $white-color;
+      margin-bottom: 21px;
+    }
+
+    a {
+      color: $white-color;
+      font-weight: $font-weight-600;
+      font-size: 17px;
+      border: 2px solid $white-color;
+      padding: 8px 15px;
+      border-radius: $border-radius-25;
+
+      &:hover {
+        background-color: $white-color;
+        border-radius: $border-radius-25;
+        color: $success-light-color;
+        transition: ease-in 0.3s;
+      }
+    }
+  }
+
+  .slide-show-right {
+    image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 7px;
+    }
+  }
+
+}

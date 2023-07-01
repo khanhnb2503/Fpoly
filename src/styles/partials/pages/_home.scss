@@ -1,0 +1,14 @@
+.wrapper__homepage {
+
+  .containers {
+    @extend .container-content;
+  }
+
+  .video-title {
+    h5 {
+      font-size: 23px;
+      padding-bottom: 8px;
+    }
+  }
+
+}

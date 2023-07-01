@@ -1,0 +1,395 @@
+{
+  "banners": [
+    {
+      "id": 1,
+      "name": "Học lập trình để đi làm ",
+      "content": "Để đạt được kết quả tốt trong mọi việc ta cần xác định mục tiêu rõ ràng cho việc đó. Học lập trình cũng không là ngoại lệ.",
+      "url": "http://localhost",
+      "content_btn": "Tìm hiểu thêm",
+      "image": "./public/images/banner.png"
+    },
+    {
+      "id": 2,
+      "name": "Học ReactJs miễn phí",
+      "content": "Đây là khóa học đầy đủ mà bạn có thể tìm kiếm ở trên internet",
+      "url": "http://localhost",
+      "content_btn": "Đăng kí ngay",
+      "image": "./public/images/banner.png"
+    },
+    {
+      "id": 3,
+      "name": "Thành quả của học viên",
+      "content": "Để có được thành quả tốt nhất thì chúng ta phải có mục tiêu dễ dàng",
+      "url": "http://localhost",
+      "content_btn": "Xem thành quả",
+      "image": "./public/images/banner.png"
+    },
+    {
+      "id": 4,
+      "name": "Khóa học HTML vs CSS pro",
+      "content": "Khóa học mang đến cho bạn đầy đủ kiến thức nhất, nội dung rõ ràng",
+      "url": "http://localhost",
+      "content_btn": "Đăng kí ngay",
+      "image": "./public/images/banner.png"
+    },
+    {
+      "id": 5,
+      "name": "F8 trên Youtobe",
+      "content": "Chúng tôi đã ra video khóa học đầy đủ nhất, chi tiết để trang bị kiến thức cho bạn",
+      "url": "http://localhost",
+      "content_btn": "Xem video",
+      "image": "./public/images/banner.png"
+    }
+  ],
+  "categories": [
+    {
+      "id": 1,
+      "name": "Mua khóa học",
+      "courses": [
+        {
+          "id": 1,
+          "image": "./public/images/course_1.png",
+          "subcribe": 155,
+          "title": "Kiến thức nền tảng lập trình để đi làm lập trình để đi làm",
+          "description": "Có lẽ cũng rất lâu rồi mà tôi chưa đụng đến thứ được gọi là timetable. Hay dân dã hơn thì người ta hay gọi là Lịch thường nhật, còn đối với học sinh, sinh viên gọi là thời khóa biểu. Chắc hẳn nhiều người sẽ thắc mắc tại sao tôi là sinh viên mà lại lâu rồi chưa đụng đến cái mà sinh viên đều gọi là thời khóa biểu. Đương nhiên học sinh hay sinh viên đều cần có nó để xem lịch học, để không một buổi sáng nào bị quên mất kiến thức.Trong bài viết này, ý tôi muốn nói là timetable hay là cách sắp sếp thời gian cho từng môn học hoặc việc gì đó ghi chi chít trên một bảng lịch. Đến tận bây giờ tôi mới học được cách sắp xếp thời gian, phân chia từng môn học theo lịch học trên trường. Khi chúng ta còn trẻ còn sức khỏe còn học tập và lao động thì thời gian là thứ vô cùng quan trọng nếu như chúng ta biết sắp xếp và phân bổ hợp lý thì sẽ kiểm soát được nó, thay vì chúng ta muốn học một cái gì đó mà cứ than vãn rằng: Thôi chắc không có thời gian để học đâu hay kiểu thấy một khóa học dài thì lại than: Haizz.... Học khóa này lâu thế. Tốn thời gian thì các bạn đang cố tìm kiếm biện minh cho sự lười biếng của các bạn mà thôi, có thể dành vài tiếng đồng hồ ra chơi game, lướt facebook, tiktok mà bỏ mấy phút ra học thì lại không làm được và cố tỏ ra mình là người bận rộn. Đó là chẳng qua chưa kiểm soát được thời gian nên sẽ có tình trạng lúc thì làm rất nhiều việc nhưng lại có lúc mất cân bằng chả muốn làm gì cả, làm một việc là ngại không muốn làm. Đặc biệt chúng ta trong thời gian tự học thì càng cần phải kiểm soát được nó như một cái gì đấy làm động lực giúp ta học hỏi thêm nhiều thứ hay ho hơn."
+        },
+        {
+          "id": 2,
+          "image": "./public/images/course_2.png",
+          "subcribe": 155,
+          "title": "Kiến thức nền tảng",
+          "description": "Có lẽ cũng rất lâu rồi mà tôi chưa đụng đến thứ được gọi là timetable. Hay dân dã hơn thì người ta hay gọi là Lịch thường nhật, còn đối với học sinh, sinh viên gọi là thời khóa biểu. Chắc hẳn nhiều người sẽ thắc mắc tại sao tôi là sinh viên mà lại lâu rồi chưa đụng đến cái mà sinh viên đều gọi là thời khóa biểu. Đương nhiên học sinh hay sinh viên đều cần có nó để xem lịch học, để không một buổi sáng nào bị quên mất kiến thức.Trong bài viết này, ý tôi muốn nói là timetable hay là cách sắp sếp thời gian cho từng môn học hoặc việc gì đó ghi chi chít trên một bảng lịch. Đến tận bây giờ tôi mới học được cách sắp xếp thời gian, phân chia từng môn học theo lịch học trên trường. Khi chúng ta còn trẻ còn sức khỏe còn học tập và lao động thì thời gian là thứ vô cùng quan trọng nếu như chúng ta biết sắp xếp và phân bổ hợp lý thì sẽ kiểm soát được nó, thay vì chúng ta muốn học một cái gì đó mà cứ than vãn rằng: Thôi chắc không có thời gian để học đâu hay kiểu thấy một khóa học dài thì lại than: Haizz.... Học khóa này lâu thế. Tốn thời gian thì các bạn đang cố tìm kiếm biện minh cho sự lười biếng của các bạn mà thôi, có thể dành vài tiếng đồng hồ ra chơi game, lướt facebook, tiktok mà bỏ mấy phút ra học thì lại không làm được và cố tỏ ra mình là người bận rộn. Đó là chẳng qua chưa kiểm soát được thời gian nên sẽ có tình trạng lúc thì làm rất nhiều việc nhưng lại có lúc mất cân bằng chả muốn làm gì cả, làm một việc là ngại không muốn làm. Đặc biệt chúng ta trong thời gian tự học thì càng cần phải kiểm soát được nó như một cái gì đấy làm động lực giúp ta học hỏi thêm nhiều thứ hay ho hơn."
+        },
+        {
+          "id": 3,
+          "image": "./public/images/course_3.png",
+          "subcribe": 155,
+          "title": "Kiến thức nền tảng",
+          "description": "Có lẽ cũng rất lâu rồi mà tôi chưa đụng đến thứ được gọi là timetable. Hay dân dã hơn thì người ta hay gọi là Lịch thường nhật, còn đối với học sinh, sinh viên gọi là thời khóa biểu. Chắc hẳn nhiều người sẽ thắc mắc tại sao tôi là sinh viên mà lại lâu rồi chưa đụng đến cái mà sinh viên đều gọi là thời khóa biểu. Đương nhiên học sinh hay sinh viên đều cần có nó để xem lịch học, để không một buổi sáng nào bị quên mất kiến thức.Trong bài viết này, ý tôi muốn nói là timetable hay là cách sắp sếp thời gian cho từng môn học hoặc việc gì đó ghi chi chít trên một bảng lịch. Đến tận bây giờ tôi mới học được cách sắp xếp thời gian, phân chia từng môn học theo lịch học trên trường. Khi chúng ta còn trẻ còn sức khỏe còn học tập và lao động thì thời gian là thứ vô cùng quan trọng nếu như chúng ta biết sắp xếp và phân bổ hợp lý thì sẽ kiểm soát được nó, thay vì chúng ta muốn học một cái gì đó mà cứ than vãn rằng: Thôi chắc không có thời gian để học đâu hay kiểu thấy một khóa học dài thì lại than: Haizz.... Học khóa này lâu thế. Tốn thời gian thì các bạn đang cố tìm kiếm biện minh cho sự lười biếng của các bạn mà thôi, có thể dành vài tiếng đồng hồ ra chơi game, lướt facebook, tiktok mà bỏ mấy phút ra học thì lại không làm được và cố tỏ ra mình là người bận rộn. Đó là chẳng qua chưa kiểm soát được thời gian nên sẽ có tình trạng lúc thì làm rất nhiều việc nhưng lại có lúc mất cân bằng chả muốn làm gì cả, làm một việc là ngại không muốn làm. Đặc biệt chúng ta trong thời gian tự học thì càng cần phải kiểm soát được nó như một cái gì đấy làm động lực giúp ta học hỏi thêm nhiều thứ hay ho hơn."
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Khóa học miễn phí",
+      "courses": [
+        {
+          "id": 1,
+          "image": "./public/images/course_1.png",
+          "subcribe": 155,
+          "title": "Kiến thức nền tảng lập trình để đi làm lập trình để đi làm",
+          "description": "Có lẽ cũng rất lâu rồi mà tôi chưa đụng đến thứ được gọi là timetable. Hay dân dã hơn thì người ta hay gọi là Lịch thường nhật, còn đối với học sinh, sinh viên gọi là thời khóa biểu. Chắc hẳn nhiều người sẽ thắc mắc tại sao tôi là sinh viên mà lại lâu rồi chưa đụng đến cái mà sinh viên đều gọi là thời khóa biểu. Đương nhiên học sinh hay sinh viên đều cần có nó để xem lịch học, để không một buổi sáng nào bị quên mất kiến thức.Trong bài viết này, ý tôi muốn nói là timetable hay là cách sắp sếp thời gian cho từng môn học hoặc việc gì đó ghi chi chít trên một bảng lịch. Đến tận bây giờ tôi mới học được cách sắp xếp thời gian, phân chia từng môn học theo lịch học trên trường. Khi chúng ta còn trẻ còn sức khỏe còn học tập và lao động thì thời gian là thứ vô cùng quan trọng nếu như chúng ta biết sắp xếp và phân bổ hợp lý thì sẽ kiểm soát được nó, thay vì chúng ta muốn học một cái gì đó mà cứ than vãn rằng: Thôi chắc không có thời gian để học đâu hay kiểu thấy một khóa học dài thì lại than: Haizz.... Học khóa này lâu thế. Tốn thời gian thì các bạn đang cố tìm kiếm biện minh cho sự lười biếng của các bạn mà thôi, có thể dành vài tiếng đồng hồ ra chơi game, lướt facebook, tiktok mà bỏ mấy phút ra học thì lại không làm được và cố tỏ ra mình là người bận rộn. Đó là chẳng qua chưa kiểm soát được thời gian nên sẽ có tình trạng lúc thì làm rất nhiều việc nhưng lại có lúc mất cân bằng chả muốn làm gì cả, làm một việc là ngại không muốn làm. Đặc biệt chúng ta trong thời gian tự học thì càng cần phải kiểm soát được nó như một cái gì đấy làm động lực giúp ta học hỏi thêm nhiều thứ hay ho hơn."
+        },
+        {
+          "id": 2,
+          "image": "./public/images/course_2.png",
+          "subcribe": 155,
+          "title": "Kiến thức nền tảng",
+          "description": "Có lẽ cũng rất lâu rồi mà tôi chưa đụng đến thứ được gọi là timetable. Hay dân dã hơn thì người ta hay gọi là Lịch thường nhật, còn đối với học sinh, sinh viên gọi là thời khóa biểu. Chắc hẳn nhiều người sẽ thắc mắc tại sao tôi là sinh viên mà lại lâu rồi chưa đụng đến cái mà sinh viên đều gọi là thời khóa biểu. Đương nhiên học sinh hay sinh viên đều cần có nó để xem lịch học, để không một buổi sáng nào bị quên mất kiến thức.Trong bài viết này, ý tôi muốn nói là timetable hay là cách sắp sếp thời gian cho từng môn học hoặc việc gì đó ghi chi chít trên một bảng lịch. Đến tận bây giờ tôi mới học được cách sắp xếp thời gian, phân chia từng môn học theo lịch học trên trường. Khi chúng ta còn trẻ còn sức khỏe còn học tập và lao động thì thời gian là thứ vô cùng quan trọng nếu như chúng ta biết sắp xếp và phân bổ hợp lý thì sẽ kiểm soát được nó, thay vì chúng ta muốn học một cái gì đó mà cứ than vãn rằng: Thôi chắc không có thời gian để học đâu hay kiểu thấy một khóa học dài thì lại than: Haizz.... Học khóa này lâu thế. Tốn thời gian thì các bạn đang cố tìm kiếm biện minh cho sự lười biếng của các bạn mà thôi, có thể dành vài tiếng đồng hồ ra chơi game, lướt facebook, tiktok mà bỏ mấy phút ra học thì lại không làm được và cố tỏ ra mình là người bận rộn. Đó là chẳng qua chưa kiểm soát được thời gian nên sẽ có tình trạng lúc thì làm rất nhiều việc nhưng lại có lúc mất cân bằng chả muốn làm gì cả, làm một việc là ngại không muốn làm. Đặc biệt chúng ta trong thời gian tự học thì càng cần phải kiểm soát được nó như một cái gì đấy làm động lực giúp ta học hỏi thêm nhiều thứ hay ho hơn."
+        },
+        {
+          "id": 3,
+          "image": "./public/images/course_3.png",
+          "subcribe": 155,
+          "title": "Kiến thức nền tảng",
+          "description": "Có lẽ cũng rất lâu rồi mà tôi chưa đụng đến thứ được gọi là timetable. Hay dân dã hơn thì người ta hay gọi là Lịch thường nhật, còn đối với học sinh, sinh viên gọi là thời khóa biểu. Chắc hẳn nhiều người sẽ thắc mắc tại sao tôi là sinh viên mà lại lâu rồi chưa đụng đến cái mà sinh viên đều gọi là thời khóa biểu. Đương nhiên học sinh hay sinh viên đều cần có nó để xem lịch học, để không một buổi sáng nào bị quên mất kiến thức.Trong bài viết này, ý tôi muốn nói là timetable hay là cách sắp sếp thời gian cho từng môn học hoặc việc gì đó ghi chi chít trên một bảng lịch. Đến tận bây giờ tôi mới học được cách sắp xếp thời gian, phân chia từng môn học theo lịch học trên trường. Khi chúng ta còn trẻ còn sức khỏe còn học tập và lao động thì thời gian là thứ vô cùng quan trọng nếu như chúng ta biết sắp xếp và phân bổ hợp lý thì sẽ kiểm soát được nó, thay vì chúng ta muốn học một cái gì đó mà cứ than vãn rằng: Thôi chắc không có thời gian để học đâu hay kiểu thấy một khóa học dài thì lại than: Haizz.... Học khóa này lâu thế. Tốn thời gian thì các bạn đang cố tìm kiếm biện minh cho sự lười biếng của các bạn mà thôi, có thể dành vài tiếng đồng hồ ra chơi game, lướt facebook, tiktok mà bỏ mấy phút ra học thì lại không làm được và cố tỏ ra mình là người bận rộn. Đó là chẳng qua chưa kiểm soát được thời gian nên sẽ có tình trạng lúc thì làm rất nhiều việc nhưng lại có lúc mất cân bằng chả muốn làm gì cả, làm một việc là ngại không muốn làm. Đặc biệt chúng ta trong thời gian tự học thì càng cần phải kiểm soát được nó như một cái gì đấy làm động lực giúp ta học hỏi thêm nhiều thứ hay ho hơn."
+        },
+        {
+          "id": 4,
+          "image": "./public/images/course_4.png",
+          "subcribe": 155,
+          "title": "Kiến thức nền tảng",
+          "description": "Có lẽ cũng rất lâu rồi mà tôi chưa đụng đến thứ được gọi là timetable. Hay dân dã hơn thì người ta hay gọi là Lịch thường nhật, còn đối với học sinh, sinh viên gọi là thời khóa biểu. Chắc hẳn nhiều người sẽ thắc mắc tại sao tôi là sinh viên mà lại lâu rồi chưa đụng đến cái mà sinh viên đều gọi là thời khóa biểu. Đương nhiên học sinh hay sinh viên đều cần có nó để xem lịch học, để không một buổi sáng nào bị quên mất kiến thức.Trong bài viết này, ý tôi muốn nói là timetable hay là cách sắp sếp thời gian cho từng môn học hoặc việc gì đó ghi chi chít trên một bảng lịch. Đến tận bây giờ tôi mới học được cách sắp xếp thời gian, phân chia từng môn học theo lịch học trên trường. Khi chúng ta còn trẻ còn sức khỏe còn học tập và lao động thì thời gian là thứ vô cùng quan trọng nếu như chúng ta biết sắp xếp và phân bổ hợp lý thì sẽ kiểm soát được nó, thay vì chúng ta muốn học một cái gì đó mà cứ than vãn rằng: Thôi chắc không có thời gian để học đâu hay kiểu thấy một khóa học dài thì lại than: Haizz.... Học khóa này lâu thế. Tốn thời gian thì các bạn đang cố tìm kiếm biện minh cho sự lười biếng của các bạn mà thôi, có thể dành vài tiếng đồng hồ ra chơi game, lướt facebook, tiktok mà bỏ mấy phút ra học thì lại không làm được và cố tỏ ra mình là người bận rộn. Đó là chẳng qua chưa kiểm soát được thời gian nên sẽ có tình trạng lúc thì làm rất nhiều việc nhưng lại có lúc mất cân bằng chả muốn làm gì cả, làm một việc là ngại không muốn làm. Đặc biệt chúng ta trong thời gian tự học thì càng cần phải kiểm soát được nó như một cái gì đấy làm động lực giúp ta học hỏi thêm nhiều thứ hay ho hơn."
+        },
+        {
+          "id": 5,
+          "image": "./public/images/course_2.png",
+          "subcribe": 155,
+          "title": "Kiến thức nền tảng",
+          "description": "Có lẽ cũng rất lâu rồi mà tôi chưa đụng đến thứ được gọi là timetable. Hay dân dã hơn thì người ta hay gọi là Lịch thường nhật, còn đối với học sinh, sinh viên gọi là thời khóa biểu. Chắc hẳn nhiều người sẽ thắc mắc tại sao tôi là sinh viên mà lại lâu rồi chưa đụng đến cái mà sinh viên đều gọi là thời khóa biểu. Đương nhiên học sinh hay sinh viên đều cần có nó để xem lịch học, để không một buổi sáng nào bị quên mất kiến thức.Trong bài viết này, ý tôi muốn nói là timetable hay là cách sắp sếp thời gian cho từng môn học hoặc việc gì đó ghi chi chít trên một bảng lịch. Đến tận bây giờ tôi mới học được cách sắp xếp thời gian, phân chia từng môn học theo lịch học trên trường. Khi chúng ta còn trẻ còn sức khỏe còn học tập và lao động thì thời gian là thứ vô cùng quan trọng nếu như chúng ta biết sắp xếp và phân bổ hợp lý thì sẽ kiểm soát được nó, thay vì chúng ta muốn học một cái gì đó mà cứ than vãn rằng: Thôi chắc không có thời gian để học đâu hay kiểu thấy một khóa học dài thì lại than: Haizz.... Học khóa này lâu thế. Tốn thời gian thì các bạn đang cố tìm kiếm biện minh cho sự lười biếng của các bạn mà thôi, có thể dành vài tiếng đồng hồ ra chơi game, lướt facebook, tiktok mà bỏ mấy phút ra học thì lại không làm được và cố tỏ ra mình là người bận rộn. Đó là chẳng qua chưa kiểm soát được thời gian nên sẽ có tình trạng lúc thì làm rất nhiều việc nhưng lại có lúc mất cân bằng chả muốn làm gì cả, làm một việc là ngại không muốn làm. Đặc biệt chúng ta trong thời gian tự học thì càng cần phải kiểm soát được nó như một cái gì đấy làm động lực giúp ta học hỏi thêm nhiều thứ hay ho hơn."
+        },
+        {
+          "id": 6,
+          "image": "./public/images/course_3.png",
+          "subcribe": 155,
+          "title": "Kiến thức nền tảng",
+          "description": "Có lẽ cũng rất lâu rồi mà tôi chưa đụng đến thứ được gọi là timetable. Hay dân dã hơn thì người ta hay gọi là Lịch thường nhật, còn đối với học sinh, sinh viên gọi là thời khóa biểu. Chắc hẳn nhiều người sẽ thắc mắc tại sao tôi là sinh viên mà lại lâu rồi chưa đụng đến cái mà sinh viên đều gọi là thời khóa biểu. Đương nhiên học sinh hay sinh viên đều cần có nó để xem lịch học, để không một buổi sáng nào bị quên mất kiến thức.Trong bài viết này, ý tôi muốn nói là timetable hay là cách sắp sếp thời gian cho từng môn học hoặc việc gì đó ghi chi chít trên một bảng lịch. Đến tận bây giờ tôi mới học được cách sắp xếp thời gian, phân chia từng môn học theo lịch học trên trường. Khi chúng ta còn trẻ còn sức khỏe còn học tập và lao động thì thời gian là thứ vô cùng quan trọng nếu như chúng ta biết sắp xếp và phân bổ hợp lý thì sẽ kiểm soát được nó, thay vì chúng ta muốn học một cái gì đó mà cứ than vãn rằng: Thôi chắc không có thời gian để học đâu hay kiểu thấy một khóa học dài thì lại than: Haizz.... Học khóa này lâu thế. Tốn thời gian thì các bạn đang cố tìm kiếm biện minh cho sự lười biếng của các bạn mà thôi, có thể dành vài tiếng đồng hồ ra chơi game, lướt facebook, tiktok mà bỏ mấy phút ra học thì lại không làm được và cố tỏ ra mình là người bận rộn. Đó là chẳng qua chưa kiểm soát được thời gian nên sẽ có tình trạng lúc thì làm rất nhiều việc nhưng lại có lúc mất cân bằng chả muốn làm gì cả, làm một việc là ngại không muốn làm. Đặc biệt chúng ta trong thời gian tự học thì càng cần phải kiểm soát được nó như một cái gì đấy làm động lực giúp ta học hỏi thêm nhiều thứ hay ho hơn."
+        },
+        {
+          "id": 7,
+          "image": "./public/images/course_4.png",
+          "subcribe": 155,
+          "title": "Kiến thức nền tảng",
+          "description": "Có lẽ cũng rất lâu rồi mà tôi chưa đụng đến thứ được gọi là timetable. Hay dân dã hơn thì người ta hay gọi là Lịch thường nhật, còn đối với học sinh, sinh viên gọi là thời khóa biểu. Chắc hẳn nhiều người sẽ thắc mắc tại sao tôi là sinh viên mà lại lâu rồi chưa đụng đến cái mà sinh viên đều gọi là thời khóa biểu. Đương nhiên học sinh hay sinh viên đều cần có nó để xem lịch học, để không một buổi sáng nào bị quên mất kiến thức.Trong bài viết này, ý tôi muốn nói là timetable hay là cách sắp sếp thời gian cho từng môn học hoặc việc gì đó ghi chi chít trên một bảng lịch. Đến tận bây giờ tôi mới học được cách sắp xếp thời gian, phân chia từng môn học theo lịch học trên trường. Khi chúng ta còn trẻ còn sức khỏe còn học tập và lao động thì thời gian là thứ vô cùng quan trọng nếu như chúng ta biết sắp xếp và phân bổ hợp lý thì sẽ kiểm soát được nó, thay vì chúng ta muốn học một cái gì đó mà cứ than vãn rằng: Thôi chắc không có thời gian để học đâu hay kiểu thấy một khóa học dài thì lại than: Haizz.... Học khóa này lâu thế. Tốn thời gian thì các bạn đang cố tìm kiếm biện minh cho sự lười biếng của các bạn mà thôi, có thể dành vài tiếng đồng hồ ra chơi game, lướt facebook, tiktok mà bỏ mấy phút ra học thì lại không làm được và cố tỏ ra mình là người bận rộn. Đó là chẳng qua chưa kiểm soát được thời gian nên sẽ có tình trạng lúc thì làm rất nhiều việc nhưng lại có lúc mất cân bằng chả muốn làm gì cả, làm một việc là ngại không muốn làm. Đặc biệt chúng ta trong thời gian tự học thì càng cần phải kiểm soát được nó như một cái gì đấy làm động lực giúp ta học hỏi thêm nhiều thứ hay ho hơn."
+        }
+      ]
+    }
+  ],
+  "lessons": [
+    {
+      "id": 1,
+      "title": "Bắt đầu",
+      "total_hours_lesson": 30,
+      "topics": [
+        {
+          "id": 1,
+          "total_hours_topic": 3,
+          "content": "Bạn sẽ học được gì sau khóa học",
+          "video_url": "http://localhost/video"
+        },
+        {
+          "id": 2,
+          "total_hours_topic": 23,
+          "content": "Làm quen dần với devtools",
+          "video_url": "http://localhost/video"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Làm quen với HTML và CSS",
+      "total_hours_lesson": 30,
+      "topics": [
+        {
+          "id": 1,
+          "total_hours_topic": 3,
+          "content": "Bạn sẽ học được gì sau khóa học",
+          "video_url": "http://localhost/video"
+        },
+        {
+          "id": 2,
+          "total_hours_topic": 23,
+          "content": "Làm quen dần với devtools",
+          "video_url": "http://localhost/video"
+        },
+        {
+          "id": 2,
+          "total_hours_topic": 23,
+          "content": "Làm quen dần với devtools",
+          "video_url": "http://localhost/video"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Thuộc tính background,padding,margin",
+      "total_hours_lesson": 30,
+      "topics": [
+        {
+          "id": 1,
+          "total_hours_topic": 3,
+          "content": "Bạn sẽ học được gì sau khóa học",
+          "video_url": "http://localhost/video"
+        },
+        {
+          "id": 2,
+          "total_hours_topic": 23,
+          "content": "Làm quen dần với devtools",
+          "video_url": "http://localhost/video"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Tạo layout sử dụng flex box",
+      "total_hours_lesson": 30,
+      "topics": [
+        {
+          "id": 1,
+          "total_hours_topic": 3,
+          "content": "Bạn sẽ học được gì sau khóa học",
+          "video_url": "http://localhost/video"
+        },
+        {
+          "id": 2,
+          "total_hours_topic": 23,
+          "content": "Làm quen dần với devtools",
+          "video_url": "http://localhost/video"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Kết hợp với css tạo kiểu cho trang website",
+      "total_hours_lesson": 30,
+      "topics": [
+        {
+          "id": 1,
+          "total_hours_topic": 3,
+          "content": "Bạn sẽ học được gì sau khóa học",
+          "video_url": "http://localhost/video"
+        }
+      ]
+    }
+  ],
+  "videos": [
+    {
+      "id": 1,
+      "title": "Sinh viên IT đi thực tập cần biết những gì sau khi hoc",
+      "viewer": 23.533,
+      "comments": 34.534,
+      "videoUrl": "https://www.youtube.com/watch?v=Jqa4kAPebxI",
+      "image": "./public/images/video1.jpg"
+    },
+    {
+      "id": 2,
+      "title": "Sinh viên IT đi thực tập cần biết những gì",
+      "viewer": 23.533,
+      "comments": 34.534,
+      "videoUrl": "https://www.youtube.com/watch?v=ftRGuZgiNPA",
+      "image": "./public/images/video2.jpg"
+    },
+    {
+      "id": 3,
+      "title": "Sinh viên IT đi thực tập cần biết những gì",
+      "viewer": 23.533,
+      "comments": 34.534,
+      "videoUrl": "https://www.youtube.com/watch?v=eyD8L4WtU-0",
+      "image": "./public/images/video3.jpg"
+    },
+    {
+      "id": 4,
+      "title": "Sinh viên IT đi thực tập cần biết những gì",
+      "viewer": 23.533,
+      "comments": 34.534,
+      "videoUrl": "https://www.youtube.com/watch?v=V3y-eFnBhlE",
+      "image": "./public/images/video4.jpg"
+    },
+    {
+      "id": 5,
+      "title": "Sinh viên IT đi thực tập cần biết những gì",
+      "viewer": 23.533,
+      "comments": 34.534,
+      "videoUrl": "https://www.youtube.com/watch?v=0IsiZdCzP6A",
+      "image": "./public/images/video5.jpg"
+    },
+    {
+      "id": 6,
+      "title": "Sinh viên IT đi thực tập cần biết những gì",
+      "viewer": 23.533,
+      "comments": 34.534,
+      "videoUrl": "https://www.youtube.com/watch?v=fo2yJ1vT1cE",
+      "image": "./public/images/video4.jpg"
+    },
+    {
+      "id": 7,
+      "title": "Sinh viên IT đi thực tập cần biết những gì",
+      "viewer": 23.533,
+      "comments": 34.534,
+      "videoUrl": "https://www.youtube.com/watch?v=QlfTs4cLPFY",
+      "image": "./public/images/video1.jpg"
+    },
+    {
+      "id": 8,
+      "title": "Sinh viên IT đi thực tập cần biết những gì",
+      "viewer": 23.533,
+      "comments": 34.534,
+      "videoUrl": "https://www.youtube.com/watch?v=xEEsNlQ8VPk",
+      "image": "./public/images/video2.jpg"
+    }
+  ],
+  "course": {
+  "id": 1,
+  "image": "./public/images/course_1.png",
+  "subcribe": 155,
+  "title": "Kiến thức nền tảng lập trình để đi làm lập trình để đi làm",
+  "description": "Có lẽ cũng rất lâu rồi mà tôi chưa đụng đến thứ được gọi là timetable. Hay dân dã hơn thì người ta hay gọi là Lịch thường nhật, còn đối với học sinh, sinh viên gọi là thời khóa biểu. Chắc hẳn nhiều người sẽ thắc mắc tại sao tôi là sinh viên mà lại lâu rồi chưa đụng đến cái mà sinh viên đều gọi là thời khóa biểu. Đương nhiên học sinh hay sinh viên đều cần có nó để xem lịch học, để không một buổi sáng nào bị quên mất kiến thức.Trong bài viết này, ý tôi muốn nói là timetable hay là cách sắp sếp thời gian cho từng môn học hoặc việc gì đó ghi chi chít trên một bảng lịch. Đến tận bây giờ tôi mới học được cách sắp xếp thời gian, phân chia từng môn học theo lịch học trên trường. Khi chúng ta còn trẻ còn sức khỏe còn học tập và lao động thì thời gian là thứ vô cùng quan trọng nếu như chúng ta biết sắp xếp và phân bổ hợp lý thì sẽ kiểm soát được nó, thay vì chúng ta muốn học một cái gì đó mà cứ than vãn rằng: Thôi chắc không có thời gian để học đâu hay kiểu thấy một khóa học dài thì lại than: Haizz.... Học khóa này lâu thế. Tốn thời gian thì các bạn đang cố tìm kiếm biện minh cho sự lười biếng của các bạn mà thôi, có thể dành vài tiếng đồng hồ ra chơi game, lướt facebook, tiktok mà bỏ mấy phút ra học thì lại không làm được và cố tỏ ra mình là người bận rộn. Đó là chẳng qua chưa kiểm soát được thời gian nên sẽ có tình trạng lúc thì làm rất nhiều việc nhưng lại có lúc mất cân bằng chả muốn làm gì cả, làm một việc là ngại không muốn làm. Đặc biệt chúng ta trong thời gian tự học thì càng cần phải kiểm soát được nó như một cái gì đấy làm động lực giúp ta học hỏi thêm nhiều thứ hay ho hơn.",
+    "lessons": [
+      {
+        "id": 1,
+        "title": "Bắt đầu",
+        "total_hours_lesson": 30,
+        "topics": [
+          {
+            "id": 1,
+            "total_hours_topic": 3,
+            "content": "Bạn sẽ học được gì sau khóa học",
+            "video_url": "http://localhost/video"
+          },
+          {
+            "id": 2,
+            "total_hours_topic": 23,
+            "content": "Làm quen dần với devtools",
+            "video_url": "http://localhost/video"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "title": "Làm quen với HTML và CSS",
+        "total_hours_lesson": 30,
+        "topics": [
+          {
+            "id": 1,
+            "total_hours_topic": 3,
+            "content": "Bạn sẽ học được gì sau khóa học",
+            "video_url": "http://localhost/video"
+          },
+          {
+            "id": 2,
+            "total_hours_topic": 23,
+            "content": "Làm quen dần với devtools",
+            "video_url": "http://localhost/video"
+          },
+          {
+            "id": 2,
+            "total_hours_topic": 23,
+            "content": "Làm quen dần với devtools",
+            "video_url": "http://localhost/video"
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "title": "Thuộc tính background,padding,margin",
+        "total_hours_lesson": 30,
+        "topics": [
+          {
+            "id": 1,
+            "total_hours_topic": 3,
+            "content": "Bạn sẽ học được gì sau khóa học",
+            "video_url": "http://localhost/video"
+          },
+          {
+            "id": 2,
+            "total_hours_topic": 23,
+            "content": "Làm quen dần với devtools",
+            "video_url": "http://localhost/video"
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "title": "Tạo layout sử dụng flex box",
+        "total_hours_lesson": 30,
+        "topics": [
+          {
+            "id": 1,
+            "total_hours_topic": 3,
+            "content": "Bạn sẽ học được gì sau khóa học",
+            "video_url": "http://localhost/video"
+          },
+          {
+            "id": 2,
+            "total_hours_topic": 23,
+            "content": "Làm quen dần với devtools",
+            "video_url": "http://localhost/video"
+          }
+        ]
+      },
+      {
+        "id": 5,
+        "title": "Kết hợp với css tạo kiểu cho trang website",
+        "total_hours_lesson": 30,
+        "topics": [
+          {
+            "id": 1,
+            "total_hours_topic": 3,
+            "content": "Bạn sẽ học được gì sau khóa học",
+            "video_url": "http://localhost/video"
+          }
+        ]
+      }
+    ]
+  }
+}
