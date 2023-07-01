@@ -2,10 +2,10 @@ import { Button, Col, Row } from "antd";
 import { HiUserGroup } from 'react-icons/hi';
 import { Link } from "react-router-dom";
 
-import { useGetAllCoursesQuery } from '../../../services/courses';
+import { useGetCoursesQuery } from '../../../services/courses';
 
 function Courses() {
-  const { data, isLoading, isSuccess } = useGetAllCoursesQuery();
+  const { data, isLoading, isSuccess } = useGetCoursesQuery();
 
   return (
     <div className="wrapper__courses">

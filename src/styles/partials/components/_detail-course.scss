@@ -1,0 +1,34 @@
+.wrapper__detail-course{
+  .banner{
+     img {
+       width: 100%;
+       height: 500px;
+       object-fit: cover;
+       border-radius: 7px;
+     }
+  }
+  .content{
+    margin-top: 20px;
+    margin-bottom: 20px;
+    .button{
+      background-color: #009DA6;
+      &:hover{
+        color: $white-color
+      }
+    }
+    .buttonFree{
+      background-color: #ffa500;
+      &:hover{
+        color: $white-color
+      }
+    }
+  }
+  .keyword{
+    margin-left: 20px;
+    margin-bottom: 20px;
+    width: 100%;
+  }
+  .content{
+    width: 100%;
+  }
+}
