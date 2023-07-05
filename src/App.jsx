@@ -1,29 +1,25 @@
 import { Route, Routes } from "react-router-dom";
-
 import LayoutPublic from './components/layouts';
-// import Lessons from "./components/shared/Lessons";
-// import { RoutesConstant } from "./routes";
-import CoursePage from './views/app-views/course';
-import DetailCoursePage from './views/app-views/detailCourse/index.jsx';
-import HomePage from './views/app-views/home';
-// import Login from './views/auth-views/components/Login';
-// import Register from './views/auth-views/components/Register';
+import { Defaulayout } from './routes';
+import { Fragment } from 'react';
 
 function App() {
   return (
     <>
-      <LayoutPublic>
         <Routes>
-          <Route path='/' element={<HomePage />} />
-          <Route path='/khoa-hoc' element={<CoursePage />} />
-          <Route path='/thong-tin-khoa-hoc' element={<DetailCoursePage />} />
+          {Defaulayout.map((route, index) => {
+            const Page = route.component
+            const Layout = route.layout === null ? Fragment  : LayoutPublic
+            return <Route
+              key={index}
+              path={route.path}
+              element={
+              <Layout>
+                <Page />
+              </Layout>
+            } />
+          })}
         </Routes>
-      </LayoutPublic>
-      {/* <Routes>
-        <Route path='/lessons' element={<Lessons />} />
-        <Route path={RoutesConstant.LOGIN} element={<Login />} />
-        <Route path={RoutesConstant.REGISTER} element={<Register />} />
-      </Routes> */}
     </>
   )
 }
