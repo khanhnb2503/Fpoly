@@ -11,7 +11,7 @@ function Banner() {
     <div className="wrapper__banner">
       <div className="slide-show">
         <Carousel
-          autoplay={false}
+          autoplay={true}
           dragging={true}
           wrapAround={true}
           speed={1000}

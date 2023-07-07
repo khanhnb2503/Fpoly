@@ -1,11 +1,15 @@
-import { Button, Col, Progress, Row } from 'antd';
+import { Button, Col, Collapse, List, Progress, Row } from 'antd';
 import Carousel from 'nuka-carousel';
-import { AiOutlineComment, AiOutlineLeft, AiOutlineRight } from 'react-icons/ai';
+import { useState } from 'react';
+import { AiOutlineComment, AiOutlineLeft, AiOutlineLock, AiOutlineRight, AiOutlineVideoCamera } from 'react-icons/ai';
 import ReactPlayer from 'react-player';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useGetCourseQuery } from '../../../services/courses/index.jsx';
 
 function Lessons() {
   const navigate = useNavigate();
+  const [modal, setModal] = useState(false);
+  const { data: course, isSuccess } = useGetCourseQuery()
   return (
     <div className="wrapper__lessons">
       <div className="header">
@@ -57,16 +61,10 @@ function Lessons() {
                 <div className='action-next'>
                   <Row justify='space-between' align='middle'>
                     <Col>
-                      <Button>
-                        <AiOutlineLeft />
-                        <span>Bài trước</span>
-                      </Button>
+                      <Button> <AiOutlineLeft /><span>Bài trước</span></Button>
                     </Col>
                     <Col>
-                      <Button>
-                        <span>Bài tiếp</span>
-                        <AiOutlineRight />
-                      </Button>
+                      <Button> <span>Bài tiếp</span><AiOutlineRight /></Button>
                     </Col>
                   </Row>
                 </div>
@@ -98,6 +96,32 @@ function Lessons() {
             </div>
             <div className='content-lesson'>
               <h4>Nội dung bài học</h4>
+              <Collapse accordion expandIconPosition={'end'}>
+                {isSuccess && course && course.lessons.map(item => (
+                  <Collapse.Panel key={item.id} className='topic-items'
+                    header={
+                      <div className='details-course'>
+                        <h6>{`${item.id}.${item.title}`}</h6>
+                        <span>Tổng thời gian: {item.total_hours_lesson} phút</span>
+                      </div>
+                    }>
+                    <List
+                      dataSource={item.topics}
+                      renderItem={(item, index) => (
+                        <Row key={index} justify='space-between' align='middle'>
+                          <Col>
+                            <Link className='topic-link'>{item.id}.{item.content}</Link>
+                            <Row justify='start' align='middle' gutter={3} className='hours-group'>
+                              <Col><AiOutlineVideoCamera /></Col>
+                              <Col><span>{item.total_hours_topic} phút</span></Col>
+                            </Row>
+                          </Col>
+                          <Col><AiOutlineLock /></Col>
+                        </Row>
+                      )} />
+                  </Collapse.Panel>
+                ))}
+              </Collapse>
             </div>
           </Col>
         </Row>
