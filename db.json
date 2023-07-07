@@ -391,5 +391,41 @@
         ]
       }
     ]
-  }
+  },
+  "blogs":[
+    {
+      "id": 1,
+      "name": "Tạo dự án React với Webpack ",
+      "image": "./public/images/blog 1.jpg",
+      "content_btn": "Tìm hiểu thêm",
+      "author":"Join Terry",
+      "date": "23/4/2023"
+    },
+    {
+      "id": 2,
+      "name": "Tạo dự án React với Webpack ",
+      "image": "./public/images/blog 2.jpg",
+      "content_btn": "Tìm hiểu thêm",
+      "author": "Join Terry",
+      "date": "23/4/2023"
+    },
+      {
+        "id": 3,
+        "name": "Tạo dự án React với Webpack ",
+        "image": "./public/images/blog 3.jpg",
+        "content_btn": "Tìm hiểu thêm",
+        "author": "Join Terry",
+        "date": "23/4/2023"
+      },
+        {
+          "id": 4,
+          "name": "Tạo dự án React với Webpack ",
+          "image": "./public/images/blog 4.jpg",
+          "content_btn": "Tìm hiểu thêm",
+          "author": "Join Terry",
+          "date": "23/4/2023"
+        }
+  ]
+
+
 }

@@ -1,5 +1,5 @@
 export function NotFound() {
-  return (
-    <div>Error</div>
-  )
+    return (
+        <div>Error</div>
+    )
 }
