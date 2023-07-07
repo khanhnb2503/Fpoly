@@ -6,7 +6,7 @@ import Blogs from "../../../components/shared/Blogs";
 function HomePage() {
   return (
     <div className='wrapper__homepage'>
-      {/* <Banner /> */}
+      <Banner />
       <div className="containers">
         <Courses />
         <div className="video-title">
