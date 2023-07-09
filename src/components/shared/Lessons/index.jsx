@@ -1,6 +1,5 @@
 import { Button, Col, Collapse, List, Progress, Row } from 'antd';
 import Carousel from 'nuka-carousel';
-import { useState } from 'react';
 import { AiOutlineComment, AiOutlineLeft, AiOutlineLock, AiOutlineRight, AiOutlineVideoCamera } from 'react-icons/ai';
 import ReactPlayer from 'react-player';
 import { Link, useNavigate } from 'react-router-dom';
@@ -8,7 +7,6 @@ import { useGetCourseQuery } from '../../../services/courses/index.jsx';
 
 function Lessons() {
   const navigate = useNavigate();
-  const [modal, setModal] = useState(false);
   const { data: course, isSuccess } = useGetCourseQuery()
   return (
     <div className="wrapper__lessons">

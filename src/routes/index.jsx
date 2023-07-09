@@ -16,9 +16,9 @@ export const RoutesConstant = {
 
 export const DefaultLayout = [
   { path: '/', component: Home },
-  { path: 'khoa_hoc', component: CoursePage },
+  { path: '/khoa-hoc', component: CoursePage },
   { path: '/thong-tin-khoa-hoc', component: DetailCourse },
-  { path: '/lessons', component: Lessons },
+  { path: '/lessons', component: Lessons, layout: null },
   { path: "/login", component: Login, layout: null },
   { path: "/register", component: Register, layout: null },
   { path: "*", component: NotFound, layout: null }

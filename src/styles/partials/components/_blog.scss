@@ -1,74 +1,70 @@
 .wrapper__blogs {
+	margin-bottom: 45px;
 
+	.thumbnail-image {
+		display: block;
+		object-fit: cover;
+		position: relative;
+		width: 100%;
+	}
 
-    .blog-body {
-        margin-bottom: 25px;
+	.blog-item {
+		.less-blog {
+			width: 100%;
+			padding: 0px 0px 20px;
+			box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+			border-radius: $border-radius-5;
+		}
 
-        .thumbnail-image {
-            display: block;
-            object-fit: cover;
-            position: relative;
-            width: 100%;
-        }
+		img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			border-radius: $border-radius-5;
+		}
 
-        .blog-item {
-            .less-blog {
-                width: 100%;
-                padding: 0px 0px 20px;
-                box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-                border-radius: $border-radius-5;
-            }
+		.horizontal-info {
+			padding: 5px 10px;
+			color: $text-gray;
 
-            img {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-                border-radius: $border-radius-5;
-            }
+			.author {
+				color: #009DA6;
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
 
-            .horizontal-info {
-                margin-bottom: 5px;
-                padding: 0 5px;
-                color: $text-gray;
+				:hover {
+					color: $text-primary;
+				}
+			}
+		}
 
-                .author {
-                    color: #009DA6;
-                    overflow: hidden;
-                    white-space: nowrap;
-                    text-overflow: ellipsis;
+		.blog--name {
+			padding: 0 5px;
 
+			h6 {
+				font-size: 15.5px;
+				padding: 0 5px;
+				font-weight: 500;
+				color: #493d3d;
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
 
-                    :hover {
-                        color: $text-primary;
-                    }
-                }
-            }
+				:hover {
+					color: $text-primary;
+				}
+			}
+		}
 
-            .blog--name {
-                padding: 0 5px;
+		.btn-views {
+			text-align: center;
+			margin-top: 20px;
 
-                h6 {
-                    font-size: 15.5px;
-                    font-weight: 500;
-                    color: #493d3d;
-                    overflow: hidden;
-                    white-space: nowrap;
-                    text-overflow: ellipsis;
-                    margin-top: 5px;
-
-                    :hover {
-                        color: $text-primary;
-                    }
-                }
-            }
-
-            .btn-views {
-                margin-top: 12px;
-                margin-left: 90px;
-                background-color: #009DA6;
-                color: white
-            }
-
-        }
-    }
+			button {
+				background-color: #009DA6;
+				color: white;
+			}
+		}
+	}
 }
