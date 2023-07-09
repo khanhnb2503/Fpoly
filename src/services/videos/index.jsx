@@ -8,7 +8,7 @@ export const videosApi = createApi({
   tagTypes: ['Videos'],
   endpoints: (builder) => ({
     getAllVideos: builder.query({
-      query: () => 'videos',
+      query: () => 'lesson/trial-lesson',
       providesTags: ['Videos']
     }),
   })

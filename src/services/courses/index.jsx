@@ -8,12 +8,12 @@ export const courseApi = createApi({
   tagTypes: ['Courses'],
   endpoints: (builder) => ({
     getCourses: builder.query({
-      query: () => 'categories',
+      query: () => 'course/category-course',
       providesTags: ['Courses']
     }),
 
     getCourse: builder.query({
-      query: () => `course`,
+      query: (id) => `course/${id}`,
       providesTags: ['Courses']
     }),
   })

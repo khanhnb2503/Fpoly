@@ -26,17 +26,6 @@
 		.horizontal-info {
 			padding: 5px 10px;
 			color: $text-gray;
-
-			.author {
-				color: #009DA6;
-				overflow: hidden;
-				white-space: nowrap;
-				text-overflow: ellipsis;
-
-				:hover {
-					color: $text-primary;
-				}
-			}
 		}
 
 		.blog--name {

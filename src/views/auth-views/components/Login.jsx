@@ -2,23 +2,26 @@ import { Button, Form, Input, Typography } from 'antd';
 import { signInWithPopup } from 'firebase/auth';
 import { AiOutlineGithub, AiOutlineLock, AiOutlineUser } from 'react-icons/ai';
 import { FcGoogle } from 'react-icons/fc';
-
 import { Link } from 'react-router-dom';
+
 import BackgroundAuth from '../../../../public/images/auth.jpg';
 import { Rules } from '../../../common/validator';
 import { auth, githubAuthProvider, googleAuthProvider } from '../../../firebase/auth/FirebaseAuth';
 import { RoutesConstant } from '../../../routes';
+import { useAuthLoginMutation } from '../../../services/authentication/auth';
 const { Title, Text } = Typography;
 
 function Login() {
-
-  const handleLogin = (values) => {
-    console.log('Success:', values);
+  const [authLogin] = useAuthLoginMutation();
+  const handleLogin = async (values) => {
+    const request = await authLogin(values);
+    console.log(request);
   };
 
   const loginWithGoogle = async () => {
     try {
-      const { user: { displayName, email, photoURL } } = await signInWithPopup(auth, googleAuthProvider);
+      const res = await signInWithPopup(auth, googleAuthProvider);
+      console.log(res);
     } catch (error) {
       console.log(error);
     }
@@ -40,7 +43,7 @@ function Login() {
           <div className='w-25 p-5 bg-light rounded-1'>
             <div>
               <Form name="login-form" layout='vertical' onFinish={handleLogin}>
-                <Form.Item name="username" rules={Rules.USERNAME}>
+                <Form.Item name="email" rules={Rules.EMAIL}>
                   <Input
                     size='large'
                     className='text-secondary'

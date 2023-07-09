@@ -17,7 +17,7 @@ export const RoutesConstant = {
 export const DefaultLayout = [
   { path: '/', component: Home },
   { path: '/khoa-hoc', component: CoursePage },
-  { path: '/thong-tin-khoa-hoc', component: DetailCourse },
+  { path: '/khoa-hoc/:id', component: DetailCourse },
   { path: '/lessons', component: Lessons, layout: null },
   { path: "/login", component: Login, layout: null },
   { path: "/register", component: Register, layout: null },
@@ -33,7 +33,7 @@ export const RoutesList = [
   },
   {
     id: 1,
-    path: '',
+    path: '/',
     name: 'Home',
     icon: <IoMdHome size={30} />
   },

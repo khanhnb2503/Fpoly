@@ -5,8 +5,7 @@ import { Link } from 'react-router-dom';
 import { useGetAllBannerQuery } from '../../../services/banners';
 
 function Banner() {
-  const { data: banners, isLoading } = useGetAllBannerQuery();
-
+  const { data: banners, isSuccess } = useGetAllBannerQuery();
   return (
     <div className="wrapper__banner">
       <div className="slide-show">
@@ -17,13 +16,13 @@ function Banner() {
           speed={1000}
           autoplayInterval={5000}
         >
-          {!isLoading && banners.map((slide) => (
+          {isSuccess && banners.data.map((slide) => (
             <Row key={slide.id} justify='space-between'>
               <Col xl={10} className='slide-show-left'>
                 <h3>{slide.name}</h3>
                 <p>{slide.content}</p>
                 <div>
-                  <Link to={`${slide.url}`}>{slide.content_btn}</Link>
+                  <Link to={`${slide.url}`}>Đăng kí học</Link>
                 </div>
               </Col>
               <Col xl={14} className='slide-show-right'>
