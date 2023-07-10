@@ -1,34 +1,27 @@
-import { Avatar, Button, Col, Drawer, Row } from 'antd';
-import { useState } from 'react';
+import { Avatar, Col, Drawer, Row } from 'antd';
+import { useDispatch, useSelector } from 'react-redux';
+
 import avatar1 from '../../../../public/images/images.jfif';
+import { onClose } from '../../../redux/features/comment/commentSlice';
 
-function DrawerComment() {
-  const [open, setOpen] = useState(false);
-  const showDrawer = () => {
-    setOpen(true);
-  };
-  const onClose = () => {
-    setOpen(false);
-  };
-
-  const Input = () => {
-    return (
-      <div>
-        <input type="text" />
-      </div>
-    )
-  }
+const Input = () => {
   return (
     <div>
-      <Button type="primary" onClick={showDrawer}>
-        Open
-      </Button>
+      <input type="text" />
+    </div>
+  )
+}
+function DrawerComment() {
+  const dispatch = useDispatch();
+  const { isCompleted } = useSelector((state) => state.commentState);
+  return (
+    <div>
       <Drawer
         width={450}
         placement="right"
         className='wrapper__drawer'
-        onClose={onClose}
-        open={open}
+        onClose={() => dispatch(onClose(false))}
+        open={isCompleted}
         footer={<Input />}
       >
         <Row justify="space-between" align="top">

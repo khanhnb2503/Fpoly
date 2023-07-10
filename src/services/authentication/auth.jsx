@@ -4,13 +4,13 @@ export const loginApi = createApi({
   reducerPath: 'loginApi',
   baseQuery: fetchBaseQuery({
     baseUrl: import.meta.env.VITE_BASE_URL,
-    // prepareHeaders: (headers, { getState }) => {
-    //   const token = getState().auth.token;
-    //   if (token) {
-    //     headers.set('Authorization', `Bearer ${token}`);
-    //   }
-    //   return headers;
-    // }
+    prepareHeaders: (headers, { getState }) => {
+      // const token = getState().auth.token;
+      if (true) {
+        headers.set('Authorization', `Bearer hahahah`);
+      }
+      return headers;
+    }
   }),
   tagTypes: ['Users'],
   endpoints: (builder) => ({

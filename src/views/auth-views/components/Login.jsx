@@ -15,7 +15,7 @@ function Login() {
   const [authLogin] = useAuthLoginMutation();
   const handleLogin = async (values) => {
     const request = await authLogin(values);
-    console.log(request);
+    // console.log(request);
   };
 
   const loginWithGoogle = async () => {
