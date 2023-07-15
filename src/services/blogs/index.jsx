@@ -9,7 +9,12 @@ export const blogApi = createApi({
     tagTypes: ['Blogs'],
     endpoints: (builder) => ({
         getBlogs: builder.query({
-            query: () => 'blog',
+            query: (page) => {
+                return {
+                    url: `blog`,
+                    params: { page }
+                }
+            },
             providesTags: ['Blogs']
         }),
     })

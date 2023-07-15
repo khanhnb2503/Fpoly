@@ -16,7 +16,7 @@ function Courses() {
             <Row justify='start' align='middle' gutter={[50, 30]}>
               {course.courses.map((item) => (
                 <Col key={item.id} xl={6} className="less-item">
-                  <Link to={`/khoa-hoc/${item.id}`} className="thumbnail-link">
+                  <Link to={`/courses/${item.id}`} className="thumbnail-link">
                     <img src="./public/images/course_3.png" alt={`lesson-${item.id}`} />
                     <div className="overlay">
                       <Button shape="round" className="btn-action-views">Xem khóa học</Button>
