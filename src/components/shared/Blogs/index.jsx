@@ -3,7 +3,6 @@ import { ImHistory } from "react-icons/im";
 import { Link } from "react-router-dom";
 import { useGetBlogsQuery } from "../../../services/blogs";
 
-
 function Blogs() {
 	const { data: blogs, isSuccess } = useGetBlogsQuery();
 	return (
