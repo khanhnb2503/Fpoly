@@ -7,7 +7,7 @@ import DetailCourse from '../views/app-views/detailCourse/index.jsx';
 import Home from '../views/app-views/home/index.jsx';
 import Login from '../views/auth-views/components/Login.jsx';
 import Register from '../views/auth-views/components/Register.jsx';
-
+import Blog from "../views/app-views/blog/index.jsx";
 // List routes
 export const RoutesConstant = {
   LOGIN: '/login',
@@ -16,12 +16,13 @@ export const RoutesConstant = {
 
 export const DefaultLayout = [
   { path: '/', component: Home },
-  { path: '/khoa-hoc', component: CoursePage },
-  { path: '/khoa-hoc/:id', component: DetailCourse },
+  { path: '/courses', component: CoursePage },
+  { path: '/courses/:id', component: DetailCourse },
   { path: '/lessons', component: Lessons, layout: null },
   { path: "/login", component: Login, layout: null },
   { path: "/register", component: Register, layout: null },
-  { path: "*", component: NotFound, layout: null }
+  { path: "*", component: NotFound, layout: null },
+  { path: '/blogs', component: Blog },
 ]
 
 export const RoutesList = [
@@ -39,13 +40,13 @@ export const RoutesList = [
   },
   {
     id: 2,
-    path: 'khoa-hoc',
+    path: '/courses',
     name: 'Học',
     icon: <IoMdBulb size={30} />,
   },
   {
     id: 3,
-    path: '',
+    path: '/blogs',
     name: 'Blog',
     icon: <FaBlogger size={24} />,
   }
