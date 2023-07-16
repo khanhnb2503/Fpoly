@@ -10,5 +10,8 @@ export default defineConfig({
       host: true,
       strictPort: true,
       port: 4000
+   },
+   define: {
+      global: 'globalThis'
    }
 })

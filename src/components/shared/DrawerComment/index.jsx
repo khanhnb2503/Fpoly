@@ -3,14 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import avatar1 from '../../../../public/images/images.jfif';
 import { onClose } from '../../../redux/features/comment/commentSlice';
+import InputComment from '../InputComment';
 
-const Input = () => {
-  return (
-    <div>
-      <input type="text" />
-    </div>
-  )
-}
 function DrawerComment() {
   const dispatch = useDispatch();
   const { isCompleted } = useSelector((state) => state.commentState);
@@ -22,7 +16,7 @@ function DrawerComment() {
         className='wrapper__drawer'
         onClose={() => dispatch(onClose(false))}
         open={isCompleted}
-        footer={<Input />}
+        footer={<InputComment />}
       >
         <Row justify="space-between" align="top">
           <Col flex="40px">

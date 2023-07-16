@@ -16,7 +16,11 @@ export const courseApi = createApi({
       query: (id) => `course/${id}`,
       providesTags: ['Courses']
     }),
+    getLessons: builder.query({
+      query: (id) => `lesson/${id}`,
+      // providesTags: ['Courses']
+    }),
   })
 });
 
-export const { useGetCoursesQuery, useGetCourseQuery } = courseApi;
+export const { useGetCoursesQuery, useGetCourseQuery, useGetLessonsQuery } = courseApi;

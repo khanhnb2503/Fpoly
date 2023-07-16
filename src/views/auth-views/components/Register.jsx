@@ -15,7 +15,7 @@ function Register() {
 	const [message, setMessage] = useState('');
 	const [authRegister, { isLoading }] = useAuthRegisterMutation();
 	const handleLogin = async (values) => {
-		console.log(values)
+		console.log(values);
 		const response = await authRegister(values);
 		console.log(response);
 		// if (error) setMessage(error.data.message);
@@ -33,7 +33,7 @@ function Register() {
 							</div>
 							<div className='body'>
 								<Form name="login-form" layout='vertical' onFinish={handleLogin}>
-									<Form.Item name="username" rules={Rules.USERNAME} >
+									<Form.Item name="name" rules={Rules.USERNAME} >
 										<Input
 											size='large'
 											className='text-secondary'

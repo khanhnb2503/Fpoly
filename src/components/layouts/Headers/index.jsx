@@ -5,10 +5,12 @@ import { Link } from 'react-router-dom';
 
 import Logo from '../../../../public/images/logo_ong_vang.jpg';
 import { RoutesConstant } from '../../../routes';
+import { useProfileQuery } from '../../../services/users';
 import UserMenu from '../../shared/UserMenu';
 
 function Headers() {
   const [options, setOptions] = useState([]);
+  const { data: user, isSuccess } = useProfileQuery();
   const content = (
     <div>
       <p>Content</p>
@@ -52,7 +54,7 @@ function Headers() {
         </Col>
         <Col sm={4} md={6} lg={8} xl={8}>
           <Row justify="end" align="middle" className='navbar-action'>
-            {false ? (
+            {!isSuccess ? (
               <Col className='action-login'>
                 <Link to={RoutesConstant.LOGIN}>Đăng nhập</Link>
               </Col>

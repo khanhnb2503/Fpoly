@@ -8,7 +8,6 @@ import Community from '../Community/index.jsx';
 
 function DetailCourse() {
   const { id } = useParams();
-  console.log(id);
   const [open, setOpen] = useState(false);
   const { data: course, isSuccess } = useGetCourseQuery(id);
 

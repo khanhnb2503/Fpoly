@@ -12,7 +12,7 @@ import DrawerComment from '../DrawerComment/index.jsx';
 function Lessons() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { data: course, isSuccess } = useGetCourseQuery();
+  const { data: course, isSuccess } = useGetCourseQuery(3);
   return (
     <>
       <DrawerComment />
@@ -106,7 +106,7 @@ function Lessons() {
               <div className='content-lesson'>
                 <h4>Nội dung bài học</h4>
                 <Collapse accordion expandIconPosition={'end'}>
-                  {isSuccess && course && course.lessons.map(item => (
+                  {isSuccess && course.modules?.map(item => (
                     <Collapse.Panel key={item.id} className='topic-items'
                       header={
                         <div className='details-course'>
