@@ -1,10 +1,9 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi } from '@reduxjs/toolkit/query/react';
+import { baseQuery } from '../base/baseQuery';
 
 export const videosApi = createApi({
   reducerPath: 'videosApi',
-  baseQuery: fetchBaseQuery({
-    baseUrl: import.meta.env.VITE_BASE_URL,
-  }),
+  baseQuery: baseQuery,
   tagTypes: ['Videos'],
   endpoints: (builder) => ({
     getAllVideos: builder.query({

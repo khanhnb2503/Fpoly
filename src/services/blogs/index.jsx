@@ -1,11 +1,9 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi } from '@reduxjs/toolkit/query/react';
+import { baseQuery } from '../base/baseQuery';
 
 export const blogApi = createApi({
 	reducerPath: 'blogApi',
-	baseQuery: fetchBaseQuery({
-		baseUrl: import.meta.env.VITE_BASE_URL,
-
-	}),
+	baseQuery: baseQuery,
 	tagTypes: ['Blogs'],
 	endpoints: (builder) => ({
 		getBlogs: builder.query({

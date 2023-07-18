@@ -12,6 +12,7 @@ import Loading from '../../../components/shared/Spin';
 import { auth, githubAuthProvider, googleAuthProvider } from '../../../firebase/auth/FirebaseAuth';
 import { RoutesConstant } from '../../../routes';
 import { useAuthLoginMutation } from '../../../services/authentication/auth';
+import { setLocalStorage } from '../../../services/base/useLocalStorage';
 const { Title, Text } = Typography;
 
 function Login() {
@@ -24,8 +25,8 @@ function Login() {
     if (error) setMessage(error.data.message);
     if (data) {
       const { access_token, refresh_token } = data;
-      writeStorage('access_token', access_token);
-      writeStorage('refresh_token', refresh_token);
+      setLocalStorage('access_token', access_token);
+      setLocalStorage('refresh_token', refresh_token);
       navigate('/');
     }
   };
