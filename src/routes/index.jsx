@@ -21,8 +21,8 @@ export const DefaultLayout = [
   { path: '/lessons/:id', component: Lessons, layout: null },
   { path: "/login", component: Login, layout: null },
   { path: "/register", component: Register, layout: null },
+  { path: '/blog', component: Blog },
   { path: "*", component: NotFound, layout: null },
-  { path: '/blogs', component: Blog },
 ]
 
 export const RoutesList = [
@@ -46,7 +46,7 @@ export const RoutesList = [
   },
   {
     id: 3,
-    path: '/blogs',
+    path: '/blog',
     name: 'Blog',
     icon: <FaBlogger size={24} />,
   }

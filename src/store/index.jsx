@@ -9,6 +9,7 @@ import { userApi } from "../services/users";
 import { videosApi } from "../services/videos";
 
 import commentReducer from '../redux/features/comment/commentSlice';
+import courseReducer from "../redux/features/course/courseSlice";
 
 export const store = configureStore({
   reducer: {
@@ -18,7 +19,8 @@ export const store = configureStore({
     [courseApi.reducerPath]: courseApi.reducer,
     [videosApi.reducerPath]: videosApi.reducer,
     [blogApi.reducerPath]: blogApi.reducer,
-    commentState: commentReducer
+    commentState: commentReducer,
+    courseState: courseReducer,
   },
 
   middleware: (getDefaultMiddleware) =>

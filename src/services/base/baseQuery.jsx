@@ -9,4 +9,12 @@ export const baseQuery = fetchBaseQuery({
     headers.set('Authorization', `Bearer ${token}`)
     return headers
   },
-})
+});
+
+export const baseQueryVideo = fetchBaseQuery({
+  baseUrl: import.meta.env.VITE_BASE_VIDEO_URL,
+  prepareHeaders: (headers) => {
+    headers.set('SproutVideo-Api-Key', `${import.meta.env.VITE_API_KEY_VIDEO}`)
+    return headers
+  },
+});

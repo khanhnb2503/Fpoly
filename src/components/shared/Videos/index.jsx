@@ -1,16 +1,16 @@
-import { Button, Col, Row } from 'antd';
-import { AiFillEye, AiOutlineComment } from 'react-icons/ai';
-import { Link } from 'react-router-dom';
+// import { Button, Col, Row } from 'antd';
+// import { AiFillEye, AiOutlineComment } from 'react-icons/ai';
+// import { Link } from 'react-router-dom';
 
-import { baseUrl } from '../../../constants/errors';
-import { useGetAllVideosQuery } from '../../../services/videos';
+// import { baseUrl } from '../../../constants/errors';
+// import { useGetAllVideosQuery } from '../../../services/videos';
 
 function Videos() {
-  const { data: videos, isSuccess } = useGetAllVideosQuery();
+  // const { data: videos, isSuccess } = useGetAllVideosQuery();
 
   return (
     <div className='wrapper__video'>
-      <Row justify='start' gutter={[50, 45]}>
+      {/* <Row justify='start' gutter={[50, 45]}>
         {isSuccess > 0 && videos.data.map((video) => (
           <Col key={video.id} xl={6} className='video-outstanding'>
             <Link className='thumbnail-video'>
@@ -36,7 +36,7 @@ function Videos() {
             </Row>
           </Col>
         ))}
-      </Row>
+      </Row> */}
     </div>
   );
 }

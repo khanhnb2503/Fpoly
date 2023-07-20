@@ -9,7 +9,7 @@ export const blogApi = createApi({
 		getBlogs: builder.query({
 			query: (page) => {
 				return {
-					url: `blog`,
+					url: `blog?page=${page}`,
 					params: { page }
 				}
 			},

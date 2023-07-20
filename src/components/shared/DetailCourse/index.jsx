@@ -2,19 +2,31 @@ import { Button, Col, Collapse, List, Modal, Row, Typography } from 'antd';
 import { useState } from 'react';
 import { AiOutlineSafety } from 'react-icons/ai';
 import ReactPlayer from 'react-player';
+import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { useGetCourseQuery } from '../../../services/courses/index.jsx';
+
+import { useGetCourseQuery, useSubcribeCourseMutation } from '../../../services/courses/index.jsx';
 import Community from '../Community/index.jsx';
 
 function DetailCourse() {
   const { id } = useParams();
+  const { Title, Text } = Typography;
+  const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
-  const { data: course, isSuccess } = useGetCourseQuery(id);
+  const [subcribeCourse, { isSuccess }] = useSubcribeCourseMutation();
+  const { data: course, isLoading } = useGetCourseQuery(id);
 
-  const { Title, Text } = Typography
+  const handleSubcribeCourse = async () => {
+    if (id) {
+      // dispatch(setIdCourse(id));
+      const response = await subcribeCourse(id);
+      console.log(response);
+    }
+  };
+
   return (
     <div className='wrapper__detail-course'>
-      {isSuccess && course && (
+      {!isLoading && course && (
         <>
           <Modal
             title={<h4>Học ReactJs với 8 chuyên đề</h4>}
@@ -93,9 +105,10 @@ function DetailCourse() {
                 </Col>
                 <Col >
                   <Button
-                    className='buttonFree'
+                    className='button-free'
                     shape='round'
                     size={'large'}
+                    onClick={handleSubcribeCourse}
                   >Đăng kí khóa học
                   </Button>
                 </Col>

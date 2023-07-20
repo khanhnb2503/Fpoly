@@ -15,11 +15,28 @@ export const courseApi = createApi({
       query: (id) => `course/${id}`,
       providesTags: ['Courses']
     }),
+
     getLessons: builder.query({
       query: (id) => `lesson/${id}`,
-      // providesTags: ['Courses']
+      providesTags: ['Courses']
+    }),
+
+    subcribeCourse: builder.mutation({
+      query: (data) => ({
+        url: 'course/registerCourse',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: data,
+      }),
     }),
   })
 });
 
-export const { useGetCoursesQuery, useGetCourseQuery, useGetLessonsQuery } = courseApi;
+export const {
+  useGetCoursesQuery,
+  useGetCourseQuery,
+  useGetLessonsQuery,
+  useSubcribeCourseMutation
+} = courseApi;

@@ -50,14 +50,16 @@
 
     .button {
       background-color: #009DA6;
+      color: $white-color;
 
       &:hover {
         color: $white-color
       }
     }
 
-    .buttonFree {
-      background-color: #ffa500;
+    .button-free {
+      background-color: #f05123;
+      color: $white-color;
 
       &:hover {
         color: $white-color
