@@ -14,7 +14,8 @@ export const baseQuery = fetchBaseQuery({
 export const baseQueryVideo = fetchBaseQuery({
   baseUrl: import.meta.env.VITE_BASE_VIDEO_URL,
   prepareHeaders: (headers) => {
-    headers.set('SproutVideo-Api-Key', `${import.meta.env.VITE_API_KEY_VIDEO}`)
+    headers.set('SproutVideo-Api-Key', `699701dc7639206852db31e119899bdf`),
+      headers.set('Access-Control-Allow-Origin', '*')
     return headers
   },
 });

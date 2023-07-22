@@ -5,6 +5,7 @@ import { loginApi } from "../services/authentication/auth";
 import { bannerApi } from "../services/banners";
 import { blogApi } from "../services/blogs";
 import { courseApi } from "../services/courses";
+import { searchApi } from "../services/search";
 import { userApi } from "../services/users";
 import { videosApi } from "../services/videos";
 
@@ -19,6 +20,7 @@ export const store = configureStore({
     [courseApi.reducerPath]: courseApi.reducer,
     [videosApi.reducerPath]: videosApi.reducer,
     [blogApi.reducerPath]: blogApi.reducer,
+    [searchApi.reducerPath]: searchApi.reducer,
     commentState: commentReducer,
     courseState: courseReducer,
   },
@@ -30,7 +32,8 @@ export const store = configureStore({
       bannerApi.middleware,
       courseApi.middleware,
       videosApi.middleware,
-      blogApi.middleware
+      blogApi.middleware,
+      searchApi.middleware,
     )
 });
 setupListeners(store.dispatch);

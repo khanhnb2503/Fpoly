@@ -5,12 +5,16 @@ import { Link } from 'react-router-dom';
 
 import Logo from '../../../../public/images/logo_ong_vang.jpg';
 import { RoutesConstant } from '../../../routes';
+import { useSearchQuery } from '../../../services/search';
 import { useProfileQuery } from '../../../services/users';
 import UserMenu from '../../shared/UserMenu';
 
 function Headers() {
   const [options, setOptions] = useState([]);
+  const [keyword, setKeyword] = useState('');
+
   const { data: user, isSuccess } = useProfileQuery();
+  const { data: results } = useSearchQuery(keyword);
   const content = (
     <div>
       <p>Content</p>
@@ -20,6 +24,7 @@ function Headers() {
   const text = <span>Title</span>;
 
   const handleSearch = (value) => {
+    setKeyword(value);
     let res = [];
     if (!value || value.indexOf('@') >= 0) {
       res = [];
@@ -29,8 +34,9 @@ function Headers() {
         label: `${value}@${domain}`,
       }));
     }
-    setOptions(res);
+    setOptions([{ label: 'khanhb', value: 'mai di lam' }]);
   };
+
   return (
     <div className='wrapper__header'>
       <Row align="middle" className='horizontal-header'>
@@ -47,7 +53,6 @@ function Headers() {
             <AutoComplete
               onSearch={handleSearch}
               placeholder="Tìm kiếm video,khóa học,bài viết..."
-              options={options}
               className='navbar-search-input'
             />
           </Row>

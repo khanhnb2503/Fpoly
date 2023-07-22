@@ -1,12 +1,26 @@
 import { Button, Col, Row } from "antd";
+import axios from "axios";
 import { HiUserGroup } from 'react-icons/hi';
 import { Link } from "react-router-dom";
 
+import { imageUrl } from "../../../common/imageUrl";
 import { useGetCoursesQuery } from '../../../services/courses';
+// import { useGetVideoQuery } from "../../../services/videos";
+import { useEffect } from "react";
 
 function Courses() {
-  const { data: courses, isLoading, isSuccess } = useGetCoursesQuery();
+  axios.defaults.headers.common['SproutVideo-Api-Key'] = '699701dc7639206852db31e119899bdf';
+  axios.defaults.headers.common['mode'] = 'no-cors';
+  axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 
+  const { data: courses, isLoading, isSuccess } = useGetCoursesQuery();
+  useEffect(() => {
+    (async () => {
+      const data = await axios.get('https://api.sproutvideo.com/v1/videos/069fd5bd1f1ae6c08f');
+      console.log(data);
+    })()
+  }, [])
+  // const { data: videos } = useGetVideoQuery('069fd5bd1f1ae6c08f');
   return (
     <div className="wrapper__courses">
       <div className="courses">
@@ -17,7 +31,7 @@ function Courses() {
               {course.courses.map((item) => (
                 <Col key={item.id} xl={6} className="less-item">
                   <Link to={`/courses/${item.id}`} className="thumbnail-link">
-                    <img src="./public/images/course_3.png" alt={`lesson-${item.id}`} />
+                    <img src={`${imageUrl}${item.image}`} alt={`lesson-${item.id}`} />
                     <div className="overlay">
                       <Button shape="round" className="btn-action-views">Xem khóa học</Button>
                     </div>

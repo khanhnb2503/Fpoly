@@ -5,6 +5,7 @@ import ReactPlayer from 'react-player';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
+import { imageUrl } from "../../../common/imageUrl";
 import { useGetCourseQuery, useSubcribeCourseMutation } from '../../../services/courses/index.jsx';
 import Community from '../Community/index.jsx';
 
@@ -15,6 +16,7 @@ function DetailCourse() {
   const [open, setOpen] = useState(false);
   const [subcribeCourse, { isSuccess }] = useSubcribeCourseMutation();
   const { data: course, isLoading } = useGetCourseQuery(id);
+
 
   const handleSubcribeCourse = async () => {
     if (id) {
@@ -91,7 +93,7 @@ function DetailCourse() {
             </Col>
             <Col xl={9} className='thumbnail'>
               <div className='reviewer-course'>
-                <img src={course.data?.image} alt='' />
+                <img src={`${imageUrl}${course.data?.image}`} alt='' />
               </div>
               <Row justify='space-evenly' className='content'>
                 <Col >

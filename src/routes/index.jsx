@@ -1,13 +1,14 @@
 import { FaBlogger } from 'react-icons/fa';
 import { IoIosAddCircle, IoMdBulb, IoMdHome } from 'react-icons/io';
-import { NotFound } from '../components/layouts/NotFound/index.jsx';
-import Lessons from '../components/shared/Lessons/index.jsx';
-import Blog from "../views/app-views/blog/index.jsx";
-import CoursePage from '../views/app-views/course/index.jsx';
-import DetailCourse from '../views/app-views/detailCourse/index.jsx';
-import Home from '../views/app-views/home/index.jsx';
-import Login from '../views/auth-views/components/Login.jsx';
-import Register from '../views/auth-views/components/Register.jsx';
+import { NotFound } from '../components/layouts/NotFound';
+import Lessons from '../components/shared/Lessons';
+import Profile from '../views/app-views/Profile';
+import Blog from "../views/app-views/blog";
+import CoursePage from '../views/app-views/course';
+import DetailCourse from '../views/app-views/detailCourse';
+import Home from '../views/app-views/home';
+import Login from '../views/auth-views/components/Login';
+import Register from '../views/auth-views/components/Register';
 // List routes
 export const RoutesConstant = {
   LOGIN: '/login',
@@ -19,6 +20,7 @@ export const DefaultLayout = [
   { path: '/courses', component: CoursePage },
   { path: '/courses/:id', component: DetailCourse },
   { path: '/lessons/:id', component: Lessons, layout: null },
+  { path: '/profile', component: Profile, layout: null },
   { path: "/login", component: Login, layout: null },
   { path: "/register", component: Register, layout: null },
   { path: '/blog', component: Blog },

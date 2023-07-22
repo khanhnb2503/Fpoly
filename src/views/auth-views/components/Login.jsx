@@ -28,6 +28,7 @@ function Login() {
       setLocalStorage('access_token', access_token);
       setLocalStorage('refresh_token', refresh_token);
       navigate('/');
+      location.reload();
     }
   };
 

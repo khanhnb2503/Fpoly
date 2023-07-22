@@ -1,0 +1,125 @@
+.wrapper__profile {
+  margin: 30px 50px;
+
+  .profile--header {
+    border-bottom: 1px solid $border-bottom-color;
+    background-color: $white-color;
+  }
+
+  .horizontal-header {
+    height: 60px;
+  }
+
+  .navbar-logo {
+    img {
+      height: 40px;
+      border-radius: 5px;
+      object-fit: contain;
+    }
+
+    h4 {
+      font-size: 18px;
+      font-weight: $font-weight-600;
+      margin-left: 10px;
+    }
+  }
+
+  .action-login {
+    a {
+      background-color: $success-light-color;
+      color: $text-white;
+      padding: 8px 18px;
+      border-radius: $border-radius-50;
+      font-size: 15px;
+
+      &:hover {
+        background-color: $success-light-opacity;
+        transition: ease-in 0.3s;
+      }
+    }
+  }
+
+  .notification {
+    .icon-light {
+      color: #707070;
+    }
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  .avatar {
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  .profile--content {
+    margin: 20px 230px;
+  }
+
+  .background-profile {
+    position: relative;
+  }
+
+  .info-my {
+    position: absolute;
+    bottom: 0;
+    left: 55px;
+    width: 35%;
+    height: 30%;
+  }
+
+  .avatar-user {
+    background-color: white;
+    border-radius: 50%;
+    padding: 10px;
+    width: 160px;
+    height: 160px;
+  }
+
+  .info--text {
+    h5 {
+      font-size: 30px;
+      margin-bottom: 15px;
+    }
+  }
+
+  .course--my {
+    margin-top: 130px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, .1), 0 0 1px 0 rgba(0, 0, 0, .1);
+    margin-bottom: 20px;
+    padding: 18px 20px;
+    word-break: break-word;
+
+    h5 {
+      text-transform: uppercase;
+      color: #063e7e;
+      font-size: 20px;
+    }
+  }
+
+  .list-course {
+    width: 60%;
+    background-color: #fff;
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, .1), 0 0 1px 0 rgba(0, 0, 0, .1);
+    padding: 10px 0;
+    margin-top: 15px;
+  }
+
+  .content-item {
+    h6 {
+      font-size: 20px;
+      margin-bottom: 10px;
+
+      a {
+        &:hover {
+          color: #063e7e;
+        }
+      }
+    }
+  }
+}
