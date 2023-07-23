@@ -10,26 +10,24 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import { onOpen } from '../../../redux/features/comment/commentSlice.jsx';
 import { queryVideo } from '../../../services/base/baseQuery.jsx';
-import { useGetLessonsQuery } from '../../../services/courses/index.jsx';
+import { useGetLessonsQuery, useSaveHistoryCourseMutation } from '../../../services/courses/index.jsx';
 import DrawerComment from '../DrawerComment/index.jsx';
-// import Loading from '../Spin';
-
-function Iframe(props) {
-  return (
-    <div
-      dangerouslySetInnerHTML={{ __html: props.iframe ? props.iframe : "" }}
-    />
-  );
-}
 
 function Lessons() {
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [saveHistoryCourse, { isLoading }] = useSaveHistoryCourseMutation();
+
   const [videoId, setVideoId] = useState();
   const [videos, setVideos] = useState();
   const [loading, setLoading] = useState(false);
   const { data: lessons, isSuccess } = useGetLessonsQuery(id);
+
+  const handleHistoryCourse = async () => {
+    const response = await saveHistoryCourse({ course_id: 11, lesson_id: 11 });
+    console.log(response)
+  };
 
   useEffect(() => {
     (async () => {
@@ -41,7 +39,7 @@ function Lessons() {
         console.log(error);
       }
     })()
-  }, [loading]);
+  }, [lessons]);
 
   return (
     <>
@@ -52,7 +50,7 @@ function Lessons() {
             <div className="header">
               <Row justify='space-between' align='middle'>
                 <Col xl={12}>
-                  <Button type='link' className='btn-come-back' onClick={() => navigate('/')}>
+                  <Button type='link' className='btn-come-back' onClick={handleHistoryCourse}>
                     <AiOutlineLeft size={20} /><span>Quay lại</span>
                   </Button>
                 </Col>
@@ -129,7 +127,7 @@ function Lessons() {
                   </div>
                   <div className='content-lesson'>
                     <h4>Nội dung bài học</h4>
-                    <Collapse accordion defaultActiveKey={[id]} expandIconPosition={'end'}>
+                    <Collapse accordion defaultActiveKey={[lessons.data?.module_id]} expandIconPosition={'end'}>
                       {lessons?.data?.course?.modules?.length > 0 &&
                         lessons?.data?.course?.modules?.map((item) => (
                           <Collapse.Panel key={item.id} className='topic-items'
@@ -147,7 +145,7 @@ function Lessons() {
                                   justify='space-between'
                                   align='middle'
                                   className={`items-list ${lessons?.data?.video_id === item.video_id ? 'active-info' : 'un-active-info'}`}
-                                  onClick={() => setVideoId(item.video_id)}
+                                  onClick={() => navigate(`/lessons/${item.id}`)}
                                 >
                                   <Col>
                                     <h6 className='topic-link'>{item.id}.{item.name}</h6>
