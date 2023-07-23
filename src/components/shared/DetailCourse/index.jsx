@@ -21,7 +21,7 @@ function DetailCourse() {
   const handleSubcribeCourse = async () => {
     if (id) {
       // dispatch(setIdCourse(id));
-      const response = await subcribeCourse(id);
+      const response = await subcribeCourse({ course_id: id });
       console.log(response);
     }
   };
@@ -51,7 +51,9 @@ function DetailCourse() {
               <div className='details'>
                 <h5>{course.data?.name}</h5>
                 <p>{course.data?.description}</p>
-                <Title level={5}>Các khái niệm chính được đề cập đến ở khóa học: </Title>
+                <Title
+                  level={5}>Các khái niệm chính được đề cập đến ở khóa học:
+                </Title>
                 <List
                   dataSource={course.data?.modules}
                   className='item-list'
@@ -63,9 +65,9 @@ function DetailCourse() {
                       />
                     </List.Item>
                   )} />
-                <Row justify='space-between'>
+                <Row justify='space-between' className='list-description'>
                   <Col>
-                    <Title level={3}>Nội dung khóa học : </Title>
+                    <Title level={3}>Nội dung khóa học: </Title>
                   </Col>
                 </Row>
                 <Row className='content'>

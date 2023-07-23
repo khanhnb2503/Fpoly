@@ -2,13 +2,16 @@ import { Avatar, Col, Row } from "antd";
 import { Link } from "react-router-dom";
 
 import avatar from '../../../../public/images/logo_ong_vang.jpg';
+import { removeLocalStorage } from "../../../services/base/useLocalStorage";
 import { useProfileQuery } from '../../../services/users';
 
 function UserMenu() {
   const { data: user, isSuccess } = useProfileQuery();
 
   const handleLogout = () => {
-    alert("Hello")
+    removeLocalStorage('access_token');
+    removeLocalStorage('refresh_token');
+    location.reload();
   }
 
   return (
@@ -26,7 +29,7 @@ function UserMenu() {
       )}
       <div className='list-items'>
         <ul>
-          <li><Link to=''>Trang cá nhân</Link></li>
+          <li><Link to='/profile'>Trang cá nhân</Link></li>
           <li><Link to=''>Bài viết của tôi</Link></li>
           <li><Link onClick={handleLogout}>Đăng xuất</Link></li>
         </ul>

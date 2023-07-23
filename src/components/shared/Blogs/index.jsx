@@ -5,11 +5,12 @@ import { useGetBlogsQuery } from "../../../services/blogs";
 
 function Blogs() {
 	const { data: blogs, isSuccess } = useGetBlogsQuery();
+
 	return (
 		<div className="wrapper__blogs">
 			<div className="blogs">
 				<Row justify='start' align='middle' gutter={[50, 45]}>
-					{isSuccess > 0 && blogs.data.map((item) => (
+					{isSuccess > 0 && blogs.data.data.map((item) => (
 						<Col key={item.id} xl={6} className="blog-item">
 							<div className="less-blog">
 								<Link>

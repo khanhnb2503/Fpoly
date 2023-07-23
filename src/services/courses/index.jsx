@@ -23,7 +23,7 @@ export const courseApi = createApi({
 
     subcribeCourse: builder.mutation({
       query: (data) => ({
-        url: 'course/registerCourse',
+        url: 'course/register-course',
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

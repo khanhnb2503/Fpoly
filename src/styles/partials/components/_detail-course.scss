@@ -1,7 +1,8 @@
 .wrapper__detail-course {
   .details {
     h5 {
-      font-size: 25px;
+      font-size: 23px;
+      color: #291e77;
     }
 
     p {
@@ -64,6 +65,12 @@
       &:hover {
         color: $white-color
       }
+    }
+  }
+
+  .list-description {
+    h3 {
+      color: #291e77 !important;
     }
   }
 }

@@ -2,6 +2,7 @@ import { AutoComplete, Avatar, Badge, Col, Popover, Row } from 'antd';
 import { useState } from 'react';
 import { IoMdNotifications } from 'react-icons/io';
 import { Link } from 'react-router-dom';
+import Loading from '../../shared/Spin';
 
 import Logo from '../../../../public/images/logo_ong_vang.jpg';
 import { RoutesConstant } from '../../../routes';
@@ -14,28 +15,7 @@ function Headers() {
   const [keyword, setKeyword] = useState('');
 
   const { data: user, isSuccess } = useProfileQuery();
-  const { data: results } = useSearchQuery(keyword);
-  const content = (
-    <div>
-      <p>Content</p>
-      <p>Content</p>
-    </div>
-  );
-  const text = <span>Title</span>;
-
-  const handleSearch = (value) => {
-    setKeyword(value);
-    let res = [];
-    if (!value || value.indexOf('@') >= 0) {
-      res = [];
-    } else {
-      res = ['gmail.com', '163.com', 'qq.com'].map((domain) => ({
-        value,
-        label: `${value}@${domain}`,
-      }));
-    }
-    setOptions([{ label: 'khanhb', value: 'mai di lam' }]);
-  };
+  const { data: dataSearch, isLoading } = useSearchQuery(keyword);
 
   return (
     <div className='wrapper__header'>
@@ -51,7 +31,49 @@ function Headers() {
         <Col sm={16} md={12} lg={8} xl={8}>
           <Row justify="center">
             <AutoComplete
-              onSearch={handleSearch}
+              options={[{
+                label: (
+                  <Loading loading={isLoading} size='small'>
+                    <div className='list-item-search'>
+                      {dataSearch?.message
+                        ? <span>Nhập để tìm kiếm!</span>
+                        : (
+                          <div className='list-content-search'>
+                            {dataSearch?.data?.blogs?.length > 0 && (
+                              <>
+                                <h4>Bài viết</h4>
+                                {dataSearch.data.blogs.map((blog, index) => (
+                                  <div key={index}>
+                                    <Row>
+                                      <Col>
+                                        <p><Link>{blog.title}</Link></p>
+                                      </Col>
+                                    </Row>
+                                  </div>
+                                ))}
+                              </>
+                            )}
+                            <h4>Khóa học</h4>
+                            {dataSearch?.data?.courses?.length > 0 && (
+                              <>
+                                {dataSearch.data.courses.map((course, index) => (
+                                  <div key={index}>
+                                    <Row>
+                                      <Col>
+                                        <p><Link>{course.name}</Link></p>
+                                      </Col>
+                                    </Row>
+                                  </div>
+                                ))}
+                              </>
+                            )}
+                          </div>
+                        )}
+                    </div>
+                  </Loading>
+                )
+              }]}
+              onSearch={(value) => setKeyword(value)}
               placeholder="Tìm kiếm video,khóa học,bài viết..."
               className='navbar-search-input'
             />
@@ -69,7 +91,7 @@ function Headers() {
                   <Popover
                     placement="bottomRight"
                     title={<h4 className='title-notification'>Thông báo</h4>}
-                    content={content}
+                    content={<span>Chưa có thông báo nào</span>}
                     trigger="click"
                   >
                     <Badge count={2} size="small">

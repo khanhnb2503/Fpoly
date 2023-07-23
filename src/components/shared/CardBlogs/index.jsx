@@ -12,7 +12,7 @@ export const CardsBlog = ({ data }) => {
           title="Nguyễn Đăng Thái"
           style={{ marginBottom: 20 }}
         />
-        <Row gutter={10}>
+        <Row gutter={[60]}>
           <Col span={15}>
             <Link to={"/"}>
               <Title level={3}>{data.title}</Title>
@@ -31,7 +31,7 @@ export const CardsBlog = ({ data }) => {
           </Col>
           <Col span={9}>
             <Link>
-              <Image preview={false} src={data.image} width={"100%"} height={230} />
+              <Image preview={false} src='../../../../public/images/blog 2.jpg' width={"100%"} height={230} />
             </Link>
           </Col>
         </Row>

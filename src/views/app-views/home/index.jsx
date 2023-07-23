@@ -1,7 +1,9 @@
 
 import Banner from "../../../components/shared/Banner";
+import Blogs from "../../../components/shared/Blogs";
 import Courses from "../../../components/shared/Courses";
 import Videos from "../../../components/shared/Videos";
+
 function HomePage() {
   return (
     <div className='wrapper__homepage'>
@@ -14,7 +16,7 @@ function HomePage() {
         </div>
         <div className="blogs-title">
           <h5>Bài viết mới nhất </h5>
-          {/* <Blogs /> */}
+          <Blogs />
         </div>
       </div>
     </div>
