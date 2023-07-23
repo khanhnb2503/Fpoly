@@ -31,6 +31,16 @@ export const courseApi = createApi({
         body: data,
       }),
     }),
+    saveHistoryCourse: builder.mutation(({
+      query: (data) => ({
+        url: 'course/historyCourseUpdate',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: data,
+      })
+    }))
   })
 });
 
@@ -38,5 +48,6 @@ export const {
   useGetCoursesQuery,
   useGetCourseQuery,
   useGetLessonsQuery,
-  useSubcribeCourseMutation
+  useSubcribeCourseMutation,
+  useSaveHistoryCourseMutation
 } = courseApi;

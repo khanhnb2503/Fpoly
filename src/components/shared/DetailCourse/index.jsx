@@ -1,50 +1,85 @@
 import { Button, Col, Collapse, List, Modal, Row, Typography } from 'antd';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AiOutlineSafety } from 'react-icons/ai';
-import ReactPlayer from 'react-player';
 import { useDispatch } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { imageUrl } from "../../../common/imageUrl";
+import { queryVideo } from '../../../services/base/baseQuery';
 import { useGetCourseQuery, useSubcribeCourseMutation } from '../../../services/courses/index.jsx';
+import { useProfileQuery } from '../../../services/users';
 import Community from '../Community/index.jsx';
 
 function DetailCourse() {
   const { id } = useParams();
   const { Title, Text } = Typography;
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
-  const [subcribeCourse, { isSuccess }] = useSubcribeCourseMutation();
-  const { data: course, isLoading } = useGetCourseQuery(id);
+  const [loading, setLoading] = useState(false);
+  const [videoId, setVideoId] = useState('709fd5b8181fe1c6f9');
+  const [videos, setVideos] = useState();
 
+  const [subcribeCourse] = useSubcribeCourseMutation();
+  const { data: course } = useGetCourseQuery(id);
+  const { data: users } = useProfileQuery();
 
   const handleSubcribeCourse = async () => {
-    if (id) {
-      // dispatch(setIdCourse(id));
-      const response = await subcribeCourse({ course_id: id });
-      console.log(response);
-    }
+    if (!id || !users.id) navigate('/login');
+    dispatch(setIdCourse(id));
+    const response = await subcribeCourse({ course_id: id });
+    console.log(response);
   };
+
+  useEffect(() => {
+    try {
+      (async () => {
+        const { data } = await queryVideo(videoId);
+        setVideos(data);
+        setLoading(true);
+      })()
+    } catch (error) {
+      console.log('Error');
+    }
+  }, [course, videoId]);
 
   return (
     <div className='wrapper__detail-course'>
-      {!isLoading && course && (
+      {loading && course && (
         <>
           <Modal
-            title={<h4>Học ReactJs với 8 chuyên đề</h4>}
+            title={<h3>{course.data.name}</h3>}
             centered
             onOk={() => setOpen(false)}
             onCancel={() => setOpen(false)}
             open={open}
             footer={null}
-            width='50%'
+            width='35.4%'
+            className='video-trial-content'
           >
-            <ReactPlayer
-              url='https://www.youtube.com/watch?v=5MTSQspPjXQ'
-              className='review-first-video'
-              playing={true}
-              controls
-            />
+            <div
+              dangerouslySetInnerHTML={{ __html: videos.embed_code }}
+              className='video-player-modal'
+            ></div>
+            <h4>Video học thử miễn phí</h4>
+            {course.data.modules.length > 0 && course.data.modules.map((items) => (
+              <div key={items.id}>
+                {items.lessons.map((value) => (
+                  <div
+                    key={value.id}
+                    className={`trial-study-content ${value.video_id == videoId ? 'active-default-bk' : ''}`}
+                    onClick={() => setVideoId(value.video_id)}
+                  >
+                    {value.status === 1 &&
+                      (<Row justify='space-between' align='middle'>
+                        <Col xl={20}><h6>{value.name}</h6></Col>
+                        <Col xl={2}><span>20 phút</span></Col>
+                      </Row>)
+                    }
+                  </div>
+                ))}
+              </div>
+            ))}
           </Modal>
           <Row justify='space-between' align='top' gutter={50}>
             <Col xl={15}>
@@ -100,11 +135,11 @@ function DetailCourse() {
               <Row justify='space-evenly' className='content'>
                 <Col >
                   <Button
-                    className='button'
+                    className='button btn-views'
                     shape='round'
                     size={'large'}
                     onClick={() => setOpen(true)}
-                  >Học thử bài đầu
+                  >Học thử video
                   </Button>
                 </Col>
                 <Col >
@@ -120,8 +155,9 @@ function DetailCourse() {
             </Col>
           </Row>
         </>
-      )}
-    </div>
+      )
+      }
+    </div >
   )
 }
 export default DetailCourse

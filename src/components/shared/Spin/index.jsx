@@ -2,9 +2,11 @@ import { Spin } from "antd";
 
 function Loading({ loading, size, children }) {
   return (
-    <Spin spinning={loading} size={size}>
-      {children}
-    </Spin>
+    <div style={{ width: '100%', height: '100%' }}>
+      <Spin spinning={loading} size={size}>
+        {children}
+      </Spin>
+    </div>
   );
 }
 
