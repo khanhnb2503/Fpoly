@@ -1,0 +1,44 @@
+.wrapper_payment {
+  .payment-title {
+    display: flex;
+    justify-content: center;
+
+  }
+
+  .price {
+    align-items: center;
+  }
+
+  .price_sale {
+    color: #ffa500;
+    margin-left: 10px;
+    font-size: 1.5rem;
+    border-radius: $border-radius-10;
+  }
+
+  .color-text {
+    color: $white-color
+  }
+
+  .total_price {
+    display: flex;
+    align-items: center;
+  }
+
+  .card_price {
+    background-color: #009DA6;
+  }
+
+  .btn-payment {
+    background-color: #009DA6;
+    margin-top: 15px;
+    margin-left: 40%;
+    &:hover {
+      color: #ffa500;
+    }
+  }
+  .card_infor{
+    margin-top: 10px;
+    text-align: center;
+  }
+}

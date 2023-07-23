@@ -6,6 +6,7 @@ import Profile from '../views/app-views/Profile';
 import Blog from "../views/app-views/blog";
 import CoursePage from '../views/app-views/course';
 import DetailCourse from '../views/app-views/detailCourse';
+import Payment from '../views/app-views/Payment';
 import Home from '../views/app-views/home';
 import Login from '../views/auth-views/components/Login';
 import Register from '../views/auth-views/components/Register';
@@ -24,6 +25,7 @@ export const DefaultLayout = [
   { path: "/login", component: Login, layout: null },
   { path: "/register", component: Register, layout: null },
   { path: '/blog', component: Blog },
+  { path: '/payment/:id', component: Payment },
   { path: "*", component: NotFound, layout: null },
 ]
 
