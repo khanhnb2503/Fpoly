@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { AiOutlineSafety } from 'react-icons/ai';
 import ReactPlayer from 'react-player';
 import { useDispatch } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import {Link, useParams} from 'react-router-dom';
 
 import { imageUrl } from "../../../common/imageUrl";
 import { useGetCourseQuery, useSubcribeCourseMutation } from '../../../services/courses/index.jsx';
@@ -108,13 +108,15 @@ function DetailCourse() {
                   </Button>
                 </Col>
                 <Col >
-                  <Button
-                    className='button-free'
-                    shape='round'
-                    size={'large'}
-                    onClick={handleSubcribeCourse}
-                  >Đăng kí khóa học
-                  </Button>
+                  <Link to={`/payment/${id}`} >
+                    <Button
+                      className='button-free'
+                      shape='round'
+                      size={'large'}
+                      onClick={handleSubcribeCourse}
+                    >Đăng kí khóa học
+                    </Button>
+                  </Link>
                 </Col>
               </Row>
             </Col>
