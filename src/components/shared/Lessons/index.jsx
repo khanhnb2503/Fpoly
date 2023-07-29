@@ -8,21 +8,31 @@ import {
 import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 
+// import ReactPlayer from 'react-player';
+import { formatTime } from '../../../common/formatTime';
 import { onOpen } from '../../../redux/features/comment/commentSlice.jsx';
 import { queryVideo } from '../../../services/base/baseQuery.jsx';
 import { useGetLessonsQuery, useSaveHistoryCourseMutation } from '../../../services/courses/index.jsx';
 import DrawerComment from '../DrawerComment/index.jsx';
 
+window.addEventListener('message', function (e) {
+  const data = JSON.parse(e.data);
+  console.log(formatTime(data?.data?.time));
+  if (data.type === 'completed') {
+    console.log('da hoan thanh');
+  }
+});
+
 function Lessons() {
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [saveHistoryCourse, { isLoading }] = useSaveHistoryCourseMutation();
 
   const [videoId, setVideoId] = useState();
   const [videos, setVideos] = useState();
   const [loading, setLoading] = useState(false);
   const { data: lessons, isSuccess } = useGetLessonsQuery(id);
+  const [saveHistoryCourse, { isLoading }] = useSaveHistoryCourseMutation();
 
   const handleHistoryCourse = async () => {
     const response = await saveHistoryCourse({ course_id: 11, lesson_id: 11 });
@@ -40,6 +50,15 @@ function Lessons() {
       }
     })()
   }, [lessons]);
+
+  // const handleGetTime = (state) => {
+  //   const result = formatTime(state.playedSeconds);
+  //   console.log(state.playedSeconds);
+  //   if (result === '11:00') {
+  //     navigate('/lessons/18')
+  //     return;
+  //   }
+  // }
 
   return (
     <>
@@ -74,13 +93,18 @@ function Lessons() {
                           dangerouslySetInnerHTML={{ __html: videos.embed_code }}
                           className='video-player'
                         ></div>
+                        {/* <ReactPlayer
+                          url='https://www.youtube.com/watch?v=p6AvUqCvkFQ'
+                          controls={true}
+                          onProgress={handleGetTime}
+                        /> */}
                       </Row>
                     </div>
                     <div className='video-info-bio'>
                       <div>
                         <Row justify='space-between' align='middle'>
                           <Col xl={21}>
-                            <h3>{lessons.data.description}</h3>
+                            <h3 dangerouslySetInnerHTML={{ __html: lessons.data.description }}></h3>
                           </Col>
                           <Col xl={3.2}>
                             <Button

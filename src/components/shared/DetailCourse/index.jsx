@@ -4,6 +4,7 @@ import { AiOutlineSafety } from 'react-icons/ai';
 import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { imageUrl } from "../../../common/imageUrl";
+import { setIdCourse } from '../../../redux/features/course/courseSlice';
 import { queryVideo } from '../../../services/base/baseQuery';
 import { useGetCourseQuery, useSubcribeCourseMutation } from '../../../services/courses/index.jsx';
 import { useProfileQuery } from '../../../services/users';
@@ -16,19 +17,21 @@ function DetailCourse() {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [videoId, setVideoId] = useState('709fd5b8181fe1c6f9');
+  const [videoId, setVideoId] = useState();
   const [videos, setVideos] = useState();
 
   const [subcribeCourse] = useSubcribeCourseMutation();
-  const { data: course } = useGetCourseQuery(id);
+  const { data: course, isSuccess } = useGetCourseQuery(id);
   const { data: users } = useProfileQuery();
 
   const handleSubcribeCourse = async () => {
     if (!id || !users.id) navigate('/login');
     dispatch(setIdCourse(id));
     const response = await subcribeCourse({ course_id: id });
+    navigate('/lessons/11')
     console.log(response);
   };
+
 
   useEffect(() => {
     try {
@@ -41,6 +44,18 @@ function DetailCourse() {
       console.log('Error');
     }
   }, [course, videoId]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      let isTrial = [];
+      course?.data?.modules.map((module) => {
+        module?.lessons.map((lesson) => {
+          if (lesson.is_trial_lesson == 1) isTrial.push(lesson.video_id);
+        })
+      });
+      setVideoId(isTrial[0])
+    }
+  }, [course]);
 
   return (
     <div className='wrapper__detail-course'>
@@ -69,7 +84,7 @@ function DetailCourse() {
                     className={`trial-study-content ${value.video_id == videoId ? 'active-default-bk' : ''}`}
                     onClick={() => setVideoId(value.video_id)}
                   >
-                    {value.status === 1 &&
+                    {value.is_trial_lesson === 1 &&
                       (<Row justify='space-between' align='middle'>
                         <Col xl={20}><h6>{value.name}</h6></Col>
                         <Col xl={2}><span>20 phút</span></Col>
@@ -84,7 +99,11 @@ function DetailCourse() {
             <Col xl={15}>
               <div className='details'>
                 <h5>{course.data?.name}</h5>
-                <p>{course.data?.description}</p>
+                {/* <p>{course.data?.description}</p> */}
+                <div
+                  dangerouslySetInnerHTML={{ __html: course.data?.description }}
+                  className='video-player-modal'
+                ></div>
                 <Title
                   level={5}>Các khái niệm chính được đề cập đến ở khóa học:
                 </Title>
@@ -142,15 +161,15 @@ function DetailCourse() {
                   </Button>
                 </Col>
                 <Col >
-                  <Link to={`/payment/${id}`} >
-                    <Button
-                      className='button-free'
-                      shape='round'
-                      size={'large'}
-                      onClick={handleSubcribeCourse}
-                    >Đăng kí khóa học
-                    </Button>
-                  </Link>
+                  {/* <Link to={`/payment/${id}`} > */}
+                  <Button
+                    className='button-free'
+                    shape='round'
+                    size={'large'}
+                    onClick={handleSubcribeCourse}
+                  >Đăng kí khóa học
+                  </Button>
+                  {/* </Link> */}
                 </Col>
               </Row>
             </Col>
