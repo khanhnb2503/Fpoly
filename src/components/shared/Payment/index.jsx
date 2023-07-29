@@ -1,5 +1,5 @@
 // import PaymentForm from "../PaymentForm";
-import { Button, Card, Col, List, Modal, Row, Typography } from "antd";
+import { Button, Card, Col, List, Modal, Row, Typography, Input  } from "antd";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useGetCourseQuery } from '../../../services/courses';
@@ -9,11 +9,12 @@ import PaymentForm from "../PaymentForm";
 
 const Payment = () => {
     const { Title, Text } = Typography
+    const {Search} = Input
     const { id } = useParams()
     const { data: course } = useGetCourseQuery(id)
-    const data = [
+    const dataInfor = [
         'Truy cập toàn bộ khóa học',
-        `Hơn ${course.data.modules.length} video bài tập`,
+        `Hơn ${20} video bài tập`,
         'Các bài tập thực hành sau mỗi video',
         'Hỏi đáp trực tiếp ngay dưới mỗi bài học',
         'Có cộng đồng bàn luận trên facbook, forum',
@@ -21,6 +22,12 @@ const Payment = () => {
     ];
 
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isLoading, setIsLoading] =  useState(false)
+    const [isDiscount, setIsDiscount] = useState("abc");
+    const [textDiscount, setTextDiscount] = useState('');
+    const [priceTotal, setPriceTotal] = useState(course.data.price);
+    const [discountPrice, setDiscountPrice] = useState(0);
+
     const showModal = () => {
         setIsModalOpen(true);
     };
@@ -31,6 +38,28 @@ const Payment = () => {
         setIsModalOpen(false);
     };
 
+    const handleSearchDiscount = (codeDiscount) => {
+        setIsLoading(true)
+        if (codeDiscount === isDiscount) {
+            setDiscountPrice(15)
+            setTimeout(() => {
+                setIsLoading(false)
+                setTextDiscount("áp dụng voucher thành công")
+            }, 2000)
+        } else {
+            setTimeout(() => {
+                setTextDiscount("voucher không hợp lệ, xin vui lòng thử lại")
+                setIsLoading(false)
+            }, 2000)
+        }
+    }
+
+    const handlePaymentVnPay = () => {
+        console.log("Vui lòng đợi trong giây lát")
+        setTimeout(() => {
+            console.log("Thanh toán thành công!!")
+        }, 1000)
+    }
 
     const price = () => {
         return (
@@ -40,8 +69,8 @@ const Payment = () => {
                         <Title style={{ margin: 0 }} level={5} className="price_number color-text">Giá bán : </Title>
                     </Col>
                     <Col>
-                        <Text delete className="color-text ">{course.price || "1.200.000"}</Text>
-                        <Text className="price_sale">{(1200000 / 100) * 50}</Text>
+                        <Text delete className="color-text ">{discountPrice ? course.data.price : ''}</Text>
+                        <Text className="price_sale">{(priceTotal / 100) * discountPrice}</Text>
                     </Col>
                 </Row>
             </div>
@@ -61,16 +90,24 @@ const Payment = () => {
                         title={price()}
                         className="card_price"
                     >
+                        <div className="discount_input">
+                            <Search placeholder="nhập mã giảm giá" enterButton="Áp dụng" size="middle" loading={isLoading} onSearch={(codeDiscount) => handleSearchDiscount(codeDiscount)} />
+                            <Text>{isDiscount ? (
+                              <div style={{color: "red"}}>{textDiscount}</div>
+                            ) : (
+                              <div style={{color: "white"}}>{textDiscount}</div>
+                            )}</Text>
+                        </div>
                         <div className="total_price">
                             <Title level={4} style={{ margin: 0 }} className="color-text">Tổng tiền : </Title>
-                            <Text className="price_sale">{(1200000 / 100) * 50}</Text>
+                            <Text className="price_sale">{(priceTotal / 100) * discountPrice}</Text>
                         </div>
                     </Card>
                     <div>
                         <Button
                             className="btn-payment color-text"
                             size={"large"}
-                            onClick={() => showModal()}
+                            onClick={() => handlePaymentVnPay()}
                         >Thanh toán ngay</Button>
                     </div>
                     <Modal open={isModalOpen} onOk={handleOk} onCancel={handleCancel} width={"50%"}>
@@ -81,7 +118,7 @@ const Payment = () => {
                     <Card className="card_infor" bordered={true}>
                         <Title level={3}>Bạn sẽ nhận được gì</Title>
                         <List
-                            dataSource={data}
+                            dataSource={dataInfor}
                             renderItem={(item) => (
                                 <List.Item>
                                     <Text></Text> {item}

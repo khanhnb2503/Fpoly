@@ -1,18 +1,18 @@
-import { Button, Col, Collapse, List, Modal, Row, Typography } from 'antd';
-import { useEffect, useState } from 'react';
-import { AiOutlineSafety } from 'react-icons/ai';
-import { useDispatch } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
-import { imageUrl } from "../../../common/imageUrl";
-import { setIdCourse } from '../../../redux/features/course/courseSlice';
-import { queryVideo } from '../../../services/base/baseQuery';
-import { useGetCourseQuery, useSubcribeCourseMutation } from '../../../services/courses/index.jsx';
-import { useProfileQuery } from '../../../services/users';
+import {Button, Col, Collapse, List, Modal, Row, Typography} from 'antd';
+import {useEffect, useState} from 'react';
+import {AiOutlineSafety} from 'react-icons/ai';
+import {useDispatch} from 'react-redux';
+import {Link, useNavigate, useParams} from 'react-router-dom';
+import {imageUrl} from "../../../common/imageUrl";
+import {setIdCourse} from '../../../redux/features/course/courseSlice';
+import {queryVideo} from '../../../services/base/baseQuery';
+import {useGetCourseQuery, useSubcribeCourseMutation} from '../../../services/courses/index.jsx';
+import {useProfileQuery} from '../../../services/users';
 import Community from '../Community/index.jsx';
 
 function DetailCourse() {
-  const { id } = useParams();
-  const { Title, Text } = Typography;
+  const {id} = useParams();
+  const {Title, Text} = Typography;
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
@@ -21,13 +21,13 @@ function DetailCourse() {
   const [videos, setVideos] = useState();
 
   const [subcribeCourse] = useSubcribeCourseMutation();
-  const { data: course, isSuccess } = useGetCourseQuery(id);
-  const { data: users } = useProfileQuery();
+  const {data: course, isSuccess} = useGetCourseQuery(id);
+  const {data: users} = useProfileQuery();
 
   const handleSubcribeCourse = async () => {
     if (!id || !users.id) navigate('/login');
     dispatch(setIdCourse(id));
-    const response = await subcribeCourse({ course_id: id });
+    const response = await subcribeCourse({course_id: id});
     navigate('/lessons/11')
     console.log(response);
   };
@@ -36,7 +36,7 @@ function DetailCourse() {
   useEffect(() => {
     try {
       (async () => {
-        const { data } = await queryVideo(videoId);
+        const {data} = await queryVideo(videoId);
         setVideos(data);
         setLoading(true);
       })()
@@ -72,7 +72,7 @@ function DetailCourse() {
             className='video-trial-content'
           >
             <div
-              dangerouslySetInnerHTML={{ __html: videos.embed_code }}
+              dangerouslySetInnerHTML={{__html: videos.embed_code}}
               className='video-player-modal'
             ></div>
             <h4>Video học thử miễn phí</h4>
@@ -101,7 +101,7 @@ function DetailCourse() {
                 <h5>{course.data?.name}</h5>
                 {/* <p>{course.data?.description}</p> */}
                 <div
-                  dangerouslySetInnerHTML={{ __html: course.data?.description }}
+                  dangerouslySetInnerHTML={{__html: course.data?.description}}
                   className='video-player-modal'
                 ></div>
                 <Title
@@ -113,18 +113,18 @@ function DetailCourse() {
                   renderItem={(item, index) => (
                     <List.Item>
                       <List.Item.Meta
-                        avatar={<AiOutlineSafety size={20} />}
+                        avatar={<AiOutlineSafety size={20}/>}
                         title={<p>{item.name}</p>}
                       />
                     </List.Item>
-                  )} />
+                  )}/>
                 <Row justify='space-between' className='list-description'>
                   <Col>
                     <Title level={3}>Nội dung khóa học: </Title>
                   </Col>
                 </Row>
                 <Row className='content'>
-                  <Collapse accordion size={'large'} style={{ width: '100%' }} expandIconPosition={'end'}>
+                  <Collapse accordion size={'large'} style={{width: '100%'}} expandIconPosition={'end'}>
                     {course.data.modules.length > 0 && course.data.modules.map(item => (
                       <Collapse.Panel key={item.id} header={<h6>{item.name}</h6>}>
                         <List
@@ -132,26 +132,26 @@ function DetailCourse() {
                           renderItem={(item, index) => (
                             <List.Item>
                               <List.Item.Meta
-                                avatar={<AiOutlineSafety />}
+                                avatar={<AiOutlineSafety/>}
                                 title={<p>{item.name}</p>}
                               />
                             </List.Item>
-                          )} />
+                          )}/>
                       </Collapse.Panel>
                     ))}
                   </Collapse>
                 </Row>
                 <Row justify='center'>
-                  <Community />
+                  <Community/>
                 </Row>
               </div>
             </Col>
             <Col xl={9} className='thumbnail'>
               <div className='reviewer-course'>
-                <img src={`${imageUrl}${course.data?.image}`} alt='' />
+                <img src={`${imageUrl}${course.data?.image}`} alt=''/>
               </div>
               <Row justify='space-evenly' className='content'>
-                <Col >
+                <Col>
                   <Button
                     className='button btn-views'
                     shape='round'
@@ -160,16 +160,16 @@ function DetailCourse() {
                   >Học thử video
                   </Button>
                 </Col>
-                <Col >
-                  {/* <Link to={`/payment/${id}`} > */}
-                  <Button
-                    className='button-free'
-                    shape='round'
-                    size={'large'}
-                    onClick={handleSubcribeCourse}
-                  >Đăng kí khóa học
-                  </Button>
-                  {/* </Link> */}
+                <Col>
+                  <Link to={`/payment/${id}`}>
+                    <Button
+                      className='button-free'
+                      shape='round'
+                      size={'large'}
+                      onClick={handleSubcribeCourse}
+                    >Đăng kí khóa học
+                    </Button>
+                  </Link>
                 </Col>
               </Row>
             </Col>
@@ -177,7 +177,8 @@ function DetailCourse() {
         </>
       )
       }
-    </div >
+    </div>
   )
 }
+
 export default DetailCourse
