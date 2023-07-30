@@ -20,9 +20,6 @@ const PaymentForm = ({data, price}) => {
             </div>
           </Card>
         </Col>
-        <Col span={13}>
-          <Image preview={false} src={"https://vinacheck.vn/media/2020/09/unnamed-1-e1599126130688.png"} />
-        </Col>
       </Row>
     </div>
   )

@@ -19,8 +19,8 @@ function DetailCourse() {
   const [videos, setVideos] = useState();
 
   const [subcribeCourse] = useSubcribeCourseMutation();
-  const { data: course, isSuccess } = useGetCourseQuery(id);
-  const { data: users } = useProfileQuery();
+  const {data: course, isSuccess} = useGetCourseQuery(id);
+  const {data: users} = useProfileQuery();
 
   const handleSubcribeCourse = async () => {
     setLocalStorage('course_id', id);
@@ -37,7 +37,7 @@ function DetailCourse() {
   useEffect(() => {
     try {
       (async () => {
-        const { data } = await queryVideo(videoId);
+        const {data} = await queryVideo(videoId);
         setVideos(data);
         setLoading(true);
       })()
@@ -73,7 +73,7 @@ function DetailCourse() {
             className='video-trial-content'
           >
             <div
-              dangerouslySetInnerHTML={{ __html: videos.embed_code }}
+              dangerouslySetInnerHTML={{__html: videos.embed_code}}
               className='video-player-modal'
             ></div>
             <h4>Video học thử miễn phí</h4>
@@ -102,7 +102,7 @@ function DetailCourse() {
                 <h5>{course.data?.name}</h5>
                 {/* <p>{course.data?.description}</p> */}
                 <div
-                  dangerouslySetInnerHTML={{ __html: course.data?.description }}
+                  dangerouslySetInnerHTML={{__html: course.data?.description}}
                   className='video-player-modal'
                 ></div>
                 <Title
@@ -114,18 +114,18 @@ function DetailCourse() {
                   renderItem={(item, index) => (
                     <List.Item>
                       <List.Item.Meta
-                        avatar={<AiOutlineSafety size={20} />}
+                        avatar={<AiOutlineSafety size={20}/>}
                         title={<p>{item.name}</p>}
                       />
                     </List.Item>
-                  )} />
+                  )}/>
                 <Row justify='space-between' className='list-description'>
                   <Col>
                     <Title level={3}>Nội dung khóa học: </Title>
                   </Col>
                 </Row>
                 <Row className='content'>
-                  <Collapse accordion size={'large'} style={{ width: '100%' }} expandIconPosition={'end'}>
+                  <Collapse accordion size={'large'} style={{width: '100%'}} expandIconPosition={'end'}>
                     {course.data.modules.length > 0 && course.data.modules.map(item => (
                       <Collapse.Panel key={item.id} header={<h6>{item.name}</h6>}>
                         <List
@@ -133,26 +133,26 @@ function DetailCourse() {
                           renderItem={(item, index) => (
                             <List.Item>
                               <List.Item.Meta
-                                avatar={<AiOutlineSafety />}
+                                avatar={<AiOutlineSafety/>}
                                 title={<p>{item.name}</p>}
                               />
                             </List.Item>
-                          )} />
+                          )}/>
                       </Collapse.Panel>
                     ))}
                   </Collapse>
                 </Row>
                 <Row justify='center'>
-                  <Community />
+                  <Community/>
                 </Row>
               </div>
             </Col>
             <Col xl={9} className='thumbnail'>
               <div className='reviewer-course'>
-                <img src={`${imageUrl}${course.data?.image}`} alt='' />
+                <img src={`${imageUrl}${course.data?.image}`} alt=''/>
               </div>
               <Row justify='space-evenly' className='content'>
-                <Col >
+                <Col>
                   <Button
                     className='button btn-views'
                     shape='round'
@@ -189,7 +189,8 @@ function DetailCourse() {
         </>
       )
       }
-    </div >
+    </div>
   )
 }
+
 export default DetailCourse
