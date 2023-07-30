@@ -1,6 +1,5 @@
 
 import { Button, Col, Form, Input, Row, Typography } from 'antd';
-import { signInWithPopup } from 'firebase/auth';
 import { useState } from 'react';
 import { AiOutlineGithub, AiOutlineLock, AiOutlineUser } from 'react-icons/ai';
 import { FcGoogle } from 'react-icons/fc';
@@ -9,47 +8,35 @@ import { Link, useNavigate } from 'react-router-dom';
 import BackgroundAuth from '../../../../public/images/auth.jpg';
 import { Rules } from '../../../common/validator';
 import Loading from '../../../components/shared/Spin';
-import { auth, githubAuthProvider, googleAuthProvider } from '../../../firebase/auth/FirebaseAuth';
 import { RoutesConstant } from '../../../routes';
 import { useAuthLoginMutation } from '../../../services/authentication/auth';
-import { setLocalStorage } from '../../../services/base/useLocalStorage';
+import { getLocalStorage, setLocalStorage } from '../../../services/base/useLocalStorage';
+import { useSubcribeCourseMutation } from '../../../services/courses';
 const { Title, Text } = Typography;
 
 function Login() {
   const navigate = useNavigate();
   const [message, setMessage] = useState('');
   const [authLogin, { isLoading }] = useAuthLoginMutation();
+  const [subcribeCourse] = useSubcribeCourseMutation();
 
   const handleLogin = async (values) => {
     const { data, error } = await authLogin(values);
-    if (error) setMessage(error.data.message);
     if (data) {
       const { access_token, refresh_token } = data;
       setLocalStorage('access_token', access_token);
       setLocalStorage('refresh_token', refresh_token);
-      navigate('/');
-      location.reload();
+
+      if (getLocalStorage('course_id')) {
+        const response = await subcribeCourse({ course_id: getLocalStorage('course_id') });
+        console.log(response)
+        return;
+      } else {
+        navigate('/');
+        location.reload();
+      }
     }
   };
-
-  const loginWithGoogle = async () => {
-    try {
-      const res = await signInWithPopup(auth, googleAuthProvider);
-      console.log(res);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const loginWithGithub = async () => {
-    try {
-      const { user: { displayName, email, photoURL } } = await signInWithPopup(auth, githubAuthProvider);
-      console.log(displayName, email, photoURL)
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   return (
     <>
       <Loading loading={isLoading} size='large'>
@@ -98,7 +85,6 @@ function Login() {
                         size='large'
                         className='px-4'
                         icon={<FcGoogle />}
-                        onClick={loginWithGoogle}
                       > Google
                       </Button>
                     </div>
@@ -107,7 +93,6 @@ function Login() {
                         size='large'
                         className='px-4'
                         icon={<AiOutlineGithub />}
-                        onClick={loginWithGithub}
                       > Github
                       </Button>
                     </div>

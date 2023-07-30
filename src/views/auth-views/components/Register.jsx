@@ -1,5 +1,4 @@
 import { Button, Col, Form, Input, Row, Typography } from 'antd';
-import { useState } from 'react';
 import { AiOutlineLock, AiOutlineMail, AiOutlineUser } from 'react-icons/ai';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -8,18 +7,32 @@ import { Rules } from '../../../common/validator';
 import Loading from '../../../components/shared/Spin';
 import { RoutesConstant } from '../../../routes';
 import { useAuthRegisterMutation } from '../../../services/authentication/auth';
+import { getLocalStorage, setLocalStorage } from '../../../services/base/useLocalStorage';
+import { useSubcribeCourseMutation } from '../../../services/courses';
 const { Title, Text } = Typography;
 
 function Register() {
 	const navigate = useNavigate();
-	const [message, setMessage] = useState('');
 	const [authRegister, { isLoading }] = useAuthRegisterMutation();
+	const [subcribeCourse] = useSubcribeCourseMutation();
 	const handleLogin = async (values) => {
-		console.log(values);
-		const response = await authRegister(values);
-		console.log(response);
-		// if (error) setMessage(error.data.message);
-		// navigate('/');
+		const { data, error } = await authRegister(values);
+		if (data) {
+			const { access_token, refresh_token } = data;
+			setLocalStorage('access_token', access_token);
+			setLocalStorage('refresh_token', refresh_token);
+
+			if (getLocalStorage('course_id')) {
+				setTimeout(async () => {
+					const response = await subcribeCourse({ course_id: getLocalStorage('course_id') });
+					console.log(response)
+				}, 4000)
+				return;
+			} else {
+				navigate('/');
+				location.reload();
+			}
+		}
 	};
 
 	return (

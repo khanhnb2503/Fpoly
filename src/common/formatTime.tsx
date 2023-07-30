@@ -7,4 +7,18 @@ export const formatTime = (time) => {
     return `${hour}:${('0' + minute).slice(-2)}:${second}`;
   }
   return `${minute}:${second}`;
-}
+};
+
+export const getCurrentTimeToVideo = () => {
+  let currentTime;
+  window.addEventListener('message', function (e) {
+    if (!e.data?.source) {
+      const listener = JSON.parse(e.data);
+      if (listener.type === 'progress') {
+        currentTime = formatTime(listener?.data?.time);
+      }
+    }
+  });
+  return currentTime;
+};
+
