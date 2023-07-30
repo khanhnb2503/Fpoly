@@ -1,19 +1,17 @@
-import {Button, Col, Collapse, List, Modal, Row, Typography} from 'antd';
-import {useEffect, useState} from 'react';
-import {AiOutlineSafety} from 'react-icons/ai';
-import {useDispatch} from 'react-redux';
-import {Link, useNavigate, useParams} from 'react-router-dom';
-import {imageUrl} from "../../../common/imageUrl";
-import {setIdCourse} from '../../../redux/features/course/courseSlice';
-import {queryVideo} from '../../../services/base/baseQuery';
-import {useGetCourseQuery, useSubcribeCourseMutation} from '../../../services/courses/index.jsx';
-import {useProfileQuery} from '../../../services/users';
+import { Button, Col, Collapse, List, Modal, Row, Typography } from 'antd';
+import { useEffect, useState } from 'react';
+import { AiOutlineSafety } from 'react-icons/ai';
+import { useNavigate, useParams } from 'react-router-dom';
+import { imageUrl } from "../../../common/imageUrl";
+import { queryVideo } from '../../../services/base/baseQuery';
+import { setLocalStorage } from '../../../services/base/useLocalStorage';
+import { useGetCourseQuery, useSubcribeCourseMutation } from '../../../services/courses/index.jsx';
+import { useProfileQuery } from '../../../services/users';
 import Community from '../Community/index.jsx';
 
 function DetailCourse() {
-  const {id} = useParams();
-  const {Title, Text} = Typography;
-  const dispatch = useDispatch();
+  const { id } = useParams();
+  const { Title, Text } = Typography;
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -25,13 +23,16 @@ function DetailCourse() {
   const {data: users} = useProfileQuery();
 
   const handleSubcribeCourse = async () => {
-    if (!id || !users.id) navigate('/login');
-    dispatch(setIdCourse(id));
-    const response = await subcribeCourse({course_id: id});
-    navigate('/lessons/11')
-    console.log(response);
+    setLocalStorage('course_id', id);
+    if (!id || !users?.id) {
+      navigate('/login');
+      return;
+    } else {
+      const response = await subcribeCourse({ course_id: id });
+      navigate('/lessons/11')
+      console.log(response);
+    }
   };
-
 
   useEffect(() => {
     try {
@@ -161,15 +162,26 @@ function DetailCourse() {
                   </Button>
                 </Col>
                 <Col>
-                  <Link to={`/payment/${id}`}>
-                    <Button
-                      className='button-free'
-                      shape='round'
-                      size={'large'}
-                      onClick={handleSubcribeCourse}
-                    >Đăng kí khóa học
-                    </Button>
-                  </Link>
+                  {course?.data?.is_free == 1
+                    ? (
+                      <Button
+                        className='button-free'
+                        shape='round'
+                        size={'large'}
+                        onClick={handleSubcribeCourse}
+                      >Đăng kí khóa học
+                      </Button>
+                    )
+                    : (
+                      <Button
+                        className='button-free'
+                        shape='round'
+                        size={'large'}
+                        onClick={() => navigate('payment')}
+                      >Mua khóa học
+                      </Button>
+                    )
+                  }
                 </Col>
               </Row>
             </Col>

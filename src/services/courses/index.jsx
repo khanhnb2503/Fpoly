@@ -21,6 +21,11 @@ export const courseApi = createApi({
       providesTags: ['Courses']
     }),
 
+    getHistoryCourse: builder.query({
+      query: (id) => `course/historyCourse?course_id=${id}`,
+      providesTags: ['Courses']
+    }),
+
     subcribeCourse: builder.mutation({
       query: (data) => ({
         url: 'course/register-course',
@@ -31,6 +36,7 @@ export const courseApi = createApi({
         body: data,
       }),
     }),
+
     saveHistoryCourse: builder.mutation(({
       query: (data) => ({
         url: 'course/historyCourseUpdate',
@@ -41,6 +47,7 @@ export const courseApi = createApi({
         body: data,
       })
     }))
+
   })
 });
 
@@ -49,5 +56,6 @@ export const {
   useGetCourseQuery,
   useGetLessonsQuery,
   useSubcribeCourseMutation,
-  useSaveHistoryCourseMutation
+  useSaveHistoryCourseMutation,
+  useGetHistoryCourseQuery
 } = courseApi;
