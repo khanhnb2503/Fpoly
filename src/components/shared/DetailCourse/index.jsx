@@ -11,8 +11,8 @@ import Community from '../Community/index.jsx';
 import Loading from '../Spin';
 
 function DetailCourse() {
-  const { id } = useParams();
   const { Title, Text } = Typography;
+  const { id } = useParams();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
