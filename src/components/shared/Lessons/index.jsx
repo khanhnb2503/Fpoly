@@ -11,9 +11,9 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import { onOpen } from '../../../redux/features/comment/commentSlice.jsx';
 import { videoInfo } from '../../../redux/features/video/videoSlice';
-import { queryVideo } from '../../../services/base/baseQuery.jsx';
+import { getHistoryCourse, queryVideo } from '../../../services/base/baseQuery.jsx';
+import { removeLocalStorage } from '../../../services/base/useLocalStorage.jsx';
 import {
-  useGetHistoryCourseQuery,
   useGetLessonsQuery,
   useSaveHistoryCourseMutation
 } from '../../../services/courses/index.jsx';
@@ -23,15 +23,17 @@ import DrawerComment from '../DrawerComment/index.jsx';
 function Lessons() {
   const { id } = useParams();
   const navigate = useNavigate();
+  removeLocalStorage('course_id');
   const dispatch = useDispatch();
+  const { totalTime, iframe, course_id } = useSelector((state) => state.videoState);
   const { data: lessons, isSuccess } = useGetLessonsQuery(id);
-  const { data: history } = useGetHistoryCourseQuery(12);
   const [saveHistoryCourse] = useSaveHistoryCourseMutation();
   const { data: users, isFetching } = useProfileQuery();
-  const { videoId, totalTime, iframe } = useSelector((state) => state.videoState);
 
   const [loading, setLoading] = useState(false);
-
+  const [histories, setHistories] = useState([]);
+  const [times, setTimes] = useState(false);
+  const [complete, setComplete] = useState(0);
 
   if (!isFetching) {
     if (!users?.id) navigate('/login');
@@ -43,11 +45,7 @@ function Lessons() {
       let currentTime = 0;
       if (listener.type === 'progress') currentTime = (listener?.data?.time).toFixed();
       if (totalTime && ((totalTime.toFixed() - currentTime) == 60)) {
-        const response = await saveHistoryCourse({
-          course_id: lessons?.data?.course_id,
-          lesson_id: id
-        });
-        console.log(response);
+        setTimes(true);
       }
     }
   });
@@ -55,18 +53,45 @@ function Lessons() {
   useEffect(() => {
     (async () => {
       try {
-        const { data } = await queryVideo(lessons?.data?.video_id);
-        dispatch(videoInfo({
-          video_id: data.id,
-          time: data?.duration,
-          iframe: data.embed_code
-        }));
-        setLoading(true);
+        if (lessons) {
+          const { data } = await queryVideo(lessons?.data?.video_id);
+          dispatch(videoInfo({
+            video_id: data.id,
+            time: data?.duration,
+            iframe: data.embed_code,
+            course_id: lessons?.data?.course_id
+          }));
+          setLoading(true);
+        }
       } catch (error) {
         navigate('/login')
       }
     })()
   }, [lessons]);
+
+  useEffect(() => {
+    (async () => {
+      if (course_id) {
+        const { data: history } = await getHistoryCourse(lessons?.data?.course_id);
+        console.log(history)
+        setComplete(history.complete_rate);
+        if (history) {
+          let historyStatus = 1;
+          if ((history?.history?.length <= 0) || (history?.history[0]?.status == 0)) {
+            historyStatus = 0
+          };
+
+          if (times) historyStatus = 1;
+          const response = await saveHistoryCourse({
+            course_id: course_id,
+            lesson_id: id,
+            status: 0
+          });
+          console.log(response);
+        }
+      }
+    })()
+  }, [loading, times]);
 
   return (
     <>
@@ -85,7 +110,7 @@ function Lessons() {
                   <Row justify='end' align='middle' gutter={10} className='progress-learn'>
                     <Col><span>Tiến độ</span></Col>
                     <Col>
-                      <Progress size={40} type="circle" percent={50} />
+                      <Progress size={40} type="circle" percent={complete} />
                     </Col>
                   </Row>
                 </Col>
@@ -107,7 +132,7 @@ function Lessons() {
                       <div>
                         <Row justify='space-between' align='middle'>
                           <Col xl={21}>
-                            <h3 dangerouslySetInnerHTML={{ __html: lessons.data.description }}></h3>
+                            <h3>{lessons?.data?.name}</h3>
                           </Col>
                           <Col xl={3.2}>
                             <Button
@@ -127,7 +152,11 @@ function Lessons() {
                             <Button> <AiOutlineLeft /><span>Bài trước</span></Button>
                           </Col>
                           <Col>
-                            <Button> <span>Bài tiếp</span><AiOutlineRight /></Button>
+                            <Button
+                              onClick={() => navigate(`/lessons/${Number(id) + 1}`)}
+                            >
+                              <span>Bài tiếp</span><AiOutlineRight />
+                            </Button>
                           </Col>
                         </Row>
                       </div>
@@ -174,9 +203,12 @@ function Lessons() {
                                   className={
                                     `items-list 
                                     ${lessons?.data?.video_id === item.video_id ? 'active-info' : 'un-active-info'}
-                                    ${[17, 18].includes(item.id) ? 'active-hand' : ''}`
+                                    ${(histories.includes(item.id)) ? 'active-hand' : ''}`
                                   }
-                                  onClick={() => [17, 18].includes(item.id) ? navigate(`/lessons/${item.id}`) : null}
+                                  // onClick={() => (histories.includes(item.id))
+                                  //   ? navigate(`/lessons/${item.id}`) : null
+                                  // }
+                                  onClick={() => (navigate(`/lessons/${item.id}`))}
                                 >
                                   <Col>
                                     <h6 className='topic-link'>{item.id}.{item.name}</h6>
@@ -186,9 +218,9 @@ function Lessons() {
                                     </Row>
                                   </Col>
                                   <Col>
-                                    {[17].includes(item.id)
+                                    {(histories.includes(item.id))
                                       ? <AiFillCheckSquare style={{ color: '#06ac33' }} size={20} />
-                                      : <AiOutlineLock size={20} />
+                                      : <AiOutlineLock className={`${id == item.id ? 'hide-lock' : ''}`} size={20} />
                                     }
                                   </Col>
                                 </Row>

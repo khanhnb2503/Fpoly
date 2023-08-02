@@ -1,0 +1,22 @@
+.wrapper__notfound {
+
+  .number-error {
+    text-shadow: 0 0 0.2em #e22c12, 0 0 0.2em #ff9586;
+    font-size: 100px;
+  }
+
+  .content {
+    font-size: 40px;
+    color: black;
+    padding: 20px 0;
+    text-transform: capitalize;
+  }
+
+  .direct-link {
+    background-color: #f05123;
+    padding: 10px 15px;
+    color: white;
+    border-radius: 23px;
+    font-size: 15px;
+  }
+}
