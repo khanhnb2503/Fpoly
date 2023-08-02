@@ -1,7 +1,7 @@
 import { Button, Col, Collapse, List, Modal, Row, Typography } from 'antd';
 import { useEffect, useState } from 'react';
 import { AiOutlineSafety } from 'react-icons/ai';
-import { useNavigate, useParams } from 'react-router-dom';
+import {Link, useNavigate, useParams} from 'react-router-dom';
 import { imageUrl } from "../../../common/imageUrl";
 import { queryVideo } from '../../../services/base/baseQuery';
 import { setLocalStorage } from '../../../services/base/useLocalStorage';
@@ -19,7 +19,7 @@ function DetailCourse() {
   const [videos, setVideos] = useState();
 
   const [subcribeCourse] = useSubcribeCourseMutation();
-  const {data: course, isSuccess} = useGetCourseQuery(id);
+  const {data: course, isSuccess} = useGetCourseQuery (id);
   const {data: users} = useProfileQuery();
 
   const handleSubcribeCourse = async () => {
@@ -30,9 +30,14 @@ function DetailCourse() {
     } else {
       const response = await subcribeCourse({ course_id: id });
       navigate('/lessons/11')
-      console.log(response);
     }
   };
+
+  const handlePaymentCourse = async () => {
+    if (id) {
+      navigate(`/payment/${id}`)
+    }
+  }
 
   useEffect(() => {
     try {
@@ -173,13 +178,13 @@ function DetailCourse() {
                       </Button>
                     )
                     : (
-                      <Button
-                        className='button-free'
-                        shape='round'
-                        size={'large'}
-                        onClick={() => navigate('payment')}
-                      >Mua khóa học
-                      </Button>
+                        <Button
+                          className='button-free'
+                          shape='round'
+                          size={'large'}
+                          onClick={() => handlePaymentCourse()}
+                        >Mua khóa học
+                        </Button>
                     )
                   }
                 </Col>
