@@ -10,6 +10,7 @@ import { blogApi } from "../services/blogs";
 import { courseApi } from "../services/courses";
 import { searchApi } from "../services/search";
 import { userApi } from "../services/users";
+import {paymentApi} from "../services/payment/index.jsx";
 
 export const store = configureStore({
   reducer: {
@@ -19,6 +20,7 @@ export const store = configureStore({
     [courseApi.reducerPath]: courseApi.reducer,
     [blogApi.reducerPath]: blogApi.reducer,
     [searchApi.reducerPath]: searchApi.reducer,
+    [paymentApi.reducerPath]: paymentApi.reducer,
     commentState: commentReducer,
     courseState: courseReducer,
     videoState: videoReducer
@@ -32,6 +34,7 @@ export const store = configureStore({
       courseApi.middleware,
       blogApi.middleware,
       searchApi.middleware,
+      paymentApi.middleware
     )
 });
 setupListeners(store.dispatch);
