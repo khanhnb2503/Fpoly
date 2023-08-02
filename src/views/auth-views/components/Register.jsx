@@ -8,30 +8,27 @@ import Loading from '../../../components/shared/Spin';
 import { RoutesConstant } from '../../../routes';
 import { useAuthRegisterMutation } from '../../../services/authentication/auth';
 import { getLocalStorage, setLocalStorage } from '../../../services/base/useLocalStorage';
-import { useSubcribeCourseMutation } from '../../../services/courses';
+import { useGetCourseQuery, useSubcribeCourseMutation } from '../../../services/courses';
 const { Title, Text } = Typography;
 
 function Register() {
 	const navigate = useNavigate();
 	const [authRegister, { isLoading }] = useAuthRegisterMutation();
 	const [subcribeCourse] = useSubcribeCourseMutation();
+	const { data: course } = useGetCourseQuery(getLocalStorage('course_id'));
+
 	const handleLogin = async (values) => {
 		const { data, error } = await authRegister(values);
 		if (data) {
 			const { access_token, refresh_token } = data;
 			setLocalStorage('access_token', access_token);
 			setLocalStorage('refresh_token', refresh_token);
-
-			if (getLocalStorage('course_id')) {
-				setTimeout(async () => {
-					const response = await subcribeCourse({ course_id: getLocalStorage('course_id') });
-					console.log(response)
-				}, 4000)
-				return;
-			} else {
-				navigate('/');
+			const response = await subcribeCourse({ course_id: getLocalStorage('course_id') });
+			setTimeout(() => {
+				let lesson_id = course?.data?.modules[0]?.lessons[0]?.id;
+				navigate(`/lessons/${lesson_id}`);
 				location.reload();
-			}
+			}, 3000)
 		}
 	};
 

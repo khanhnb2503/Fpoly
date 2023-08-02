@@ -1,18 +1,19 @@
-import { Button, Result } from 'antd';
-import {Link} from "react-router-dom";
+
+import { Result } from 'antd';
+import { Link } from 'react-router-dom';
+
 export function NotFound() {
-    return (
-        <div>
-            <Result
-              status="404"
-              title="PAGE NOT FOUND"
-              subTitle="Sorry, the page you visited does not exist."
-              extra={
-                <Link to="/">
-                    <Button type="primary">Back Home</Button>
-                </Link>
-              }
-            />
-        </div>
-    )
+
+	return (
+		<div className='wrapper__notfound'>
+			<Result
+				status="404"
+				title={<h4 className='number-error'>404</h4>}
+				subTitle={<h3 className='content'>Không tìm thấy nội dung</h3>}
+				extra={
+					<Link className='direct-link' to='/'>Truy cập trang chủ</Link>
+				}
+			/>
+		</div>
+	)
 }

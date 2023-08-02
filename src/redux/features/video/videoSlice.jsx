@@ -5,14 +5,16 @@ const videoSlice = createSlice({
   initialState: {
     videoId: '',
     totalTime: 0,
-    iframe: ''
+    iframe: '',
+    course_id: undefined
   },
   reducers: {
     videoInfo: (state, action) => {
-      const { video_id, time, iframe } = action.payload;
+      const { video_id, time, iframe, course_id } = action.payload;
       state.videoId = video_id;
       state.totalTime = time;
       state.iframe = iframe;
+      state.course_id = course_id
     }
   }
 });
