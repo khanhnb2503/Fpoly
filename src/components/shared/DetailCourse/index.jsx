@@ -10,8 +10,8 @@ import { useProfileQuery } from '../../../services/users';
 import Community from '../Community/index.jsx';
 
 function DetailCourse() {
-  const { id } = useParams();
   const { Title, Text } = Typography;
+  const { id } = useParams();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
