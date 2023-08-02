@@ -85,7 +85,7 @@ function Lessons() {
           const response = await saveHistoryCourse({
             course_id: course_id,
             lesson_id: id,
-            status: 0
+            status: historyStatus
           });
           console.log(response);
         }
