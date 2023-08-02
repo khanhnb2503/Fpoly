@@ -11,7 +11,7 @@ import Loading from '../../../components/shared/Spin';
 import { RoutesConstant } from '../../../routes';
 import { useAuthLoginMutation } from '../../../services/authentication/auth';
 import { getLocalStorage, setLocalStorage } from '../../../services/base/useLocalStorage';
-import { useSubcribeCourseMutation } from '../../../services/courses';
+import { useGetCourseQuery, useSubcribeCourseMutation } from '../../../services/courses';
 const { Title, Text } = Typography;
 
 function Login() {
@@ -28,8 +28,10 @@ function Login() {
       setLocalStorage('refresh_token', refresh_token);
 
       if (getLocalStorage('course_id')) {
+        const { data: course } = useGetCourseQuery(getLocalStorage('course_id'));
         const response = await subcribeCourse({ course_id: getLocalStorage('course_id') });
-        console.log(response)
+        let lesson_id = course?.data?.modules[0]?.lessons[0]?.id;
+        navigate(`/lessons/${lesson_id}`)
         return;
       } else {
         navigate('/');

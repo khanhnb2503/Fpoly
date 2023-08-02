@@ -150,6 +150,7 @@
   .items-list {
     margin-bottom: 8px;
     padding: 8px 8px 0 16px !important;
+    cursor: pointer;
 
     &:hover {
       background-color: rgb(239, 237, 237);
@@ -162,7 +163,12 @@
 
   .active-info {
     background-color: #f8eae7;
-    cursor: default;
+    cursor: pointer;
+  }
+
+  .hide-lock,
+  .hide-complete {
+    display: none;
   }
 
   .hours-group {
