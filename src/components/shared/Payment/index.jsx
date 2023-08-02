@@ -1,18 +1,18 @@
 // import PaymentForm from "../PaymentForm";
-import {Button, Card, Col, List, Modal, Row, Typography, Input, Statistic} from "antd";
-import {useEffect, useState} from "react";
-import {useParams} from "react-router-dom";
-import {useGetCourseQuery} from '../../../services/courses';
+import { Button, Card, Col, Input, List, Modal, Row, Statistic, Typography } from "antd";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { useGetCourseQuery } from '../../../services/courses';
+import { usePaymentCourseMutation } from "../../../services/payment/index.jsx";
 import Community from "../Community";
 import PaymentForm from "../PaymentForm";
-import {usePaymentCourseMutation} from "../../../services/payment/index.jsx";
 
 
 const Payment = () => {
-  const {Title, Text} = Typography
-  const {Search} = Input
-  const {id} = useParams()
-  const {data: course} = useGetCourseQuery(id)
+  const { Title, Text } = Typography
+  const { Search } = Input
+  const { id } = useParams()
+  const { data: course } = useGetCourseQuery(id)
 
   const dataInfor = [
     'Truy cập toàn bộ khóa học',
@@ -39,7 +39,7 @@ const Payment = () => {
     if (course !== undefined) {
       setPriceTotal(course.data.price)
     }
-  },[course?.data?.price])
+  }, [course?.data?.price])
   const handleSearchDiscount = (codeDiscount) => {
     setIsLoading(true)
     if (codeDiscount === isDiscount) {
@@ -60,7 +60,7 @@ const Payment = () => {
   }
 
   const handlePayment = async () => {
-    const {data} = await paymentCourse({course_id: id, amount: priceTotal})
+    const { data } = await paymentCourse({ course_id: id, amount: priceTotal })
     window.location.replace(data.data);
   }
 
@@ -70,13 +70,13 @@ const Payment = () => {
         {course && (
           <Row className="price" gutter={10}>
             <Col>
-              <Title style={{margin: 0}} level={5} className="price_number color-text">Giá bán : </Title>
+              <Title style={{ margin: 0 }} level={5} className="price_number color-text">Giá bán : </Title>
             </Col>
             <Col>
               <Text delete className="color-text">{course && discountPrice ? course.data.price : ''}</Text>
             </Col>
             <Col>
-              <Statistic valueStyle={{color: "orange"}} value={priceTotal}/>
+              <Statistic valueStyle={{ color: "orange" }} value={priceTotal} />
             </Col>
           </Row>
         )}
@@ -101,23 +101,23 @@ const Payment = () => {
               >
                 <div className="discount_input">
                   <Search placeholder="nhập mã giảm giá" enterButton="Áp dụng" size="middle" loading={isLoading}
-                          onSearch={(codeDiscount) => handleSearchDiscount(codeDiscount)}/>
+                    onSearch={(codeDiscount) => handleSearchDiscount(codeDiscount)} />
                   <Text>{isDiscount ? (
-                    <div style={{color: "red"}}>{textDiscount}</div>
+                    <div style={{ color: "red" }}>{textDiscount}</div>
                   ) : (
-                    <div style={{color: "white"}}>{textDiscount}</div>
+                    <div style={{ color: "white" }}>{textDiscount}</div>
                   )}</Text>
                 </div>
                 <Row className="price">
                   <Col>
-                    <Title level={4} style={{margin: 0}} className="color-text">Tổng tiền : </Title>
+                    <Title level={4} style={{ margin: 0 }} className="color-text">Tổng tiền : </Title>
                   </Col>
-                  <Col style={{marginLeft: "10px"}}>
-                    <Statistic valueStyle={{color: "orange", fontSize: 40}} value={priceTotal}/>
+                  <Col style={{ marginLeft: "10px" }}>
+                    <Statistic valueStyle={{ color: "orange", fontSize: 40 }} value={priceTotal} />
                   </Col>
                 </Row>
               </Card>
-              <Row gutter={10} style={{alignItems: "center"}}>
+              <Row gutter={10} style={{ alignItems: "center" }}>
                 <Col span={12}>
                   <Button
                     loading={isLoadingPay}
@@ -136,8 +136,8 @@ const Payment = () => {
                 </Col>
               </Row>
               <Modal open={isModalOpen} onOk={() => setIsModalOpen(false)} onCancel={() => setIsModalOpen(false)}
-                     width={"50%"}>
-                <PaymentForm price={price} data={course} priceTotal={priceTotal}/>
+                width={"50%"}>
+                <PaymentForm price={price} data={course} priceTotal={priceTotal} />
               </Modal>
             </Col>
             <Col span={10}>
@@ -154,7 +154,7 @@ const Payment = () => {
               </Card>
             </Col>
           </Row>
-          <Community/>
+          <Community />
         </>
       )}
     </div>
