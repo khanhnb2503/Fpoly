@@ -10,6 +10,7 @@ import Payment from '../views/app-views/Payment';
 import Home from '../views/app-views/home';
 import Login from '../views/auth-views/components/Login';
 import Register from '../views/auth-views/components/Register';
+import {PaymentSuccess} from "../components/layouts/PaymentSuccess/index.jsx";
 // List routes
 export const RoutesConstant = {
   LOGIN: '/login',
@@ -26,6 +27,7 @@ export const DefaultLayout = [
   { path: "/register", component: Register, layout: null },
   { path: '/blog', component: Blog },
   { path: '/payment/:id', component: Payment },
+  { path: '/paymentSuccess', component: PaymentSuccess },
   { path: "*", component: NotFound, layout: null },
 ]
 

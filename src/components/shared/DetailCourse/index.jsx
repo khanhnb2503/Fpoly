@@ -32,7 +32,6 @@ function DetailCourse() {
     console.log(response);
   };
 
-
   useEffect(() => {
     try {
       (async () => {
