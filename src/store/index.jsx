@@ -3,6 +3,7 @@ import { setupListeners } from "@reduxjs/toolkit/dist/query";
 
 import commentReducer from '../redux/features/comment/commentSlice';
 import courseReducer from "../redux/features/course/courseSlice";
+import videoReducer from '../redux/features/video/videoSlice';
 import { loginApi } from "../services/authentication/auth";
 import { bannerApi } from "../services/banners";
 import { blogApi } from "../services/blogs";
@@ -22,6 +23,7 @@ export const store = configureStore({
     [paymentApi.reducerPath]: paymentApi.reducer,
     commentState: commentReducer,
     courseState: courseReducer,
+    videoState: videoReducer
   },
 
   middleware: (getDefaultMiddleware) =>

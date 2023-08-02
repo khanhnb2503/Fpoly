@@ -145,16 +145,19 @@
 
   .topic-link {
     font-weight: $font-weight-500;
-
-    &:hover {
-      color: $text-primary;
-    }
   }
 
   .items-list {
     margin-bottom: 8px;
-    cursor: pointer;
     padding: 8px 8px 0 16px !important;
+
+    &:hover {
+      background-color: rgb(239, 237, 237);
+    }
+  }
+
+  .active-hand {
+    cursor: pointer;
   }
 
   .active-info {
