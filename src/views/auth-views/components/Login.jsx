@@ -1,6 +1,6 @@
 
 import { Button, Col, Form, Input, Row, Typography } from 'antd';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AiOutlineGithub, AiOutlineLock, AiOutlineUser } from 'react-icons/ai';
 import { FcGoogle } from 'react-icons/fc';
 import { Link, useNavigate } from 'react-router-dom';
@@ -10,13 +10,14 @@ import { Rules } from '../../../common/validator';
 import Loading from '../../../components/shared/Spin';
 import { RoutesConstant } from '../../../routes';
 import { useAuthLoginMutation } from '../../../services/authentication/auth';
-import { getLocalStorage, setLocalStorage } from '../../../services/base/useLocalStorage';
-import { useGetCourseQuery, useSubcribeCourseMutation } from '../../../services/courses';
+import { getLocalStorage, removeLocalStorage, setLocalStorage } from '../../../services/base/useLocalStorage';
+import { useSubcribeCourseMutation } from '../../../services/courses';
 const { Title, Text } = Typography;
 
 function Login() {
   const navigate = useNavigate();
   const [message, setMessage] = useState('');
+  const [courses, setCourses] = useState(null);
   const [authLogin, { isLoading }] = useAuthLoginMutation();
   const [subcribeCourse] = useSubcribeCourseMutation();
 
@@ -26,19 +27,37 @@ function Login() {
       const { access_token, refresh_token } = data;
       setLocalStorage('access_token', access_token);
       setLocalStorage('refresh_token', refresh_token);
+    };
 
-      if (getLocalStorage('course_id')) {
-        const { data: course } = useGetCourseQuery(getLocalStorage('course_id'));
-        const response = await subcribeCourse({ course_id: getLocalStorage('course_id') });
-        let lesson_id = course?.data?.modules[0]?.lessons[0]?.id;
+    if (!courses) {
+      navigate('/')
+      location.reload();
+      return;
+    };
+
+    if (courses && (courses?.is_free == 1)) {
+      const response = await subcribeCourse({ course_id: courses?.id });
+      setTimeout(() => {
+        let lesson_id = courses?.modules[0]?.lessons[0]?.id
         navigate(`/lessons/${lesson_id}`)
-        return;
-      } else {
-        navigate('/');
-        location.reload();
-      }
-    }
+        removeLocalStorage('hd-course')
+        location.reload()
+      }, 3000);
+      return;
+    };
+
+    navigate(`/payment/${courses?.id}`)
+    removeLocalStorage('hd-course')
+    location.reload()
   };
+
+  useEffect(() => {
+    if (getLocalStorage('hd-course')) {
+      const course = getLocalStorage('hd-course');
+      setCourses(course)
+    };
+  }, []);
+
   return (
     <>
       <Loading loading={isLoading} size='large'>
