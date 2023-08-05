@@ -9,16 +9,16 @@ import { useProfileQuery } from '../../../services/users';
 
 function Courses() {
   const navigate = useNavigate();
-  const [complete, setComplete] = useState();
+  const [complete, setComplete] = useState(false);
   const { data: courses, isSuccess } = useGetCoursesQuery();
   const { data: users } = useProfileQuery();
 
   useEffect(() => {
-    if (users && courses) {
-      const existHistory = users.histories;
-      const exist = ((existHistory[existHistory.length - 1]).lesson_id)
-      setComplete(exist)
-    };
+    // if (users && courses) {
+    //   const existHistory = users.histories;
+    //   const exist = ((existHistory[existHistory.length - 1]).lesson_id)
+    //   setComplete(exist)
+    // };
   }, [users, courses])
 
   return (
