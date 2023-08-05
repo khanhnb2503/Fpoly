@@ -4,7 +4,7 @@ import { AiOutlineSafety } from 'react-icons/ai';
 import { useNavigate, useParams } from 'react-router-dom';
 import { imageUrl } from "../../../common/imageUrl";
 import { queryVideo } from '../../../services/base/baseQuery';
-import { setLocalStorage } from '../../../services/base/useLocalStorage';
+import { setLocalStorage, getLocalStorage } from '../../../services/base/useLocalStorage';
 import { useGetCourseQuery, useSubcribeCourseMutation } from '../../../services/courses/index.jsx';
 import { useProfileQuery } from '../../../services/users';
 import Community from '../Community/index.jsx';
@@ -57,6 +57,15 @@ function DetailCourse() {
       setVideoId(isTrial[0])
     }
   }, [course]);
+
+  const handlePayment = async () => {
+    const token = await getLocalStorage("access_token")
+    if (token) {
+      navigate(`/payment/${id}`)
+    } else {
+      navigate('/login')
+    }
+  }
 
   return (
     <div className='wrapper__detail-course'>
@@ -176,7 +185,7 @@ function DetailCourse() {
                         className='button-free'
                         shape='round'
                         size={'large'}
-                        onClick={() => navigate(`/payment/${id}`)}
+                        onClick={() => handlePayment()}
                       >Mua khóa học
                       </Button>
                     )

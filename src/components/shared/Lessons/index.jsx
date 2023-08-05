@@ -149,7 +149,7 @@ function Lessons() {
                       <div className='action-next'>
                         <Row justify='space-between' align='middle'>
                           <Col>
-                            <Button> <AiOutlineLeft /><span>Bài trước</span></Button>
+                            <Button onClick={() => navigate(`/lessons/${Number(id) - 1}`)}> <AiOutlineLeft /><span>Bài trước</span></Button>
                           </Col>
                           <Col>
                             <Button
