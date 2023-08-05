@@ -1,16 +1,18 @@
 import { Avatar, Col, Row } from "antd";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import avatar from '../../../../public/images/logo_ong_vang.jpg';
 import { removeLocalStorage } from "../../../services/base/useLocalStorage";
 import { useProfileQuery } from '../../../services/users';
 
 function UserMenu() {
+  const navigate = useNavigate();
   const { data: user, isSuccess } = useProfileQuery();
 
   const handleLogout = () => {
     removeLocalStorage('access_token');
     removeLocalStorage('refresh_token');
+    navigate('/')
     location.reload();
   }
 

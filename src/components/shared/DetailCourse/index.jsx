@@ -4,7 +4,7 @@ import { AiOutlineSafety } from 'react-icons/ai';
 import { useNavigate, useParams } from 'react-router-dom';
 import { imageUrl } from "../../../common/imageUrl";
 import { queryVideo } from '../../../services/base/baseQuery';
-import { setLocalStorage, getLocalStorage } from '../../../services/base/useLocalStorage';
+import { setLocalStorage } from '../../../services/base/useLocalStorage';
 import { useGetCourseQuery, useSubcribeCourseMutation } from '../../../services/courses/index.jsx';
 import { useProfileQuery } from '../../../services/users';
 import Community from '../Community/index.jsx';
@@ -21,9 +21,10 @@ function DetailCourse() {
   const [subcribeCourse] = useSubcribeCourseMutation();
   const { data: course, isSuccess } = useGetCourseQuery(id);
   const { data: users } = useProfileQuery();
+
   const handleSubcribeCourse = async () => {
-    setLocalStorage('course_id', id);
     if (!id || !users?.id) {
+      setLocalStorage('hd-course', course.data);
       navigate('/login')
     } else {
       const { data } = await subcribeCourse({ course_id: id });
@@ -31,6 +32,15 @@ function DetailCourse() {
         let lesson_id = course?.data?.modules[0]?.lessons[0]?.id;
         navigate(`/lessons/${lesson_id}`)
       }
+    }
+  };
+
+  const handlePayment = async () => {
+    if (!id || !users?.id) {
+      setLocalStorage('hd-course', course.data);
+      navigate('/login');
+    } else {
+      navigate(`/payment/${id}`)
     }
   };
 
@@ -57,15 +67,6 @@ function DetailCourse() {
       setVideoId(isTrial[0])
     }
   }, [course]);
-
-  const handlePayment = async () => {
-    const token = await getLocalStorage("access_token")
-    if (token) {
-      navigate(`/payment/${id}`)
-    } else {
-      navigate('/login')
-    }
-  }
 
   return (
     <div className='wrapper__detail-course'>
