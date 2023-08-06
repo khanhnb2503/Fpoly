@@ -10,34 +10,85 @@ import { useProfileQuery } from '../../../services/users';
 function Courses() {
   const navigate = useNavigate();
   const [complete, setComplete] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [filterHistory, setFilterHistory] = useState();
   const { data: courses, isSuccess } = useGetCoursesQuery();
-  const { data: users } = useProfileQuery();
+  const { data: users, isFetching } = useProfileQuery();
 
   useEffect(() => {
-    // if (users && courses) {
-    //   const existHistory = users.histories;
-    //   const exist = ((existHistory[existHistory.length - 1]).lesson_id)
-    //   setComplete(exist)
-    // };
-  }, [users, courses])
+    if (!isFetching && courses) {
+      const { data } = courses;
+      setLoading(true);
+      if ((!users?.id)) return setFilterHistory(data);
+    };
+
+    if (courses && users) {
+      const { histories } = users;
+      if (histories.length <= 0) {
+        const { data } = courses;
+        setLoading(true);
+        return setFilterHistory(data);
+      };
+
+      let filterCourse = histories.reduce((accumulator, currentValue) => {
+        let existCourseId = accumulator.find((item) => item.course_id == currentValue.course_id);
+        if (existCourseId) {
+          existCourseId.lessonId.push(currentValue.lesson_id);
+        }
+        else {
+          accumulator.push({
+            course_id: currentValue.course_id,
+            lessonId: [currentValue.lesson_id]
+          });
+        }
+        return accumulator;
+      }, []);
+
+      let historyNew = filterCourse.map((item) => {
+        return {
+          courseId: item.course_id,
+          lessonId: Math.max.apply(null, item.lessonId)
+        }
+      });
+
+      const mapHistory = new Map(historyNew.map((item) => [item.courseId, item]));
+      let newCourse = courses.data.map((items) => {
+        let arrCourse = [];
+        items.courses.map((course) => {
+          let existLesson = course;
+          const checkExistCourseId = mapHistory.get(course.id);
+          if (checkExistCourseId) {
+            existLesson = { ...course, completed: checkExistCourseId.lessonId }
+          };
+          arrCourse.push(existLesson)
+        })
+        return { ...items, courses: arrCourse };
+      });
+      setFilterHistory(newCourse)
+      setLoading(true);
+    }
+  }, [courses, users, isFetching]);
 
   return (
     <div className="wrapper__courses">
       <div className="courses">
-        {isSuccess && courses?.data?.map((course) => (
+        {loading && filterHistory.map((course) => (
           <div key={course.id} className="course-body">
             <h3>{course.name}</h3>
             <Row justify='start' align='middle' gutter={[50, 30]}>
               {course?.courses?.map((item) => (
                 <Col key={item.id} xl={6} className="less-item">
-                  <Link to={complete ? `/lessons/${complete}` : `/courses/${item.id}`} className="thumbnail-link">
+                  <Link
+                    to={item?.completed ? `/lessons/${item?.completed}` : `/courses/${item.id}`}
+                    className="thumbnail-link"
+                  >
                     <img src={`${imageUrl}${item.image}`} alt={`lesson-${item.id}`} />
                     <div className="overlay">
-                      {complete
+                      {item?.completed
                         ? <Button
                           shape="round"
                           className="btn-action-views"
-                          onClick={() => navigate(`/lessons/${complete}`)}
+                          onClick={() => navigate(`/lessons/${item?.completed}`)}
                         >Tiếp tục học
                         </Button>
                         : <Button shape="round" className="btn-action-views">Xem khóa học</Button>

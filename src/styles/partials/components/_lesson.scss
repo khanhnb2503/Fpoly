@@ -157,17 +157,12 @@
     }
   }
 
-  .active-hand {
-    cursor: pointer;
-  }
-
   .active-info {
     background-color: #f8eae7;
     cursor: pointer;
   }
 
-  .hide-lock,
-  .hide-complete {
+  .hide-lock {
     display: none;
   }
 
