@@ -12,7 +12,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { onOpen } from '../../../redux/features/comment/commentSlice.jsx';
 import { videoInfo } from '../../../redux/features/video/videoSlice';
 import { getHistoryCourse, queryVideo } from '../../../services/base/baseQuery.jsx';
-import { removeLocalStorage } from '../../../services/base/useLocalStorage.jsx';
 import {
   useGetLessonsQuery,
   useSaveHistoryCourseMutation
@@ -23,30 +22,27 @@ import DrawerComment from '../DrawerComment/index.jsx';
 function Lessons() {
   const { id } = useParams();
   const navigate = useNavigate();
-  removeLocalStorage('course_id');
   const dispatch = useDispatch();
-  const { totalTime, iframe, course_id } = useSelector((state) => state.videoState);
+  const { iframe, course_id } = useSelector((state) => state.videoState);
   const { data: lessons, isSuccess } = useGetLessonsQuery(id);
   const [saveHistoryCourse] = useSaveHistoryCourseMutation();
   const { data: users, isFetching } = useProfileQuery();
 
+  const [completeCourse, setCompleteCourse] = useState([]);
+  const [progress, setProgress] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [histories, setHistories] = useState([]);
-  const [times, setTimes] = useState(false);
   const [complete, setComplete] = useState(0);
 
   if (!isFetching) {
-    if (!users?.id) navigate('/login');
+    if (!users?.id) return navigate('/login');
   };
 
   window.addEventListener('message', async (e) => {
     if (!e.data?.source) {
       const listener = JSON.parse(e.data);
       let currentTime = 0;
-      if (listener.type === 'progress') currentTime = (listener?.data?.time).toFixed();
-      if (totalTime && ((totalTime.toFixed() - currentTime) == 60)) {
-        setTimes(true);
-      }
+      if (listener.type === 'progress') currentTime = (listener?.data?.percent).toFixed(1);
+      if (currentTime >= 0.9) setProgress(true);
     }
   });
 
@@ -72,26 +68,26 @@ function Lessons() {
   useEffect(() => {
     (async () => {
       if (course_id) {
-        const { data: history } = await getHistoryCourse(lessons?.data?.course_id);
-        console.log(history)
-        setComplete(history.complete_rate);
-        if (history) {
-          let historyStatus = 1;
-          if ((history?.history?.length <= 0) || (history?.history[0]?.status == 0)) {
-            historyStatus = 0
-          };
-
-          if (times) historyStatus = 1;
-          const response = await saveHistoryCourse({
-            course_id: course_id,
-            lesson_id: id,
-            status: historyStatus
+        let status = 0;
+        const { data } = await getHistoryCourse(course_id);
+        if (data?.history[0]?.lesson_id) {
+          let ids = [];
+          data.history.map((item) => {
+            if ((ids.indexOf(item.lesson_id) == -1) && (item.status == 1)) {
+              ids.push(item.lesson_id)
+            }
           });
-          console.log(response);
-        }
+          status = ids.includes(Number(id)) ? 1 : 0;
+          setCompleteCourse(ids)
+          setComplete(data.complete_rate)
+        };
+        if (!progress) {
+          return await saveHistoryCourse({ course_id: course_id, lesson_id: id, status: status });
+        };
+        return await saveHistoryCourse({ course_id: course_id, lesson_id: id, status: 1 });
       }
     })()
-  }, [loading, times]);
+  }, [progress, iframe]);
 
   return (
     <>
@@ -201,14 +197,14 @@ function Lessons() {
                                   justify='space-between'
                                   align='middle'
                                   className={
-                                    `items-list 
-                                    ${lessons?.data?.video_id === item.video_id ? 'active-info' : 'un-active-info'}
-                                    ${(histories.includes(item.id)) ? 'active-hand' : ''}`
+                                    `items-list ${lessons?.data?.video_id === item.video_id
+                                      ? 'active-info' : 'un-active-info'
+                                    }`
                                   }
-                                  // onClick={() => (histories.includes(item.id))
-                                  //   ? navigate(`/lessons/${item.id}`) : null
-                                  // }
-                                  onClick={() => (navigate(`/lessons/${item.id}`))}
+                                  onClick={() => {
+                                    setProgress(false)
+                                    completeCourse.includes(item.id) ? navigate(`/lessons/${item.id}`) : null
+                                  }}
                                 >
                                   <Col>
                                     <h6 className='topic-link'>{item.id}.{item.name}</h6>
@@ -218,7 +214,7 @@ function Lessons() {
                                     </Row>
                                   </Col>
                                   <Col>
-                                    {(histories.includes(item.id))
+                                    {(completeCourse.includes(item.id))
                                       ? <AiFillCheckSquare style={{ color: '#06ac33' }} size={20} />
                                       : <AiOutlineLock className={`${id == item.id ? 'hide-lock' : ''}`} size={20} />
                                     }
