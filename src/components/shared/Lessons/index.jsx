@@ -3,13 +3,12 @@ import Carousel from 'nuka-carousel';
 import { useEffect, useState } from 'react';
 import {
   AiFillCheckSquare,
-  AiOutlineComment, AiOutlineLeft, AiOutlineLock,
+  AiOutlineLeft, AiOutlineLock,
   AiOutlineRight, AiOutlineVideoCamera
 } from 'react-icons/ai';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { onOpen } from '../../../redux/features/comment/commentSlice.jsx';
 import { videoInfo } from '../../../redux/features/video/videoSlice';
 import { getHistoryCourse, queryVideo } from '../../../services/base/baseQuery.jsx';
 import {
@@ -17,7 +16,6 @@ import {
   useSaveHistoryCourseMutation
 } from '../../../services/courses/index.jsx';
 import { useProfileQuery } from '../../../services/users/index.jsx';
-import DrawerComment from '../DrawerComment/index.jsx';
 
 function Lessons() {
   const { id } = useParams();
@@ -30,8 +28,9 @@ function Lessons() {
 
   const [completeCourse, setCompleteCourse] = useState([]);
   const [progress, setProgress] = useState(false);
+  const [checked, setChecked] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [complete, setComplete] = useState(0);
+
 
   if (!isFetching) {
     if (!users?.id) return navigate('/login');
@@ -42,7 +41,9 @@ function Lessons() {
       const listener = JSON.parse(e.data);
       let currentTime = 0;
       if (listener.type === 'progress') currentTime = (listener?.data?.percent).toFixed(1);
-      if (currentTime >= 0.9) setProgress(true);
+      if (currentTime >= 0.9) {
+        setProgress(true);
+      }
     }
   });
 
@@ -68,8 +69,13 @@ function Lessons() {
   useEffect(() => {
     (async () => {
       if (course_id) {
-        let status = 0;
         const { data } = await getHistoryCourse(course_id);
+        let lessonIds = [];
+        lessons?.data?.course?.modules.map((item) => {
+          item.lessons.map((lesson) => lessonIds.push(lesson.id));
+        });
+
+        let status = 0;
         if (data?.history[0]?.lesson_id) {
           let ids = [];
           data.history.map((item) => {
@@ -79,12 +85,23 @@ function Lessons() {
           });
           status = ids.includes(Number(id)) ? 1 : 0;
           setCompleteCourse(ids)
-          setComplete(data.complete_rate)
-        };
+          setChecked(ids)
+        } else {
+          setChecked([Number(id)])
+        }
+
         if (!progress) {
-          return await saveHistoryCourse({ course_id: course_id, lesson_id: id, status: status });
+          return;
+          // return await saveHistoryCourse({ course_id: course_id, lesson_id: id, status: status });
         };
-        return await saveHistoryCourse({ course_id: course_id, lesson_id: id, status: 1 });
+
+        let totals = checked.length;
+        let index = lessonIds[totals] + 1;
+
+        setCompleteCourse((state) => !state.includes(Number(id)) ? [...state, Number(id)] : [...state])
+        setChecked((state) => !state.includes(Number(id)) ? [...state, index] : [...state])
+        return;
+        // return await saveHistoryCourse({ course_id: course_id, lesson_id: id, status: 1 });
       }
     })()
   }, [progress, iframe]);
@@ -93,12 +110,11 @@ function Lessons() {
     <>
       {isSuccess && loading && (
         <>
-          <DrawerComment />
           <div className="wrapper__lessons">
             <div className="header">
               <Row justify='space-between' align='middle'>
                 <Col xl={12}>
-                  <Button type='link' className='btn-come-back'>
+                  <Button type='link' onClick={() => navigate('/')} className='btn-come-back'>
                     <AiOutlineLeft size={20} /><span>Quay lại</span>
                   </Button>
                 </Col>
@@ -106,7 +122,7 @@ function Lessons() {
                   <Row justify='end' align='middle' gutter={10} className='progress-learn'>
                     <Col><span>Tiến độ</span></Col>
                     <Col>
-                      <Progress size={40} type="circle" percent={complete} />
+                      <Progress size={40} type="circle" percent={15} />
                     </Col>
                   </Row>
                 </Col>
@@ -129,16 +145,6 @@ function Lessons() {
                         <Row justify='space-between' align='middle'>
                           <Col xl={21}>
                             <h3>{lessons?.data?.name}</h3>
-                          </Col>
-                          <Col xl={3.2}>
-                            <Button
-                              shape="round"
-                              className='btn-action-comment'
-                              onClick={() => dispatch(onOpen(true))}
-                            >
-                              <AiOutlineComment size={20} />
-                              <span>Thêm bình luận</span>
-                            </Button>
                           </Col>
                         </Row>
                       </div>
@@ -196,14 +202,12 @@ function Lessons() {
                                   key={index}
                                   justify='space-between'
                                   align='middle'
-                                  className={
-                                    `items-list ${lessons?.data?.video_id === item.video_id
-                                      ? 'active-info' : 'un-active-info'
-                                    }`
-                                  }
+                                  className={`
+                                    items-list ${id == item.id ? 'active-info' : ''}
+                                  `}
                                   onClick={() => {
                                     setProgress(false)
-                                    completeCourse.includes(item.id) ? navigate(`/lessons/${item.id}`) : null
+                                    checked.includes(item.id) ? navigate(`/lessons/${item.id}`) : null
                                   }}
                                 >
                                   <Col>
@@ -216,7 +220,12 @@ function Lessons() {
                                   <Col>
                                     {(completeCourse.includes(item.id))
                                       ? <AiFillCheckSquare style={{ color: '#06ac33' }} size={20} />
-                                      : <AiOutlineLock className={`${id == item.id ? 'hide-lock' : ''}`} size={20} />
+                                      : <AiOutlineLock
+                                        className={`
+                                          ${id == item.id ? 'hide-lock' : ''} ${checked.includes(item.id) ? 'checked-hand' : ''}
+                                        `}
+                                        size={20}
+                                      />
                                     }
                                   </Col>
                                 </Row>
