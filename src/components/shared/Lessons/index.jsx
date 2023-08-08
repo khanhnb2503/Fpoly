@@ -1,4 +1,4 @@
-import { Button, Col, Collapse, List, Progress, Row } from 'antd';
+import { Button, Col, Collapse, List, Progress, Row, Form } from 'antd';
 import Carousel from 'nuka-carousel';
 import { useEffect, useState } from 'react';
 import {
@@ -30,7 +30,6 @@ function Lessons() {
   const [progress, setProgress] = useState(false);
   const [checked, setChecked] = useState([]);
   const [loading, setLoading] = useState(false);
-
 
   if (!isFetching) {
     if (!users?.id) return navigate('/login');
@@ -72,7 +71,7 @@ function Lessons() {
         const { data } = await getHistoryCourse(course_id);
         let lessonIds = [];
         lessons?.data?.course?.modules.map((item) => {
-          item.lessons.map((lesson) => lessonIds.push(lesson.id));
+          item.lessons.map((lesson) => lessonIds.push(lesson.id))
         });
 
         let status = 0;
@@ -85,10 +84,11 @@ function Lessons() {
           });
           status = ids.includes(Number(id)) ? 1 : 0;
           setCompleteCourse(ids)
+          if (ids.length == 1) ids.push(Number(id))
           setChecked(ids)
         } else {
           setChecked([Number(id)])
-        }
+        };
 
         if (!progress) {
           return;
@@ -96,10 +96,10 @@ function Lessons() {
         };
 
         let totals = checked.length;
-        let index = lessonIds[totals] + 1;
+        let index = lessonIds[totals];
 
         setCompleteCourse((state) => !state.includes(Number(id)) ? [...state, Number(id)] : [...state])
-        setChecked((state) => !state.includes(Number(id)) ? [...state, index] : [...state])
+        setChecked((state) => state.includes(Number(id)) ? [...state, index] : [...state])
         return;
         // return await saveHistoryCourse({ course_id: course_id, lesson_id: id, status: 1 });
       }
@@ -131,7 +131,14 @@ function Lessons() {
             <div>
               <Row>
                 <Col xl={18}>
-                  <div className='side-left-video'>
+                  <div className='quiz-content'>
+                    <div className='box-large'>
+                      <Form>
+                        
+                      </Form>
+                    </div>
+                  </div>
+                  {/* <div className='side-left-video'>
                     <div className='video-scroll'>
                       <Row justify='center'>
                         <div
@@ -163,7 +170,7 @@ function Lessons() {
                         </Row>
                       </div>
                     </div>
-                  </div>
+                  </div> */}
                 </Col>
                 <Col xl={6} className='side-right-box'>
                   <div className='carousel-theory'>
@@ -185,7 +192,12 @@ function Lessons() {
                   </div>
                   <div className='content-lesson'>
                     <h4>Nội dung bài học</h4>
-                    <Collapse accordion defaultActiveKey={[lessons.data?.module_id]} expandIconPosition={'end'}>
+                    <Collapse 
+                      accordion 
+                      defaultActiveKey={[lessons.data?.module_id]} 
+                      expandIconPosition={'end'}
+                      className='list-items-module'
+                    >
                       {lessons?.data?.course?.modules?.length > 0 &&
                         lessons?.data?.course?.modules?.map((item) => (
                           <Collapse.Panel key={item.id} className='topic-items'
@@ -198,37 +210,38 @@ function Lessons() {
                             <List
                               dataSource={item.lessons}
                               renderItem={(item, index) => (
-                                <Row
-                                  key={index}
-                                  justify='space-between'
-                                  align='middle'
-                                  className={`
-                                    items-list ${id == item.id ? 'active-info' : ''}
-                                  `}
-                                  onClick={() => {
-                                    setProgress(false)
-                                    checked.includes(item.id) ? navigate(`/lessons/${item.id}`) : null
-                                  }}
-                                >
-                                  <Col>
-                                    <h6 className='topic-link'>{item.id}.{item.name}</h6>
-                                    <Row justify='start' align='middle' gutter={3} className='hours-group'>
-                                      <Col><AiOutlineVideoCamera /></Col>
-                                      <Col><span>15 phút</span></Col>
-                                    </Row>
-                                  </Col>
-                                  <Col>
-                                    {(completeCourse.includes(item.id))
-                                      ? <AiFillCheckSquare style={{ color: '#06ac33' }} size={20} />
-                                      : <AiOutlineLock
-                                        className={`
+                                <div className={`${checked.includes(item.id) ? 'has-next' : ''}`}>
+                                  <Row
+                                    key={index}
+                                    justify='space-between'
+                                    align='middle'
+                                    className={`items-list ${id == item.id ? 'active-info' : ''} `}
+                                    onClick={() => {
+                                      setProgress(false)
+                                      checked.includes(item.id) ? navigate(`/lessons/${item.id}`) : null
+                                    }}
+                                  >
+                                    <Col>
+                                      <h6 className='topic-link'>{item.id}.{item.name}</h6>
+                                      <Row justify='start' align='middle' gutter={3} className='hours-group'>
+                                        <Col><AiOutlineVideoCamera /></Col>
+                                        <Col><span>15 phút</span></Col>
+                                      </Row>
+                                    </Col>
+                                    <Col>
+                                      {(completeCourse.includes(item.id))
+                                        ? <AiFillCheckSquare style={{ color: '#06ac33' }} size={20} />
+                                        : <AiOutlineLock
+                                          className={`
                                           ${id == item.id ? 'hide-lock' : ''} ${checked.includes(item.id) ? 'checked-hand' : ''}
                                         `}
-                                        size={20}
-                                      />
-                                    }
-                                  </Col>
-                                </Row>
+                                          size={20}
+                                        />
+                                      }
+                                    </Col>
+                                  </Row>
+                                </div>
+
                               )} />
                           </Collapse.Panel>
                         ))}
