@@ -3,7 +3,6 @@
 @import './partials/base/antd';
 @import './partials/base/common';
 
-
 /* -----COMPONENTS----- */
 @import './partials/components/layout';
 @import './partials/components/header';
@@ -17,7 +16,7 @@
 @import './partials/components/footer';
 @import './partials/components/detail-course';
 @import './partials/components/community';
-@import './partials/components/blog';
+@import './partials/components/forum';
 @import './partials/components/card-blog';
 @import './partials/components/input-comment';
 @import './partials/components/payment';
@@ -31,7 +30,7 @@
 @import './partials/pages/home';
 @import './partials/pages/course';
 @import './partials/pages/detailCourse';
-@import './partials/pages/blog';
+@import './partials/pages/forum';
 @import './partials/pages/profile';
 @import './partials/pages/login';
 @import './partials/pages/register';

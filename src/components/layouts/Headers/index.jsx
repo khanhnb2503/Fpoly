@@ -17,6 +17,7 @@ function Headers() {
   const { data: user, isSuccess } = useProfileQuery();
   const { data: dataSearch, isLoading } = useSearchQuery(keyword);
 
+  const url = window.location.href === 'http://localhost:4000/forum'
   return (
     <div className='wrapper__header'>
       <Row align="middle" className='horizontal-header'>
@@ -29,55 +30,58 @@ function Headers() {
           </Row>
         </Col>
         <Col sm={16} md={12} lg={8} xl={8}>
-          <Row justify="center">
-            <AutoComplete
-              options={[{
-                label: (
-                  <Loading loading={isLoading} size='small'>
-                    <div className='list-item-search'>
-                      {dataSearch?.message
-                        ? <span>Nhập để tìm kiếm!</span>
-                        : (
-                          <div className='list-content-search'>
-                            {dataSearch?.data?.blogs?.length > 0 && (
-                              <>
-                                <h4>Bài viết</h4>
-                                {dataSearch.data.blogs.map((blog, index) => (
-                                  <div key={index}>
-                                    <Row>
-                                      <Col>
-                                        <p><Link>{blog.title}</Link></p>
-                                      </Col>
-                                    </Row>
-                                  </div>
-                                ))}
-                              </>
-                            )}
-                            <h4>Khóa học</h4>
-                            {dataSearch?.data?.courses?.length > 0 && (
-                              <>
-                                {dataSearch.data.courses.map((course, index) => (
-                                  <div key={index}>
-                                    <Row>
-                                      <Col>
-                                        <p><Link>{course.name}</Link></p>
-                                      </Col>
-                                    </Row>
-                                  </div>
-                                ))}
-                              </>
-                            )}
-                          </div>
-                        )}
-                    </div>
-                  </Loading>
-                )
-              }]}
-              onSearch={(value) => setKeyword(value)}
-              placeholder="Tìm kiếm video,khóa học,bài viết..."
-              className='navbar-search-input'
-            />
-          </Row>
+          {!url && (
+            <Row justify="center">
+              <AutoComplete
+                options={[{
+                  label: (
+                    <Loading loading={isLoading} size='small'>
+                      <div className='list-item-search'>
+                        {dataSearch?.message
+                          ? <span>Nhập để tìm kiếm!</span>
+                          : (
+                            <div className='list-content-search'>
+                              {dataSearch?.data?.blogs?.length > 0 && (
+                                <>
+                                  <h4>Bài viết</h4>
+                                  {dataSearch.data.blogs.map((blog, index) => (
+                                    <div key={index}>
+                                      <Row>
+                                        <Col>
+                                          <p><Link>{blog.title}</Link></p>
+                                        </Col>
+                                      </Row>
+                                    </div>
+                                  ))}
+                                </>
+                              )}
+                              <h4>Khóa học</h4>
+                              {dataSearch?.data?.courses?.length > 0 && (
+                                <>
+                                  {dataSearch.data.courses.map((course, index) => (
+                                    <div key={index}>
+                                      <Row>
+                                        <Col>
+                                          <p><Link>{course.name}</Link></p>
+                                        </Col>
+                                      </Row>
+                                    </div>
+                                  ))}
+                                </>
+                              )}
+                            </div>
+                          )}
+                      </div>
+                    </Loading>
+                  )
+                }]}
+                onSearch={(value) => setKeyword(value)}
+                placeholder="Tìm kiếm video,khóa học,bài viết..."
+                className='navbar-search-input'
+              />
+            </Row>
+          )}
+
         </Col>
         <Col sm={4} md={6} lg={8} xl={8}>
           <Row justify="end" align="middle" className='navbar-action'>

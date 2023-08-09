@@ -1,0 +1,38 @@
+.wrapper__blog--page {
+  @extend .container-content;
+
+  .pagination-blog {
+    margin: 30px 0;
+    text-align: center;
+  }
+
+  .card_title {
+    margin-top: 10px;
+  }
+
+  .content_left {
+    margin-top: 10px;
+    align-items: center;
+    display: flex;
+
+    .text {
+      margin-left: 10px;
+      font-size: x-large;
+      color: #009DA6;
+      font-weight: bold;
+    }
+  }
+
+  .dateTime {
+    font-size: smaller;
+    opacity: 60%;
+    margin-right: 10px;
+  }
+  .title{
+    font-weight: 600;
+  }
+
+  .background{
+    background-color: #D9D9D9;
+  }
+}
