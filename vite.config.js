@@ -13,5 +13,9 @@ export default defineConfig({
    },
    define: {
       global: 'globalThis'
+   },
+   optimizeDeps: {
+      exclude: ['js-big-decimal']
    }
+
 })

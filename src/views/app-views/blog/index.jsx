@@ -1,6 +1,6 @@
-import BlogsPage from "../../../components/shared/BLogsPage/index.jsx";
+import BlogsPage from "../../../components/shared/ForumPage/index.jsx";
 
-const BlogPage = () => {
+const ForumPage = () => {
   return (
     <div>
       <BlogsPage />
@@ -8,4 +8,4 @@ const BlogPage = () => {
   )
 }
 
-export default BlogPage
+export default ForumPage
