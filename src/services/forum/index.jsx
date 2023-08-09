@@ -2,7 +2,7 @@ import { createApi } from '@reduxjs/toolkit/query/react';
 import { baseQuery } from '../base/baseQuery';
 
 export const forumApi = createApi({
-  reducerPath: 'courseApi',
+  reducerPath: 'forumApi',
   baseQuery: baseQuery,
   tagTypes: ['Posts', 'Comments'],
   endpoints: (builder) => ({
@@ -46,13 +46,13 @@ export const forumApi = createApi({
         method: 'DELETE',
       }),
     }),
-    //
-    // addStarPost: builder.mutation({
-    //   query: (id) => ({
-    //     url: `forum/removePost/${id}`,
-    //     method: 'DELETE',
-    //   }),
-    // }),
+
+    addStarPost: builder.mutation({
+      query: (id) => ({
+        url: `forum/removePost/${id}`,
+        method: 'DELETE',
+      }),
+    }),
 
 
     // Comments
