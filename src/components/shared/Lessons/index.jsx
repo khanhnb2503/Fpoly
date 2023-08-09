@@ -1,10 +1,11 @@
-import { Button, Col, Collapse, List, Progress, Row, Form } from 'antd';
+import { Button, Col, Collapse, List, Progress, Row } from 'antd';
 import Carousel from 'nuka-carousel';
 import { useEffect, useState } from 'react';
 import {
   AiFillCheckSquare,
   AiOutlineLeft, AiOutlineLock,
-  AiOutlineRight, AiOutlineVideoCamera
+  AiOutlineRight,
+  AiOutlineVideoCamera
 } from 'react-icons/ai';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -75,8 +76,8 @@ function Lessons() {
         });
 
         let status = 0;
+        let ids = [];
         if (data?.history[0]?.lesson_id) {
-          let ids = [];
           data.history.map((item) => {
             if ((ids.indexOf(item.lesson_id) == -1) && (item.status == 1)) {
               ids.push(item.lesson_id)
@@ -84,24 +85,34 @@ function Lessons() {
           });
           status = ids.includes(Number(id)) ? 1 : 0;
           setCompleteCourse(ids)
-          if (ids.length == 1) ids.push(Number(id))
           setChecked(ids)
+
+          if (ids.length == 0) {
+            setCompleteCourse([Number(id)])
+            setChecked([Number(id)])
+          };
+
+          if (ids.length == 1 && !progress) {
+            setChecked((state) => [...state, Number(id)])
+          }
         } else {
           setChecked([Number(id)])
         };
 
         if (!progress) {
-          return;
-          // return await saveHistoryCourse({ course_id: course_id, lesson_id: id, status: status });
+          return await saveHistoryCourse({ course_id: course_id, lesson_id: id, status: status });
         };
 
-        let totals = checked.length;
-        let index = lessonIds[totals];
+        let totals = checked.length
+        if (ids.length == 1 && completeCourse.length == 2) {
+          setChecked(completeCourse)
+          totals = 2
+        };
 
+        let index = lessonIds[totals]
         setCompleteCourse((state) => !state.includes(Number(id)) ? [...state, Number(id)] : [...state])
         setChecked((state) => state.includes(Number(id)) ? [...state, index] : [...state])
-        return;
-        // return await saveHistoryCourse({ course_id: course_id, lesson_id: id, status: 1 });
+        return await saveHistoryCourse({ course_id: course_id, lesson_id: id, status: 1 });
       }
     })()
   }, [progress, iframe]);
@@ -131,14 +142,14 @@ function Lessons() {
             <div>
               <Row>
                 <Col xl={18}>
-                  <div className='quiz-content'>
+                  {/* <div className='quiz-content'>
                     <div className='box-large'>
                       <Form>
-                        
+
                       </Form>
                     </div>
-                  </div>
-                  {/* <div className='side-left-video'>
+                  </div> */}
+                  <div className='side-left-video'>
                     <div className='video-scroll'>
                       <Row justify='center'>
                         <div
@@ -170,7 +181,7 @@ function Lessons() {
                         </Row>
                       </div>
                     </div>
-                  </div> */}
+                  </div>
                 </Col>
                 <Col xl={6} className='side-right-box'>
                   <div className='carousel-theory'>
@@ -192,9 +203,9 @@ function Lessons() {
                   </div>
                   <div className='content-lesson'>
                     <h4>Nội dung bài học</h4>
-                    <Collapse 
-                      accordion 
-                      defaultActiveKey={[lessons.data?.module_id]} 
+                    <Collapse
+                      accordion
+                      defaultActiveKey={[lessons.data?.module_id]}
                       expandIconPosition={'end'}
                       className='list-items-module'
                     >
