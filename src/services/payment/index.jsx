@@ -25,10 +25,6 @@ export const paymentApi = createApi({
         body: data
       }),
     }),
-    getStatusPayment : builder.query({
-      query: () => 'course/vnpay/callback',
-      providesTags: ['Payment']
-    })
   })
 });
 

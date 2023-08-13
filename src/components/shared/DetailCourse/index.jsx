@@ -92,8 +92,8 @@ function DetailCourse() {
                 {items.lessons.map((value) => (
                   <div
                     key={value.id}
-                    className={`trial-study-content ${value.video_id == videoId ? 'active-default-bk' : ''}`}
-                    onClick={() => setVideoId(value.video_id)}
+                    className={`trial-study-content ${value?.video_id == videoId ? 'active-default-bk' : ''}`}
+                    onClick={() => setVideoId(value?.video_id)}
                   >
                     {value.is_trial_lesson === 1 &&
                       (<Row justify='space-between' align='middle'>

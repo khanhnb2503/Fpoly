@@ -12,6 +12,7 @@ import Register from '../views/auth-views/components/Register';
 import {PaymentSuccess} from "../components/layouts/PaymentSuccess/index.jsx";
 import ForumPage from "../views/app-views/blog/index.jsx";
 import DetailPostForum from "../components/shared/DetailPostForum/index.jsx";
+import ListPost from "../components/shared/ListPost/ListPost.jsx";
 // List routes
 export const RoutesConstant = {
   LOGIN: '/login',
@@ -30,6 +31,7 @@ export const DefaultLayout = [
   { path: '/forum/detailPost/:id', component: DetailPostForum },
   { path: '/payment/:id', component: Payment },
   { path: '/paymentSuccess', component: PaymentSuccess },
+  { path: '/listPosts/:id', component: ListPost },
   { path: "*", component: NotFound, layout: null },
 ]
 

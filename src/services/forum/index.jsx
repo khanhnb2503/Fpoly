@@ -1,10 +1,10 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { baseQuery } from '../base/baseQuery';
+import {baseQuery, baseQueryWithReauth} from '../base/baseQuery';
 
 export const forumApi = createApi({
   reducerPath: 'forumApi',
-  baseQuery: baseQuery,
-  tagTypes: ['Posts', 'Comments'],
+  baseQuery,
+  tagTypes: ['Posts', 'Feedbacks', 'Comments'],
   endpoints: (builder) => ({
     // Posts
     getPosts: builder.query({
@@ -16,13 +16,33 @@ export const forumApi = createApi({
       },
       providesTags: ['Posts']
     }),
-    getPost: builder.query({
-      query: (id) => `/postforum/detail//${id}`,
+    getPostsLatest: builder.query({
+      query: () => {
+        return {
+          url: `postforum/latest-posts`,
+          // params: {page}
+        }
+      },
       providesTags: ['Posts']
     }),
+    getPostsTrending: builder.query({
+      query: () => {
+        return {
+          url: `postforum/top-rated-posts`,
+          // params: {page}
+        }
+      },
+      providesTags: ['Posts']
+    }),
+
+    getPost: builder.query({
+      query: (id) => `postforum/detail/${id}`,
+      providesTags: ['Posts']
+    }),
+
     addPost: builder.mutation({
       query: (data) => ({
-        url: 'forum/addPost',
+        url: 'postforum/addpost',
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -31,8 +51,8 @@ export const forumApi = createApi({
       }),
     }),
     updatePost: builder.mutation({
-      query: (id,data) => ({
-        url: `forum/updatePost/${id}`,
+      query: (data) => ({
+        url: `postforum/updatepost/${data.id}`,
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -42,28 +62,19 @@ export const forumApi = createApi({
     }),
     removePost: builder.mutation({
       query: (id) => ({
-        url: `forum/removePost/${id}`,
+        url: `postforum/delete/${id}`,
         method: 'DELETE',
       }),
     }),
-
     addStarPost: builder.mutation({
       query: (id) => ({
-        url: `forum/removePost/${id}`,
-        method: 'DELETE',
+        url: `postforum/clickstar`,
+        method: 'POST',
+        body: id
       }),
     }),
 
-
     // Comments
-    getComments: builder.query({
-      query: () => 'forum/forum-cmt',
-      providesTags: ['Comments']
-    }),
-    getComment: builder.query({
-      query: (id) => `forum/posts/${id}`,
-      providesTags: ['Comments']
-    }),
     addComment: builder.mutation({
       query: (data) => ({
         url: 'forum/forum-cmt/add',
@@ -85,9 +96,9 @@ export const forumApi = createApi({
       }),
     }),
     updateComment: builder.mutation({
-      query: (id,data) => ({
-        url: `forum/forum-cmt/update${id}`,
-        method: 'PUT',
+      query: (data) => ({
+        url: `forum/forum-cmt/update/${data.id}`,
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -99,6 +110,48 @@ export const forumApi = createApi({
         url: `forum/forum-cmt/delete/${id}`,
         method: 'DELETE',
       }),
+      invalidatesTags: ['Posts']
+    }),
+
+    // feedback
+    getFeedbacks: builder.query({
+      query: (page) => {
+        return {
+          url: `feedback/list`,
+          params: {page}
+        }
+      },
+      providesTags: ['Feedbacks']
+    }),
+    getFeedback: builder.query({
+      query: (id) => `feedback/detail/${id}`,
+      providesTags: ['Feedbacks']
+    }),
+    addFeedback: builder.mutation({
+      query: (data) => ({
+        url: 'feedback/addfeedback',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: data,
+      }),
+    }),
+    updateFeedback: builder.mutation({
+      query: (id,data) => ({
+        url: `feedback/edit/${id}`,
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: data,
+      }),
+    }),
+    removeFeedback: builder.mutation({
+      query: (id) => ({
+        url: `feedback/delete/${id}`,
+        method: 'DELETE',
+      }),
     }),
   })
 });
@@ -106,13 +159,21 @@ export const forumApi = createApi({
 export const {
   useGetPostsQuery,
   useGetPostQuery,
+  useGetPostsLatestQuery,
+  useGetPostsTrendingQuery,
   useAddPostMutation,
   useUpdatePostMutation,
   useRemovePostMutation,
-  useGetCommentsQuery,
-  useGetCommentQuery,
+  useAddStarPostMutation,
+
   useAddCommentMutation,
   useReplyCommentMutation,
   useUpdateCommentMutation,
   useRemoveCommentMutation,
+
+  useGetFeedbacksQuery,
+  useGetFeedbackQuery,
+  useAddFeedbackMutation,
+  useUpdateFeedbackMutation,
+  useRemoveFeedbackMutation
 } = forumApi;
