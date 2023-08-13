@@ -69,32 +69,24 @@ function Lessons() {
   useEffect(() => {
     (async () => {
       if (course_id) {
-        const { data } = await getHistoryCourse(course_id);
         let lessonIds = [];
         lessons?.data?.course?.modules.map((item) => {
           item.lessons.map((lesson) => lessonIds.push(lesson.id))
         });
+        const { data } = await getHistoryCourse(course_id);
 
         let status = 0;
         let ids = [];
+        let nextLesson = [];
         if (data?.history[0]?.lesson_id) {
           data.history.map((item) => {
             if ((ids.indexOf(item.lesson_id) == -1) && (item.status == 1)) {
               ids.push(item.lesson_id)
             }
           });
+          nextLesson = ids
           status = ids.includes(Number(id)) ? 1 : 0;
-          setCompleteCourse(ids)
-          setChecked(ids)
-
-          if (ids.length == 0) {
-            setCompleteCourse([Number(id)])
-            setChecked([Number(id)])
-          };
-
-          if (ids.length == 1 && !progress) {
-            setChecked((state) => [...state, Number(id)])
-          }
+          setCompleteCourse(ids) 
         } else {
           setChecked([Number(id)])
         };
@@ -103,15 +95,7 @@ function Lessons() {
           return await saveHistoryCourse({ course_id: course_id, lesson_id: id, status: status });
         };
 
-        let totals = checked.length
-        if (ids.length == 1 && completeCourse.length == 2) {
-          setChecked(completeCourse)
-          totals = 2
-        };
-
-        let index = lessonIds[totals]
-        setCompleteCourse((state) => !state.includes(Number(id)) ? [...state, Number(id)] : [...state])
-        setChecked((state) => state.includes(Number(id)) ? [...state, index] : [...state])
+        setCompleteCourse((state) => !state.includes(Number(id)) ? [...state, Number(id)] : [...state]);
         return await saveHistoryCourse({ course_id: course_id, lesson_id: id, status: 1 });
       }
     })()
