@@ -262,7 +262,6 @@ function Lessons() {
                                     </Col>
                                   </Row>
                                 </div>
-
                               )} />
                           </Collapse.Panel>
                         ))}

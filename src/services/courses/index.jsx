@@ -1,5 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { baseQuery } from '../base/baseQuery';
+// import { baseQueryWithReauth } from '../base/baseQuery';
 
 export const courseApi = createApi({
   reducerPath: 'courseApi',
