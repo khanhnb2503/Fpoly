@@ -84,18 +84,30 @@ function Lessons() {
               ids.push(item.lesson_id)
             }
           });
+          status = ids.includes(Number(id)) ? 1 : 0
           nextLesson = ids
-          status = ids.includes(Number(id)) ? 1 : 0;
           setCompleteCourse(ids) 
+          setChecked(ids)
+
         } else {
           setChecked([Number(id)])
         };
 
+        if(progress) {
+          if(!nextLesson.includes(Number(id))) nextLesson.push(Number(id))
+        };
+
         if (!progress) {
+          if(status == 1) {
+            let index = lessonIds[nextLesson.length];
+            setChecked((state) => state.includes(Number(id)) ? [...state, index] : [...state])
+          }
           return await saveHistoryCourse({ course_id: course_id, lesson_id: id, status: status });
         };
 
         setCompleteCourse((state) => !state.includes(Number(id)) ? [...state, Number(id)] : [...state]);
+        let index = lessonIds[nextLesson.length];
+        setChecked((state) => state.includes(Number(id)) ? [...state, index] : [...state]);
         return await saveHistoryCourse({ course_id: course_id, lesson_id: id, status: 1 });
       }
     })()
