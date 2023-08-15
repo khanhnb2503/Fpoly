@@ -1,0 +1,54 @@
+.wrapper_payment {
+  .payment-title {
+    display: flex;
+    justify-content: center;
+
+  }
+
+  .price {
+    align-items: center;
+  }
+
+  .price_sale {
+    color: #ffa500;
+    margin-left: 10px;
+    font-size: 1.5rem;
+    border-radius: $border-radius-10;
+  }
+
+  .color-text {
+    color: $white-color
+  }
+
+  .total_price {
+    display: flex;
+    align-items: center;
+  }
+
+  .discount_input{
+    max-width: 50%;
+  }
+  .card_price {
+    background-color: #009DA6;
+  }
+
+  .btn-payment {
+    background-color: #009DA6;
+    margin-top: 15px;
+    &:hover {
+      color: #ffa500;
+    }
+  }
+
+  .btn-bank {
+    margin-top: 15px;
+    background-color: #ffa500;
+    &:hover {
+      color: #009DA6;
+    }
+  }
+  .card_infor{
+    margin-top: 10px;
+    text-align: center;
+  }
+}

@@ -1,74 +1,203 @@
-import { Collapse , Button, Col, Divider, List, Row, Typography } from 'antd';
-import { useGetCourseQuery } from '../../../services/courses/index.jsx';
+import { Button, Col, Collapse, List, Modal, Row, Typography } from 'antd';
+import { useEffect, useState } from 'react';
 import { AiOutlineSafety } from 'react-icons/ai';
+import { useNavigate, useParams } from 'react-router-dom';
+import { imageUrl } from "../../../common/imageUrl";
+import { setLocalStorage } from '../../../services/base/useLocalStorage';
+import { useGetCourseQuery, useSubcribeCourseMutation } from '../../../services/courses/index.jsx';
+import { useProfileQuery } from '../../../services/users';
 import Community from '../Community/index.jsx';
 
 function DetailCourse() {
-  const {data: course, isFetching} = useGetCourseQuery()
+  const { id } = useParams();
+  const { Title, Text } = Typography;
+  const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [videoId, setVideoId] = useState();
+  const [videos, setVideos] = useState();
 
-  const {Title, Text} = Typography
+  const [subcribeCourse] = useSubcribeCourseMutation();
+  const { data: course, isSuccess } = useGetCourseQuery(id);
+  const { data: users } = useProfileQuery();
+
+  const handleSubcribeCourse = async () => {
+    if (!id || !users?.id) {
+      setLocalStorage('hd-course', course.data);
+      navigate('/login')
+    } else {
+      const { data } = await subcribeCourse({ course_id: id });
+      if (data.success) {
+        let lesson_id = course?.data?.modules[0]?.lessons[0]?.id;
+        navigate(`/lessons/${lesson_id}`)
+      }
+    }
+  };
+
+  const handlePayment = async () => {
+    if (!id || !users?.id) {
+      setLocalStorage('hd-course', course.data);
+      navigate('/login');
+    } else {
+      navigate(`/payment/${id}`)
+    }
+  };
+
+  useEffect(() => {
+    try {
+      (async () => {
+        const { data } = await queryVideo(videoId);
+        setVideos(data);
+        setLoading(true);
+      })()
+    } catch (error) {
+      navigate('/not-found')
+    }
+  }, [course, videoId]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      let isTrial = [];
+      course?.data?.modules.map((module) => {
+        module?.lessons.map((lesson) => {
+          if (lesson.is_trial_lesson == 1) isTrial.push(lesson.video_id);
+        })
+      });
+      setVideoId(isTrial[0])
+    }
+  }, [course]);
+
   return (
     <div className='wrapper__detail-course'>
-      <Row justify='center' className='banner'>
-          <img src={course?.image} alt='' />
-      </Row>
-      <Row justify='center' className='content' gutter={10}>
-        <Col>
-          <Button className='button' shape='round' size={'large'}>Mua khóa học</Button>
-        </Col>
-        <Col>
-          <Button className='buttonFree' shape='round' size={'large'}>Học miễn phí</Button>
-        </Col>
-      </Row>
-      <div>
-        <Title>{course?.title}</Title>
-        <Title level={2}>Thông tin khóa học</Title>
-        <Text>{course?.description}</Text>
-        <Title level={3}>Các khái niệm chính được đề cập đến ở khóa học: </Title>
-        <List
-          className='keyword'
-          itemLayout="horizontal"
-          dataSource={course?.lessons}
-          renderItem={(item, index) => (
-            <List.Item>
-              <List.Item.Meta
-                avatar={<AiOutlineSafety />}
-                title={<a href="https://ant.design">{item.title}</a>}
-              />
-            </List.Item>
-          )} />
-        <Divider />
-        <Row justify='space-between'>
-          <Col>
-            <Title level={3}>Nội dung khóa học : </Title>
-          </Col>
-        </Row>
-        <Row className='content'>
-          <Collapse accordion size={'large'} style={{width: '100%'}} expandIconPosition={'end'}>
-            {course && course.lessons.map(item => (
-              <Collapse.Panel key={item.id} header={item.title}>
+      {loading && course && (
+        <>
+          <Modal
+            title={<h3>{course.data.name}</h3>}
+            centered
+            onOk={() => setOpen(false)}
+            onCancel={() => setOpen(false)}
+            open={open}
+            footer={null}
+            width='35.4%'
+            className='video-trial-content'
+          >
+            <div
+              dangerouslySetInnerHTML={{ __html: videos.embed_code }}
+              className='video-player-modal'
+            ></div>
+            <h4>Video học thử miễn phí</h4>
+            {course.data.modules.length > 0 && course.data.modules.map((items) => (
+              <div key={items.id}>
+                {items.lessons.map((value) => (
+                  <div
+                    key={value.id}
+                    className={`trial-study-content ${value?.video_id == videoId ? 'active-default-bk' : ''}`}
+                    onClick={() => setVideoId(value?.video_id)}
+                  >
+                    {value.is_trial_lesson === 1 &&
+                      (<Row justify='space-between' align='middle'>
+                        <Col xl={20}><h6>{value.name}</h6></Col>
+                        <Col xl={2}><span>20 phút</span></Col>
+                      </Row>)
+                    }
+                  </div>
+                ))}
+              </div>
+            ))}
+          </Modal>
+          <Row justify='space-between' align='top' gutter={50}>
+            <Col xl={15}>
+              <div className='details'>
+                <h5>{course.data?.name}</h5>
+                <div
+                  dangerouslySetInnerHTML={{ __html: course.data?.description }}
+                  className='video-player-modal'
+                ></div>
+                <Title
+                  level={5}>Các khái niệm chính được đề cập đến ở khóa học:
+                </Title>
                 <List
-                  className='keyword'
-                  itemLayout="horizontal"
-                  dataSource={item.topics}
+                  dataSource={course.data?.modules}
+                  className='item-list'
                   renderItem={(item, index) => (
                     <List.Item>
                       <List.Item.Meta
-                        avatar={<AiOutlineSafety />}
-                        title={<a href="https://ant.design">{item.content}</a>}
+                        avatar={<AiOutlineSafety size={20} />}
+                        title={<p>{item.name}</p>}
                       />
                     </List.Item>
                   )} />
-              </Collapse.Panel>
-            ))}
-          </Collapse>
-        </Row>
-
-        <Row justify='center'>
-          <Community />
-        </Row>
-      </div>
+                <Row justify='space-between' className='list-description'>
+                  <Col>
+                    <Title level={3}>Nội dung khóa học: </Title>
+                  </Col>
+                </Row>
+                <Row className='content'>
+                  <Collapse accordion size={'large'} style={{ width: '100%' }} expandIconPosition={'end'}>
+                    {course.data.modules.length > 0 && course.data.modules.map(item => (
+                      <Collapse.Panel key={item.id} header={<h6>{item.name}</h6>}>
+                        <List
+                          dataSource={item.lessons}
+                          renderItem={(item, index) => (
+                            <List.Item>
+                              <List.Item.Meta
+                                avatar={<AiOutlineSafety />}
+                                title={<p>{item.name}</p>}
+                              />
+                            </List.Item>
+                          )} />
+                      </Collapse.Panel>
+                    ))}
+                  </Collapse>
+                </Row>
+                <Row justify='center'>
+                  <Community />
+                </Row>
+              </div>
+            </Col>
+            <Col xl={9} className='thumbnail'>
+              <div className='reviewer-course'>
+                <img src={`${imageUrl}${course.data?.image}`} alt='' />
+              </div>
+              <Row justify='space-evenly' className='content'>
+                <Col>
+                  <Button
+                    className='button btn-views'
+                    shape='round'
+                    size={'large'}
+                    onClick={() => setOpen(true)}
+                  >Học thử video
+                  </Button>
+                </Col>
+                <Col>
+                  {course?.data?.is_free == 1
+                    ? (
+                      <Button
+                        className='button-free'
+                        shape='round'
+                        size={'large'}
+                        onClick={handleSubcribeCourse}
+                      >Đăng kí khóa học
+                      </Button>
+                    )
+                    : (
+                      <Button
+                        className='button-free'
+                        shape='round'
+                        size={'large'}
+                        onClick={() => handlePayment()}
+                      >Mua khóa học
+                      </Button>
+                    )
+                  }
+                </Col>
+              </Row>
+            </Col>
+          </Row>
+        </>
+      )}
     </div>
   )
 }
+
 export default DetailCourse

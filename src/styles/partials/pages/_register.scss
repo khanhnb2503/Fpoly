@@ -1,0 +1,33 @@
+.wrapper__register {
+
+  .content-body {
+    padding: 30px 25px;
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, .1);
+  }
+
+  .header-title {
+    text-align: center;
+
+    h4 {
+      padding-bottom: 20px;
+      text-shadow: 0px 0px 2px #4096ff;
+      color: #4096ff;
+      font-size: 25px;
+    }
+  }
+
+  .body {
+
+    input {
+      padding: 4px;
+      font-size: 14px;
+      background-color: $white-color !important;
+    }
+  }
+
+  .message-error {
+    position: relative;
+    bottom: 18px;
+    color: $danger-color;
+  }
+}

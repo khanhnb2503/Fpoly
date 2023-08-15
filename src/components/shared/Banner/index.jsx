@@ -5,36 +5,35 @@ import { Link } from 'react-router-dom';
 import { useGetAllBannerQuery } from '../../../services/banners';
 
 function Banner() {
-  const { data: banners, isLoading } = useGetAllBannerQuery();
-
+  const { data: banners, isSuccess } = useGetAllBannerQuery();
   return (
     <div className="wrapper__banner">
       <div className="slide-show">
         <Carousel
-          autoplay={false}
+          autoplay={true}
           dragging={true}
           wrapAround={true}
           speed={1000}
           autoplayInterval={5000}
         >
-          {!isLoading && banners.map((slide) => (
-            <Row key={slide.id} justify='space-between'>
-              <Col xl={10} className='slide-show-left'>
-                <h3>{slide.name}</h3>
-                <p>{slide.content}</p>
-                <div>
-                  <Link to={`${slide.url}`}>{slide.content_btn}</Link>
-                </div>
-              </Col>
-              <Col xl={14} className='slide-show-right'>
-                <Row justify='end'>
-                  <Col>
-                    <img src={slide.image} alt={`banner-${slide.id}`} />
-                  </Col>
-                </Row>
-              </Col>
-            </Row>
-          ))}
+          {/* {isSuccess && banners.data.map((slide) => ( */}
+          <Row key={1} justify='space-between'>
+            <Col xl={10} className='slide-show-left'>
+              <h3>HTML-CSS</h3>
+              <p>Khóa học HTML-CSS miễn phí</p>
+              <div>
+                <Link to='/'>Đăng kí học</Link>
+              </div>
+            </Col>
+            <Col xl={14} className='slide-show-right'>
+              <Row justify='end'>
+                <Col>
+                  <img src='../../../../public/images/banner.png' />
+                </Col>
+              </Row>
+            </Col>
+          </Row>
+          {/* ))} */}
         </Carousel>
       </div>
     </div>

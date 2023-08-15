@@ -1,106 +1,137 @@
-import { Button, Form, Input, Typography } from 'antd';
-import { signInWithPopup } from 'firebase/auth';
+
+import { Button, Col, Form, Input, Row, Typography } from 'antd';
+import { useEffect, useState } from 'react';
 import { AiOutlineGithub, AiOutlineLock, AiOutlineUser } from 'react-icons/ai';
 import { FcGoogle } from 'react-icons/fc';
+import { Link, useNavigate } from 'react-router-dom';
 
-import { Link } from 'react-router-dom';
 import BackgroundAuth from '../../../../public/images/auth.jpg';
 import { Rules } from '../../../common/validator';
-import { auth, githubAuthProvider, googleAuthProvider } from '../../../firebase/auth/FirebaseAuth';
+import Loading from '../../../components/shared/Spin';
 import { RoutesConstant } from '../../../routes';
+import { useAuthLoginMutation } from '../../../services/authentication/auth';
+import { getLocalStorage, removeLocalStorage, setLocalStorage } from '../../../services/base/useLocalStorage';
+import { useSubcribeCourseMutation } from '../../../services/courses';
 const { Title, Text } = Typography;
 
 function Login() {
+  const navigate = useNavigate();
+  const [message, setMessage] = useState('');
+  const [courses, setCourses] = useState(null);
+  const [authLogin, { isLoading }] = useAuthLoginMutation();
+  const [subcribeCourse] = useSubcribeCourseMutation();
 
-  const handleLogin = (values) => {
-    console.log('Success:', values);
+  const handleLogin = async (values) => {
+    const { data, error } = await authLogin(values);
+    if (data) {
+      const { access_token, refresh_token } = data;
+      setLocalStorage('access_token', access_token);
+      setLocalStorage('refresh_token', refresh_token);
+    };
+
+    if (!courses) {
+      navigate('/')
+      location.reload();
+      return;
+    };
+
+    if (courses && (courses?.is_free == 1)) {
+      const response = await subcribeCourse({ course_id: courses?.id });
+      setTimeout(() => {
+        let lesson_id = courses?.modules[0]?.lessons[0]?.id
+        navigate(`/lessons/${lesson_id}`)
+        removeLocalStorage('hd-course')
+        location.reload()
+      }, 3000);
+      return;
+    };
+
+    navigate(`/payment/${courses?.id}`)
+    removeLocalStorage('hd-course')
+    location.reload()
   };
 
-  const loginWithGoogle = async () => {
-    try {
-      const { user: { displayName, email, photoURL } } = await signInWithPopup(auth, googleAuthProvider);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const loginWithGithub = async () => {
-    try {
-      const { user: { displayName, email, photoURL } } = await signInWithPopup(auth, githubAuthProvider);
-      console.log(displayName, email, photoURL)
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  useEffect(() => {
+    if (getLocalStorage('hd-course')) {
+      const course = getLocalStorage('hd-course');
+      setCourses(course)
+    };
+  }, []);
 
   return (
     <>
-      <div style={backgroundStyles}>
-        <div className='d-flex justify-content-center align-items-center min-vh-100'>
-          <div className='w-25 p-5 bg-light rounded-1'>
-            <div>
-              <Form name="login-form" layout='vertical' onFinish={handleLogin}>
-                <Form.Item name="username" rules={Rules.USERNAME}>
-                  <Input
-                    size='large'
-                    className='text-secondary'
-                    placeholder='Nhập username...'
-                    prefix={<AiOutlineUser />}
-                  />
-                </Form.Item>
-                <Form.Item name="password" rules={Rules.PASSWORD}>
-                  <Input.Password
-                    size='large'
-                    className='text-secondary'
-                    placeholder='Nhập mật khẩu...'
-                    prefix={<AiOutlineLock />}
-                  />
-                </Form.Item>
-                <Form.Item className='text-center'>
-                  <Button type="primary" shape='round' size='large' htmlType="submit">
-                    Đăng nhập
-                  </Button>
-                </Form.Item>
-              </Form>
-            </div>
-            <div>
-              <div className='text-center mb-3'>
-                <Text level={5} type="secondary">Hoặc đăng nhập với</Text>
+      <Loading loading={isLoading} size='large'>
+        <div className='wrapper__login' style={backgroundStyles}>
+          <Row justify='center' align='middle' className='min-vh-100'>
+            <Col lg={10} xl={5} className='content-body bg-light rounded-1'>
+              <div className='header-title'>
+                <h4>ĐĂNG NHẬP</h4>
+              </div>
+              <div className='body'>
+                <Form name="login-form" layout='vertical' onFinish={handleLogin}>
+                  <Form.Item name="email" rules={Rules.EMAIL}>
+                    <Input
+                      size='large'
+                      placeholder='Nhập email...'
+                      onChange={() => setMessage('')}
+                      prefix={<AiOutlineUser />}
+                    />
+                  </Form.Item>
+                  <Form.Item name="password" rules={Rules.PASSWORD}>
+                    <Input.Password
+                      size='large'
+                      placeholder='Nhập mật khẩu...'
+                      onChange={() => setMessage('')}
+                      prefix={<AiOutlineLock />}
+                    />
+                  </Form.Item>
+                  <div className='message-error'>
+                    {message && <span>{message}</span>}
+                  </div>
+                  <Form.Item className='text-center'>
+                    <Button type="primary" shape='round' size='large' htmlType="submit">
+                      Đăng nhập
+                    </Button>
+                  </Form.Item>
+                </Form>
               </div>
               <div>
-                <div className='d-flex justify-content-around flex-wrap'>
-                  <div>
-                    <Button
-                      size='large'
-                      className='px-4'
-                      icon={<FcGoogle />}
-                      onClick={loginWithGoogle}
-                    > Google
-                    </Button>
-                  </div>
-                  <div>
-                    <Button
-                      size='large'
-                      className='px-4'
-                      icon={<AiOutlineGithub />}
-                      onClick={loginWithGithub}
-                    > Github
-                    </Button>
+                <div className='text-center mb-3'>
+                  <Text level={5} type="secondary">Hoặc đăng nhập với</Text>
+                </div>
+                <div>
+                  <div className='d-flex justify-content-around flex-wrap'>
+                    <div>
+                      <Button
+                        size='large'
+                        className='px-4'
+                        icon={<FcGoogle />}
+                      > Google
+                      </Button>
+                    </div>
+                    <div>
+                      <Button
+                        size='large'
+                        className='px-4'
+                        icon={<AiOutlineGithub />}
+                      > Github
+                      </Button>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className='text-center mt-3'>
-                <Text level={5} type="secondary">
-                  Bạn chưa có tài khoản?
-                  <Text className='text-primary ms-1'>
-                    <Link to={RoutesConstant.REGISTER}>Đăng kí</Link>
+                <div className='text-center mt-3'>
+                  <Text level={5} type="secondary">
+                    Bạn chưa có tài khoản?
+                    <Text className='text-primary ms-1'>
+                      <Link to={RoutesConstant.REGISTER}>đăng kí</Link>
+                    </Text>
                   </Text>
-                </Text>
+                </div>
               </div>
-            </div>
-          </div>
+            </Col>
+          </Row>
         </div>
-      </div>
+      </Loading>
     </>
   )
 };

@@ -8,7 +8,7 @@ export const bannerApi = createApi({
   tagTypes: ['Banners'],
   endpoints: (builder) => ({
     getAllBanner: builder.query({
-      query: () => 'banners',
+      query: () => 'slider',
       providesTags: ['Banner']
     }),
   })

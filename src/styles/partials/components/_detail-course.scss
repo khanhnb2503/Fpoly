@@ -1,34 +1,122 @@
-.wrapper__detail-course{
-  .banner{
-     img {
-       width: 100%;
-       height: 500px;
-       object-fit: cover;
-       border-radius: 7px;
-     }
+.wrapper__detail-course {
+  .details {
+    h5 {
+      font-size: 23px;
+      color: #291e77;
+    }
+
+    p {
+      font-size: 16px;
+      padding: 10px 0;
+    }
   }
-  .content{
+
+  .item-list {
+
+    .ant-list-item-meta {
+      align-items: center !important;
+    }
+  }
+
+  .thumbnail {
+    img {
+      width: 100%;
+      height: 70%;
+      object-fit: cover;
+      border-radius: $border-radius-5;
+    }
+  }
+
+  .reviewer-course {
+    position: relative;
+  }
+
+  .content {
     margin-top: 20px;
     margin-bottom: 20px;
-    .button{
+
+    .ant-list-item-meta {
+      align-items: center !important;
+      padding-left: 10px;
+
+      p {
+        color: #5d5d5d;
+      }
+    }
+
+    .ant-collapse-content-box,
+    .ant-list-item {
+      padding: 0 !important;
+    }
+
+    .button {
       background-color: #009DA6;
-      &:hover{
+      color: $white-color;
+      width: 50px;
+
+      &:hover {
         color: $white-color
       }
     }
-    .buttonFree{
-      background-color: #ffa500;
-      &:hover{
+
+    .button-free {
+      background-color: #f05123;
+      color: $white-color;
+
+      &:hover {
         color: $white-color
       }
     }
+
+    .btn-views,
+    .button-free {
+      width: 160px !important;
+    }
   }
-  .keyword{
-    margin-left: 20px;
-    margin-bottom: 20px;
-    width: 100%;
+
+  .list-description {
+    h3 {
+      color: #291e77 !important;
+    }
   }
-  .content{
-    width: 100%;
+}
+
+.review-first-video {
+  width: 100% !important;
+  height: 600px !important;
+}
+
+.video-player-modal {
+  width: 100%;
+  height: 100%;
+}
+
+.video-trial-content {
+
+  h3 {
+    text-transform: uppercase;
+    font-size: 21px;
   }
+
+  h4 {
+    margin: 10px 0;
+    font-size: 18px;
+    text-transform: uppercase;
+    color: #0d2969;
+  }
+}
+
+.trial-study-content {
+  margin: 10px 0;
+  padding: 0 7px;
+  border-radius: 5px;
+  cursor: pointer;
+
+  h6 {
+    padding: 13px 0;
+  }
+}
+
+.active-default-bk {
+  background-color: #d7e3f5;
 }

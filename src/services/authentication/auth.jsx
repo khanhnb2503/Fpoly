@@ -5,18 +5,28 @@ export const loginApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: import.meta.env.VITE_BASE_URL,
     prepareHeaders: (headers, { getState }) => {
-      const token = getState().auth.token;
-      if (token) {
-        headers.set('Authorization', `Bearer ${token}`);
+      // const token = getState().auth.token;
+      if (true) {
+        headers.set('Authorization', `Bearer hahahah`);
       }
       return headers;
     }
   }),
   tagTypes: ['Users'],
   endpoints: (builder) => ({
-    login: builder.query({
+    authLogin: builder.mutation({
       query: (data) => ({
         url: '/login',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: data,
+      }),
+    }),
+    authRegister: builder.mutation({
+      query: (data) => ({
+        url: '/register',
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -27,4 +37,6 @@ export const loginApi = createApi({
   }),
 });
 
-export const { useLoginQuery } = loginApi;
+
+export const { useAuthLoginMutation, useAuthRegisterMutation } = loginApi;
+

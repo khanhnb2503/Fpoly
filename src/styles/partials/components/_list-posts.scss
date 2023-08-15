@@ -1,0 +1,29 @@
+.wrapper_listPost {
+  @extend .container-content;
+
+  .breadcrumb_header-list {
+    background-color: #F9F9F9;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .header_forum {
+    background-image: url("https://html-template.spider-themes.net/docy/img/banner-bg.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    height: 300px;
+    background-position: bottom;
+    background-color: #F9F9F9;
+    padding-top: 145px;
+    padding-bottom: 100px;
+    border-radius: 20px;
+    position: relative;
+
+    .header_search {
+      position: absolute;
+      right: 28%;
+      top: 50%;
+    }
+  }
+}

@@ -1,25 +1,24 @@
+import { Fragment } from 'react';
 import { Route, Routes } from "react-router-dom";
-import LayoutPublic from "./components/layouts";
-import { RoutesConstant } from "./routes";
-import CoursePage from "./views/app-views/course";
-import HomePage from "./views/app-views/home";
-import Login from './views/auth-views/components/Login';
-import Register from './views/auth-views/components/Register';
-import DetailCoursePage from './views/app-views/detailCourse/index.jsx';
+import LayoutPublic from './components/layouts';
+import { DefaultLayout } from './routes';
 
 function App() {
   return (
     <>
-      <LayoutPublic>
-        <Routes>
-          <Route path='/' element={<HomePage />} />
-          <Route path='/khoa-hoc' element={<CoursePage />} />
-          <Route path='/thong-tin-khoa-hoc' element={ <DetailCoursePage />} />
-        </Routes>
-      </LayoutPublic>
       <Routes>
-        <Route path={RoutesConstant.LOGIN} element={<Login />} />
-        <Route path={RoutesConstant.REGISTER} element={<Register />} />
+        {DefaultLayout.map((route, index) => {
+          const Page = route.component
+          const Layout = route.layout === null ? Fragment : LayoutPublic
+          return <Route
+            key={index}
+            path={route.path}
+            element={
+              <Layout>
+                <Page />
+              </Layout>
+            } />
+        })}
       </Routes>
     </>
   )

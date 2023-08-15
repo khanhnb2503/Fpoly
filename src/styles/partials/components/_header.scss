@@ -76,5 +76,20 @@
       cursor: pointer;
     }
   }
+}
 
+.ant-select-dropdown {
+
+  .list-item-search {
+
+    h4 {
+      margin: 7px 0 5px 0;
+      text-transform: uppercase;
+      color: #291e77;
+    }
+
+    a {
+      color: rgb(112, 109, 109);
+    }
+  }
 }

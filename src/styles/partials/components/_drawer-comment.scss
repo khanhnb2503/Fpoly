@@ -26,3 +26,15 @@
     min-width: 360px;
   }
 }
+
+.wrapper__input--comment {
+  .comment-groups {
+    height: 42px !important;
+    border-radius: 20px 0 0 20px !important;
+  }
+
+  .btn-send-comment {
+    height: 42px;
+    border-radius: 0 20px 20px 0 !important;
+  }
+}

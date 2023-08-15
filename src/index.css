@@ -5,6 +5,9 @@ body *,
   margin: 0;
 }
 
+.ck-editor__editable {
+  min-height: 300px;
+}
 
 html,
 body,
@@ -57,6 +60,7 @@ video {
   vertical-align: baseline;
 }
 
+/*
 html {
   ::-webkit-scrollbar {
     width: 7px;
@@ -75,7 +79,7 @@ html {
   ::-webkit-scrollbar-thumb:hover {
     background: #555;
   }
-}
+} */
 
 body {
   line-height: 1.5;
