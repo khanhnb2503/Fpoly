@@ -14,6 +14,7 @@ import ForumPage from "../views/app-views/blog/index.jsx";
 import DetailPostForum from "../components/shared/DetailPostForum/index.jsx";
 import ListPost from "../components/shared/ListPost/ListPost.jsx";
 import ListPosts from "../components/shared/ListPost/ListPost.jsx";
+import Contact from '../components/shared/Contact';
 // List routes
 export const RoutesConstant = {
   LOGIN: '/login',
@@ -22,6 +23,7 @@ export const RoutesConstant = {
 
 export const DefaultLayout = [
   { path: '/', component: Home },
+  {path:'/contact',component:Contact},
   { path: '/courses', component: CoursePage },
   { path: '/courses/:id', component: DetailCourse },
   { path: '/lessons/:id', component: Lessons, layout: null },
