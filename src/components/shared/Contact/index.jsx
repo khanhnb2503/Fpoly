@@ -2,7 +2,7 @@ import { Button, Col, Row } from "antd";
 import { AiFillEnvironment, AiFillMail, AiFillPhone, AiFillFacebook, AiFillYoutube } from "react-icons/ai";
 import { Link, useNavigate } from "react-router-dom";
 
-import { useEffect, useState } from "react";
+
 import Banner from "../../../components/shared/Banner";
 
 
