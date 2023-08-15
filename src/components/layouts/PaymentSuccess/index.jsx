@@ -2,8 +2,6 @@ import { Button, Result } from 'antd';
 import {Link} from "react-router-dom";
 import {useGetStatusPaymentQuery} from "../../../services/payment/index.jsx";
 export function PaymentSuccess() {
-  const {data} = useGetStatusPaymentQuery()
-  console.log(data, "data")
   return (
     <div>
       <Result

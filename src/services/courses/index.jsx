@@ -4,13 +4,17 @@ import { baseQuery } from '../base/baseQuery';
 export const courseApi = createApi({
   reducerPath: 'courseApi',
   baseQuery: baseQuery,
-  tagTypes: ['Courses'],
+  tagTypes: ['Courses', "Category"],
   endpoints: (builder) => ({
     getCourses: builder.query({
       query: () => 'course/category-course',
       providesTags: ['Courses']
     }),
 
+    getCategory: builder.query({
+      query: () => `course/category-course`,
+      providesTags: ['Category']
+    }),
     getCourse: builder.query({
       query: (id) => `course/${id}`,
       providesTags: ['Courses']
@@ -53,6 +57,7 @@ export const courseApi = createApi({
 
 export const {
   useGetCoursesQuery,
+  useGetCategoryQuery,
   useGetCourseQuery,
   useGetLessonsQuery,
   useSubcribeCourseMutation,
