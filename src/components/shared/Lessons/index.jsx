@@ -10,8 +10,8 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { videoInfo } from '../../../redux/features/video/videoSlice';
 import { onOpen } from '../../../redux/features/comment/commentSlice.jsx';
+import { videoInfo } from '../../../redux/features/video/videoSlice';
 import { getHistoryCourse, queryVideo } from '../../../services/base/baseQuery.jsx';
 import {
   useGetLessonsQuery,
@@ -90,6 +90,7 @@ function Lessons() {
           nextLesson = ids
           setCompleteCourse(ids)
           setChecked(ids)
+          if (ids.length == 0) setChecked([Number(id)]);
 
         } else {
           setChecked([Number(id)])
