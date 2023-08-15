@@ -34,6 +34,15 @@ export const forumApi = createApi({
       },
       providesTags: ['Posts']
     }),
+    getPostsCate: builder.query({
+      query: () => {
+        return {
+          url: `postforum/postsCate`,
+          // params: {page}
+        }
+      },
+      providesTags: ['Posts']
+    }),
 
     getPost: builder.query({
       query: (id) => `postforum/detail/${id}`,
@@ -165,6 +174,7 @@ export const {
   useUpdatePostMutation,
   useRemovePostMutation,
   useAddStarPostMutation,
+  useGetPostsCateQuery,
 
   useAddCommentMutation,
   useReplyCommentMutation,

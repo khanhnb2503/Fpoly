@@ -10,7 +10,12 @@ import {
   Row,
   Typography,
   Modal,
-  Divider, Input, notification, Space,Tag,
+  Divider,
+  Input,
+  notification,
+  Space,
+  Tag,
+  Skeleton,
   Image
 } from "antd";
 import {useState} from "react";
@@ -20,10 +25,7 @@ import {FaEdit, FaRocketchat} from "react-icons/fa";
 import {CKEditor} from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import {
-  useAddPostMutation,
-  useGetPostsLatestQuery,
-  useGetPostsQuery,
-  useGetPostsTrendingQuery
+  useAddPostMutation, useGetPostsLatestQuery, useGetPostsQuery, useGetPostsTrendingQuery
 } from "../../../services/forum/index.jsx";
 import {useGetCategoryQuery} from "../../../services/courses/index.jsx";
 import {FieldTimeOutlined, FolderOpenOutlined, HomeOutlined} from "@ant-design/icons";
@@ -31,7 +33,7 @@ import moment from "moment";
 import {Link} from "react-router-dom"
 
 function ForumPage() {
-  const {Title, Text, Link} = Typography;
+  const {Title, Text} = Typography;
   const [pageNumber, setPageNumber] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [dataCKEditor, setDataCKEditor] = useState('')
@@ -53,48 +55,34 @@ function ForumPage() {
 
   const {data: categories} = useGetCategoryQuery()
 
-  console.log(posts)
   const filterPostByIdCate = categories?.data.map((item) => {
     const data = posts?.filter(post => post.category.id === item.id)
     return {
-      ...item,
-      posts: data
+      ...item, posts: data
     }
   })
-
   const showModal = () => {
     setIsModalOpen(true);
   };
 
   const optionsCategory = categories && categories?.data.map((item) => {
     return {
-      value: item.id,
-      label: item.name
+      value: item.id, label: item.name
     }
   })
-  const options = [
-    {
-      value: 1,
-      label: 'Thắc mắc',
-    },
-    {
-      value: 2,
-      label: 'Câu hỏi',
-    },
-    {
-      value: 3,
-      label: 'Thảo luận',
-    },
-    {
-      value: 4,
-      label: 'Giải trí',
-    },
-  ]
+  const options = [{
+    value: 1, label: 'Thắc mắc',
+  }, {
+    value: 2, label: 'Câu hỏi',
+  }, {
+    value: 3, label: 'Thảo luận',
+  }, {
+    value: 4, label: 'Giải trí',
+  },]
 
   const openNotificationWithIcon = (type) => {
     api[type]({
-      message: 'Tạo bài viết',
-      description: "Tạo bài viết thành công",
+      message: 'Tạo bài viết', description: "Tạo bài viết thành công",
     });
   };
   const handleChangeTypePost = (value) => {
@@ -109,10 +97,7 @@ function ForumPage() {
 
   const handleAddPost = async () => {
     const dataPost = {
-      title: titlePost,
-      content: dataCKEditor,
-      type: idType,
-      category_id: idCategory
+      title: titlePost, content: dataCKEditor, type: idType, category_id: idCategory
     }
     const {data} = await addPost(dataPost)
     if (data.status) {
@@ -141,16 +126,12 @@ function ForumPage() {
       </div>
       <div className="breadcrumb_header">
         <div>
-          <Breadcrumb items={[
-            {
-              title: (
-                <div style={{display: "flex", alignItems: "center"}}>
-                  <HomeOutlined style={{fontSize: 20}}/>
-                  <span style={{marginLeft: 10, fontSize: 20}}>Home</span>
-                </div>
-              )
-            },
-          ]}/>
+          <Breadcrumb items={[{
+            title: (<div style={{display: "flex", alignItems: "center"}}>
+                <HomeOutlined style={{fontSize: 20}}/>
+                <span style={{marginLeft: 10, fontSize: 20}}>Home</span>
+              </div>)
+          },]}/>
         </div>
         <div style={{display: "flex", alignItems: "center"}}>
           <FieldTimeOutlined style={{fontSize: 20}}/>
@@ -199,7 +180,7 @@ function ForumPage() {
                   <Select
                     defaultValue="Thắc mắc"
                     style={{
-                      width: 120,
+                      width: 300,
                     }}
                     onChange={(value) => handleChangeTypePost(value)}
                     options={options}
@@ -210,7 +191,7 @@ function ForumPage() {
                   <Select
                     defaultValue="Backend"
                     style={{
-                      width: 120,
+                      width: 300,
                     }}
                     onChange={(value) => handleChangeCategory(value)}
                     options={optionsCategory}
@@ -232,6 +213,10 @@ function ForumPage() {
             <div style={{marginTop: 30}}>
               <Card type="inner" title="Forum">
                 {filterPostByIdCate && filterPostByIdCate.map((data, index) => {
+                  if (!filterPostByIdCate) {
+                    return <Skeleton />
+                  }
+                  const color = data?.posts.type.type === "Thắc mắc" ? "#2db7f5" : data?.posts.type.type === "Câu hỏi" ? "#f50" : data?.posts.type.name === "Thảo luận" ? "#108ee9" : "#87d068"
                   return (
                     <div key={index} style={{marginTop: 20, marginBottom: 20}}>
                       <Card>
@@ -239,7 +224,7 @@ function ForumPage() {
                           <Col span={9}>
                             <div style={{display: "flex", marginTop: 10}}>
                               <FolderOpenOutlined style={{fontSize: 30, color: "#009DA6"}}/>
-                              <Link to={`listPosts/${data.id}`}>
+                              <Link to={`/forum/listPosts/${data.id}`}>
                                 <Title level={3} style={{marginLeft: 10, color: "#F26F27"}}>{data.name}</Title>
                               </Link>
                             </div>
@@ -263,69 +248,57 @@ function ForumPage() {
                           <Col span={9}>
                             <Row gutter={10}>
                               <Col span={4}>
-                                <Avatar src={data?.posts[0]?.user_id.avatar || Logo} size={35} alt='avatar'/>
+                                <Avatar src={data?.posts[0]?.user_id.avatar} size={35} alt='avatar'/>
                               </Col>
-                              <Col span={19}>
+                              <Col span={20}>
                                 <Text ellipsis={true} className="title">
                                   {data?.posts && data?.posts[0]?.title}
                                 </Text>
                                 <div>
-                                  <span className="dateTime">{
-                                    moment(data?.posts[0]?.created_at).format('LLL')
-                                  }</span>
+                                  <span className="dateTime">{moment(data?.posts[0]?.created_at).format('LLL')}</span>
                                   <span>{data?.posts[0]?.user_id.user}</span>
+                                </div>
+                                <div>
+                                  <Tag color={color}>
+                                    {data?.posts[0]?.type.type}
+                                  </Tag>
                                 </div>
                               </Col>
                             </Row>
                           </Col>
                         </Row>
                       </Card>
-                    </div>
-                  )
+                    </div>)
                 })}
               </Card>
             </div>
-            {/*  {filterPostByIdCate && filterPostByIdCate.map((data, index) => {*/}
-            {/*    return (*/}
-            {/*      <div key={index} style={{marginTop: 20, marginBottom: 20}}>*/}
-            {/*        <Card title={data.name} className="background">*/}
-            {/*          {data.posts && data.posts.map((item, index) => {*/}
-            {/*            return (*/}
-            {/*              <div key={index}>*/}
-            {/*                <CardForum data={item} isLoading={isLoading}/>*/}
-            {/*              </div>*/}
-            {/*            )*/}
-            {/*          })}*/}
-            {/*        </Card>*/}
-            {/*      </div>*/}
-            {/*    )*/}
-            {/*  })}*/}
-            {/*</div>*/}
           </Col>
           <Col span={8} style={{marginTop: 10}}>
             <Row gutter={[0, 30]}>
               <Col span={24}>
                 <div style={{marginTop: 30}}>
-                  <Card type="inner" title="Bài viết nổi bật">
+                  <Card type="inner" title="Bài viết mới nhất">
                     {postTrending && postTrending.map((data, index) => {
+                      if (!postTrending) {
+                        return <Skeleton />
+                      }
                       return (
                         <div key={index} style={{marginTop: 20, marginBottom: 20}}>
                           <Card>
                             <Row gutter={10}>
                               <Col span={5}>
-                                <Avatar src={data.user_id.avatar} size={35} alt='avatar'/>
+                                <Avatar src={data?.user.avatar} size={35} alt='avatar'/>
                               </Col>
                               <Col span={19}>
                                 <Text ellipsis={true} className="title">{data.title}</Text>
                                 <div>
-                                  <span className="dateTime">06/08/2023</span>
-                                  <span>{data.user_id.user}</span>
+                                  <span className="dateTime">{moment(data.created_at).format('LLL')}</span>
+                                  <span>{data?.user.user}</span>
                                 </div>
                               </Col>
                             </Row>
                           </Card>
-                        </div>
-                      )
+                        </div>)
                     })}
                   </Card>
                 </div>
@@ -333,58 +306,50 @@ function ForumPage() {
               <Col span={24}>
                 <Card type="inner" title="Bài viết nổi bật">
                   {postLatest && postLatest.map((data, index) => {
-                    return (
-                      <div key={index} style={{marginTop: 20, marginBottom: 20}}>
+                    if (!postLatest) {
+                      return <Skeleton />
+                    }
+                    return (<div key={index} style={{marginTop: 20, marginBottom: 20}}>
                         <Card>
                           <Row gutter={10}>
                             <Col span={5}>
-                              <Avatar src={data.user_id.avatar} size={35} alt='avatar'/>
+                              <Avatar src={data.user.avatar} size={35} alt='avatar'/>
                             </Col>
                             <Col span={19}>
                               <Text ellipsis={true} className="title">{data.title}</Text>
                               <div>
-                                <span className="dateTime">06/08/2023</span>
-                                <span>{data.user_id.user}</span>
+                                <span className="dateTime">{moment(data.created_at).format('LLL')}</span>
+                                <span>{data.user.user}</span>
+                                <div>
+                                  <Tag color="#55acee">
+                                    {/*{data?.type.type}*/}
+                                  </Tag>
+                                </div>
                               </div>
                             </Col>
                           </Row>
                         </Card>
-                      </div>
-                    )
+                      </div>)
                   })}
                 </Card>
               </Col>
-              <Col span={24}>
+              <Col span={24} style={{marginBottom: 10}}>
+                <Title level={3}>Tags</Title>
+                <Space size={[0, 8]} wrap>
+                  {options && options.map((item, index) => {
+                    return (<div key={index}>
+                        <Tag style={{padding: 10}} color="#55acee">
+                          {item.label}
+                        </Tag>
+                      </div>)
+                  })}
+                </Space>
               </Col>
-            </Row>ss
-
-            {/*<Card type="inner" title="Bài viết mới nhất">*/}
-            {/*  {postTrending && postTrending.map((post, index) => {*/}
-            {/*    return (*/}
-            {/*      <div style={{marginTop: 20, marginBottom: 20}} key={index}>*/}
-            {/*        <Row>*/}
-            {/*          <Col span={5}>*/}
-            {/*            <Avatar src={Logo} size={35} alt='avatar'/>*/}
-            {/*          </Col>*/}
-            {/*          <Col span={19}>*/}
-            {/*            <Text className="title">{post.title}</Text>*/}
-            {/*            <div>*/}
-            {/*              <span className="dateTime"></span>*/}
-            {/*              <span>Dangthais</span>*/}
-            {/*            </div>*/}
-            {/*          </Col>*/}
-            {/*        </Row>*/}
-            {/*      </div>*/}
-            {/*    )*/}
-            {/*  })}*/}
-            {/*</Card>*/}
-
+            </Row>
           </Col>
-
         </Row>
       </div>
-    </div>
-  )
+    </div>)
 }
 
 export default ForumPage;

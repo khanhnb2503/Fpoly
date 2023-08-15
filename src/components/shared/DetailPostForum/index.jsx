@@ -40,7 +40,7 @@ const DetailPostForum = () => {
   console.log(isLoading)
   useEffect(() => {
     if (post) {
-        setPostData(post)
+      setPostData(post)
     }
   }, [isLoading])
 
@@ -71,12 +71,19 @@ const DetailPostForum = () => {
         <span style={{marginLeft: 10}}>Forums</span>
       </div>
     </Link>)
-  }, {
-    path: '/forum/detailPost/:id', breadcrumbName: (<div style={{display: "flex", alignItems: "center", marginTop: 3}}>
-      <FileOutlined/>
-      <span style={{marginLeft: 5}}>PostDetail</span>
-    </div>),
-  },];
+  },
+    {
+      path: '/forum/listPost/:id', breadcrumbName: (<div style={{display: "flex", alignItems: "center", marginTop: 3}}>
+        <FileOutlined/>
+        <span style={{marginLeft: 5}}>ListPost</span>
+      </div>),
+    }, {
+      path: '/forum/detailPost/:id',
+      breadcrumbName: (<div style={{display: "flex", alignItems: "center", marginTop: 3}}>
+        <FileOutlined/>
+        <span style={{marginLeft: 5}}>PostDetail</span>
+      </div>),
+    },];
 
   function itemRender(route, params, routes, paths) {
     const last = routes.indexOf(route) === routes.length - 1;
@@ -150,10 +157,10 @@ const DetailPostForum = () => {
                   <span>
                     {`@${user?.name}`}
                   </span>
-              <span
-                style={{fontSize: 20, fontWeight: 500}}
-                dangerouslySetInnerHTML={{__html: handleDisplayCkeditor(comment?.content)}}
-              >
+                  <span
+                    style={{fontSize: 20, fontWeight: 500}}
+                    dangerouslySetInnerHTML={{__html: handleDisplayCkeditor(comment?.content)}}
+                  >
               </span>
                 </Col>
                 <Col span={7} style={{display: "flex"}}>
