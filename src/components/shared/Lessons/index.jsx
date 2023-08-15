@@ -11,12 +11,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { videoInfo } from '../../../redux/features/video/videoSlice';
+import { onOpen } from '../../../redux/features/comment/commentSlice.jsx';
 import { getHistoryCourse, queryVideo } from '../../../services/base/baseQuery.jsx';
 import {
   useGetLessonsQuery,
   useSaveHistoryCourseMutation
 } from '../../../services/courses/index.jsx';
 import { useProfileQuery } from '../../../services/users/index.jsx';
+import DrawerComment from '../DrawerComment/index.jsx';
 
 function Lessons() {
   const { id } = useParams();
@@ -86,29 +88,29 @@ function Lessons() {
           });
           status = ids.includes(Number(id)) ? 1 : 0
           nextLesson = ids
-          setCompleteCourse(ids) 
+          setCompleteCourse(ids)
           setChecked(ids)
 
         } else {
           setChecked([Number(id)])
         };
 
-        if(progress) {
-          if(!nextLesson.includes(Number(id))) nextLesson.push(Number(id))
+        if (progress) {
+          if (!nextLesson.includes(Number(id))) nextLesson.push(Number(id))
         };
 
         if (!progress) {
-          if(status == 1) {
+          if (status == 1) {
             let index = lessonIds[nextLesson.length];
             setChecked((state) => state.includes(Number(id)) ? [...state, index] : [...state])
           }
-          return await saveHistoryCourse({ course_id: course_id, lesson_id: id, status: status });
+          // return await saveHistoryCourse({ course_id: course_id, lesson_id: id, status: status });
         };
 
         setCompleteCourse((state) => !state.includes(Number(id)) ? [...state, Number(id)] : [...state]);
         let index = lessonIds[nextLesson.length];
         setChecked((state) => state.includes(Number(id)) ? [...state, index] : [...state]);
-        return await saveHistoryCourse({ course_id: course_id, lesson_id: id, status: 1 });
+        // return await saveHistoryCourse({ course_id: course_id, lesson_id: id, status: 1 });
       }
     })()
   }, [progress, iframe]);
@@ -117,6 +119,7 @@ function Lessons() {
     <>
       {isSuccess && loading && (
         <>
+          <DrawerComment />
           <div className="wrapper__lessons">
             <div className="header">
               <Row justify='space-between' align='middle'>
@@ -159,6 +162,16 @@ function Lessons() {
                         <Row justify='space-between' align='middle'>
                           <Col xl={21}>
                             <h3>{lessons?.data?.name}</h3>
+                          </Col>
+                          <Col xl={3.2}>
+                            <Button
+                              shape="round"
+                              className='btn-action-comment'
+                              onClick={() => dispatch(onOpen(true))}
+                            >
+                              <AiOutlineComment size={20} />
+                              <span>Thêm bình luận</span>
+                            </Button>
                           </Col>
                         </Row>
                       </div>
