@@ -11,12 +11,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { videoInfo } from '../../../redux/features/video/videoSlice';
+import { onOpen } from '../../../redux/features/comment/commentSlice.jsx';
 import { getHistoryCourse, queryVideo } from '../../../services/base/baseQuery.jsx';
 import {
   useGetLessonsQuery,
   useSaveHistoryCourseMutation
 } from '../../../services/courses/index.jsx';
 import { useProfileQuery } from '../../../services/users/index.jsx';
+import DrawerComment from '../DrawerComment/index.jsx';
 
 function Lessons() {
   const { id } = useParams();
@@ -69,50 +71,46 @@ function Lessons() {
   useEffect(() => {
     (async () => {
       if (course_id) {
-        const { data } = await getHistoryCourse(course_id);
         let lessonIds = [];
         lessons?.data?.course?.modules.map((item) => {
           item.lessons.map((lesson) => lessonIds.push(lesson.id))
         });
+        const { data } = await getHistoryCourse(course_id);
 
         let status = 0;
         let ids = [];
+        let nextLesson = [];
         if (data?.history[0]?.lesson_id) {
           data.history.map((item) => {
             if ((ids.indexOf(item.lesson_id) == -1) && (item.status == 1)) {
               ids.push(item.lesson_id)
             }
           });
-          status = ids.includes(Number(id)) ? 1 : 0;
+          status = ids.includes(Number(id)) ? 1 : 0
+          nextLesson = ids
           setCompleteCourse(ids)
           setChecked(ids)
 
-          if (ids.length == 0) {
-            setCompleteCourse([Number(id)])
-            setChecked([Number(id)])
-          };
-
-          if (ids.length == 1 && !progress) {
-            setChecked((state) => [...state, Number(id)])
-          }
         } else {
           setChecked([Number(id)])
         };
 
+        if (progress) {
+          if (!nextLesson.includes(Number(id))) nextLesson.push(Number(id))
+        };
+
         if (!progress) {
-          return await saveHistoryCourse({ course_id: course_id, lesson_id: id, status: status });
+          if (status == 1) {
+            let index = lessonIds[nextLesson.length];
+            setChecked((state) => state.includes(Number(id)) ? [...state, index] : [...state])
+          }
+          // return await saveHistoryCourse({ course_id: course_id, lesson_id: id, status: status });
         };
 
-        let totals = checked.length
-        if (ids.length == 1 && completeCourse.length == 2) {
-          setChecked(completeCourse)
-          totals = 2
-        };
-
-        let index = lessonIds[totals]
-        setCompleteCourse((state) => !state.includes(Number(id)) ? [...state, Number(id)] : [...state])
-        setChecked((state) => state.includes(Number(id)) ? [...state, index] : [...state])
-        return await saveHistoryCourse({ course_id: course_id, lesson_id: id, status: 1 });
+        setCompleteCourse((state) => !state.includes(Number(id)) ? [...state, Number(id)] : [...state]);
+        let index = lessonIds[nextLesson.length];
+        setChecked((state) => state.includes(Number(id)) ? [...state, index] : [...state]);
+        // return await saveHistoryCourse({ course_id: course_id, lesson_id: id, status: 1 });
       }
     })()
   }, [progress, iframe]);
@@ -121,6 +119,7 @@ function Lessons() {
     <>
       {isSuccess && loading && (
         <>
+          <DrawerComment />
           <div className="wrapper__lessons">
             <div className="header">
               <Row justify='space-between' align='middle'>
@@ -163,6 +162,16 @@ function Lessons() {
                         <Row justify='space-between' align='middle'>
                           <Col xl={21}>
                             <h3>{lessons?.data?.name}</h3>
+                          </Col>
+                          <Col xl={3.2}>
+                            <Button
+                              shape="round"
+                              className='btn-action-comment'
+                              onClick={() => dispatch(onOpen(true))}
+                            >
+                              <AiOutlineComment size={20} />
+                              <span>Thêm bình luận</span>
+                            </Button>
                           </Col>
                         </Row>
                       </div>
