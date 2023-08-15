@@ -21,6 +21,7 @@ export const RoutesConstant = {
 
 export const DefaultLayout = [
   { path: '/', component: Home },
+  {path:'/contact',component:Contact},
   { path: '/courses', component: CoursePage },
   { path: '/courses/:id', component: DetailCourse },
   { path: '/lessons/:id', component: Lessons, layout: null },
