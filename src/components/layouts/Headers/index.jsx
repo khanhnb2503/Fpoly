@@ -26,7 +26,7 @@ function Headers() {
             <Link to='/'>
               <img src={Logo} alt='logo' />
             </Link>
-            <h4>FptPolytechnic</h4>
+            <h4>BeeSquad</h4>
           </Row>
         </Col>
         <Col sm={16} md={12} lg={8} xl={8}>
@@ -76,7 +76,7 @@ function Headers() {
                   )
                 }]}
                 onSearch={(value) => setKeyword(value)}
-                placeholder="Tìm kiếm video,khóa học,bài viết..."
+                placeholder="Tìm kiếm khóa học, bài viết..."
                 className='navbar-search-input'
               />
             </Row>

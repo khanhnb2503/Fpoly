@@ -1,8 +1,6 @@
 import { Col, Row } from 'antd';
 import { Link } from 'react-router-dom';
 import Logo from '../../../../public/images/logo_ong_vang.jpg';
-import { IoLogoFacebook, IoLogoTwitter, IoLogoYoutube, IoMdMail } from 'react-icons/io';
-
 
 function Footers() {
   return (
@@ -40,29 +38,15 @@ function Footers() {
           </Row>
         </Col>
         <Col sm={8} md={8} xl={8}>
-            <Row justify="start" className='footer-contact'>
-              <h1>Liên Hệ</h1>
-            </Row>
-            <Row justify="start" className='footer-contacts'>
-              <ul>
-                <li>Điện thoại: 0246.329.1102</li>
-                <li>Email : Contact@gmail.com</li>
-                <li>Địa chỉ: Số 26 Dương Đình Nghệ, Phường Yên Hòa, Quận Cầu Giấy, TP. Hà Nội</li>
-              </ul>
-            </Row>
-          <Row justify="space-between" className='footer-socials'>
-            <Link to='/'>
-              <i><IoLogoFacebook size={50} color='#009DA6' /></i>
-            </Link>
-            <Link to='/'>
-              <i><IoLogoYoutube size={50} color='#009DA6' /></i>
-            </Link>
-            <Link to='/'>
-              <i><IoMdMail size={50} color='#009DA6' /></i>
-            </Link>
-            <Link to='/'>
-              <i><IoLogoTwitter size={50} color='#009DA6' /></i>
-            </Link>
+          <Row justify="start" className='footer-contact'>
+            <h1>Liên Hệ</h1>
+          </Row>
+          <Row justify="start" className='footer-contacts'>
+            <ul>
+              <li>Điện thoại: 0246.329.1102</li>
+              <li>Email : Contact@gmail.com</li>
+              <li>Địa chỉ: Số 26 Dương Đình Nghệ, Phường Yên Hòa, Quận Cầu Giấy, TP. Hà Nội</li>
+            </ul>
           </Row>
         </Col>
       </Row>

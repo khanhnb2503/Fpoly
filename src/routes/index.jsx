@@ -2,6 +2,7 @@ import { FaBlogger } from 'react-icons/fa';
 import { IoMdBulb, IoMdHome } from 'react-icons/io';
 import { NotFound } from '../components/layouts/NotFound';
 import { PaymentSuccess } from "../components/layouts/PaymentSuccess/index.jsx";
+import Contact from '../components/shared/Contact';
 import DetailPostForum from "../components/shared/DetailPostForum/index.jsx";
 import Lessons from '../components/shared/Lessons';
 import ListPosts from "../components/shared/ListPost/ListPost.jsx";
@@ -21,7 +22,6 @@ export const RoutesConstant = {
 
 export const DefaultLayout = [
   { path: '/', component: Home },
-  {path:'/contact',component:Contact},
   { path: '/courses', component: CoursePage },
   { path: '/courses/:id', component: DetailCourse },
   { path: '/lessons/:id', component: Lessons, layout: null },
@@ -33,6 +33,7 @@ export const DefaultLayout = [
   { path: '/payment/:id', component: Payment },
   { path: '/paymentSuccess', component: PaymentSuccess },
   { path: '/forum/listPosts/:id', component: ListPosts },
+  { path: '/contact', component: Contact },
   { path: "*", component: NotFound, layout: null },
 ]
 
