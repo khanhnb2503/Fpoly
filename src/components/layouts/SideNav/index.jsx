@@ -12,7 +12,7 @@ function SideNav() {
           <li key={index}>
             <Link
               to={route.path}
-              className={active === index ? 'active' : ''}
+              className={active === route.id ? 'active' : ''}
               onClick={() => setActive(route.id)}
             >
               {route.icon}
