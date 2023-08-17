@@ -21,24 +21,27 @@ function Contact() {
                                     <h2>Liên hệ </h2>
                                     <h6> Chúng tôi luôn sẵn sàng tiếp nhận mọi ý kiến ​đóng góp và giải đáp những yêu cầu của bạn.Hãy liên hệ ngay với chúng tôi</h6>
                                 </div>
-                                <div className="item_map">
-                                    <AiFillEnvironment size={22} />
-                                    <span>Phương Canh, Nam Từ Liêm, Hà Nội</span>
+                                <div>
+                                    <div className="item_map">
+                                        <AiFillEnvironment size={20} />
+                                        <span>Phương Canh, Nam Từ Liêm, Hà Nội</span>
+                                    </div>
+                                    <div className="item_email">
+                                        <AiFillMail size={20} />
+                                        <span>Contact@gmail.com</span>
+                                    </div>
+                                    <div className="item_phone">
+                                        <AiFillPhone size={20} />
+                                        <span>0988888999</span>
+                                    </div>
+                                    <div className="item_keep">
+                                        <span>Keep in Touch</span>
+                                        <AiFillFacebook size={20} />
+                                        <AiFillYoutube size={22} />
+
+                                    </div>
                                 </div>
-                                <div className="item_email">
-                                    <AiFillMail size={22} />
-                                    <span>Contact@gmail.com</span>
-                                </div>
-                                <div className="item_phone">
-                                    <AiFillPhone size={22} />
-                                    <span>0988888999</span>
-                                </div>
-                                <div className="item_keep">
-                                    <span>Keep in Touch</span>
-                                    <AiFillFacebook size={22} />
-                                    <AiFillYoutube size={22}/>
-                                    
-                                </div>
+                                
                             </Col>
                             <Col xl={12} className="right-item">
                                 <div className="item--name">
