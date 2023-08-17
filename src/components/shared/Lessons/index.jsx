@@ -1,20 +1,19 @@
-import { Button, Col, Collapse, List, Progress, Row } from 'antd';
+import { Button, Col, Collapse, Form, List, Progress, Row } from 'antd';
 import Carousel from 'nuka-carousel';
 import { useEffect, useState } from 'react';
 import {
   AiFillCheckSquare,
   AiOutlineLeft, AiOutlineLock,
-  AiOutlineRight,
   AiOutlineVideoCamera
 } from 'react-icons/ai';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { onOpen } from '../../../redux/features/comment/commentSlice.jsx';
 import { videoInfo } from '../../../redux/features/video/videoSlice';
 import { getHistoryCourse, queryVideo } from '../../../services/base/baseQuery.jsx';
 import {
   useGetLessonsQuery,
+  useGetQuizQuery,
   useSaveHistoryCourseMutation
 } from '../../../services/courses/index.jsx';
 import { useProfileQuery } from '../../../services/users/index.jsx';
@@ -28,6 +27,7 @@ function Lessons() {
   const { data: lessons, isSuccess } = useGetLessonsQuery(id);
   const [saveHistoryCourse] = useSaveHistoryCourseMutation();
   const { data: users, isFetching } = useProfileQuery();
+  const { data: quizs } = useGetQuizQuery(1);
 
   const [completeCourse, setCompleteCourse] = useState([]);
   const [progress, setProgress] = useState(false);
@@ -106,6 +106,7 @@ function Lessons() {
             setChecked((state) => state.includes(Number(id)) ? [...state, index] : [...state])
           }
           // return await saveHistoryCourse({ course_id: course_id, lesson_id: id, status: status });
+          return;
         };
 
         setCompleteCourse((state) => !state.includes(Number(id)) ? [...state, Number(id)] : [...state]);
@@ -116,11 +117,15 @@ function Lessons() {
     })()
   }, [progress, iframe]);
 
+  const handleQuiz = async () => {
+
+  }
+
   return (
     <>
       {isSuccess && loading && (
         <>
-          <DrawerComment />
+          <DrawerComment courseId={course_id} />
           <div className="wrapper__lessons">
             <div className="header">
               <Row justify='space-between' align='middle'>
@@ -142,14 +147,29 @@ function Lessons() {
             <div>
               <Row>
                 <Col xl={18}>
-                  {/* <div className='quiz-content'>
+                  <div className='quiz-content'>
                     <div className='box-large'>
-                      <Form>
-
+                      <Form onFinish={handleQuiz}>
+                        {/* {quizs?.data.questions.map((item) => (
+                          <Card
+                            title={item.name}
+                            key={item.id}
+                            type='inner'
+                          >
+                            {item.answers.map((quiz) => (
+                              <Radio.Group key={quiz.id}>
+                                <Radio value={quiz.id}>{quiz.name}</Radio>
+                              </Radio.Group>
+                            ))}
+                          </Card>
+                        ))} */}
+                        <Button htmlType='submit' type='primary'>
+                          Gửi
+                        </Button>
                       </Form>
                     </div>
-                  </div> */}
-                  <div className='side-left-video'>
+                  </div>
+                  {/* <div className='side-left-video'>
                     <div className='video-scroll'>
                       <Row justify='center'>
                         <div
@@ -159,23 +179,21 @@ function Lessons() {
                       </Row>
                     </div>
                     <div className='video-info-bio'>
-                      <div>
-                        <Row justify='space-between' align='middle'>
-                          <Col xl={21}>
-                            <h3>{lessons?.data?.name}</h3>
-                          </Col>
-                          <Col xl={3.2}>
-                            <Button
-                              shape="round"
-                              className='btn-action-comment'
-                              onClick={() => dispatch(onOpen(true))}
-                            >
-                              <AiOutlineComment size={20} />
-                              <span>Thêm bình luận</span>
-                            </Button>
-                          </Col>
-                        </Row>
-                      </div>
+                      <Row justify='space-between' align='middle'>
+                        <Col xl={20}>
+                          <h3>{lessons?.data?.name}</h3>
+                        </Col>
+                        <Col xl={3}>
+                          <Button
+                            shape="round"
+                            className='btn-action-comment'
+                            onClick={() => dispatch(onOpen(true))}
+                          >
+                            <AiOutlineComment size={20} />
+                            <span>Thêm bình luận</span>
+                          </Button>
+                        </Col>
+                      </Row>
                       <div className='action-next'>
                         <Row justify='space-between' align='middle'>
                           <Col>
@@ -191,7 +209,7 @@ function Lessons() {
                         </Row>
                       </div>
                     </div>
-                  </div>
+                  </div> */}
                 </Col>
                 <Col xl={6} className='side-right-box'>
                   <div className='carousel-theory'>

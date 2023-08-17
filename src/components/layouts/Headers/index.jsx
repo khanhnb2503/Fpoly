@@ -1,5 +1,5 @@
 import { AutoComplete, Avatar, Badge, Col, Popover, Row } from 'antd';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { IoMdNotifications } from 'react-icons/io';
 import { Link } from 'react-router-dom';
 import Loading from '../../shared/Spin';
@@ -14,9 +14,60 @@ import UserMenu from '../../shared/UserMenu';
 function Headers() {
   const [options, setOptions] = useState([]);
   const [keyword, setKeyword] = useState('');
+  const [filterHistory, setFilterHistory] = useState();
 
-  const { data: user, isSuccess } = useProfileQuery();
+  const { data: users, isSuccess, isFetching } = useProfileQuery();
   const { data: dataSearch, isLoading } = useSearchQuery(keyword);
+
+  useEffect(() => {
+    if (dataSearch?.data?.courses) {
+      const { courses } = dataSearch?.data;
+      if (!isFetching) {
+        if ((!users?.id)) return setFilterHistory(courses);
+      };
+
+      if (users) {
+        const { histories } = users;
+        if (histories.length <= 0) {
+          return setFilterHistory(courses)
+        };
+
+        let filterCourse = histories.reduce((accumulator, currentValue) => {
+          let existCourseId = accumulator.find((item) => item.course_id == currentValue.course_id);
+          if (existCourseId) {
+            existCourseId.lessonId.push(currentValue.lesson_id);
+          }
+          else {
+            accumulator.push({
+              course_id: currentValue.course_id,
+              lessonId: [currentValue.lesson_id]
+            });
+          }
+          return accumulator;
+        }, []);
+
+        let historyNew = filterCourse.map((item) => {
+          return {
+            courseId: item.course_id,
+            lessonId: Math.max.apply(null, item.lessonId)
+          }
+        });
+
+        const mapHistory = new Map(historyNew.map((item) => [item.courseId, item]));
+        let newCourse = courses.map((items) => {
+          let arrCourse = [];
+          let existLesson = items;
+          const checkExistCourseId = mapHistory.get(items.id);
+          if (checkExistCourseId) {
+            existLesson = { ...items, completed: checkExistCourseId.lessonId }
+          };
+          arrCourse.push(existLesson)
+          return arrCourse
+        });
+        setFilterHistory(newCourse)
+      }
+    }
+  }, [dataSearch, users]);
 
   const url = window.location.href === 'http://localhost:4000/forum'
   return (
