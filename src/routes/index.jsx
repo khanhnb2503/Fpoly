@@ -17,6 +17,7 @@ import Register from '../views/auth-views/components/Register';
 import ListNotifications from "../components/shared/ListNotification/ListNotification.jsx";
 import ListFeedback from "../components/shared/ListFeedbacks/ListFeedbacks.jsx";
 import DetailFeedback from "../components/shared/DetailFeedback/DetailFeedback.jsx";
+import ListVoucher from "../components/shared/ListVoucher/ListVoucher.jsx";
 // List routes
 export const RoutesConstant = {
   LOGIN: '/login',
@@ -29,6 +30,7 @@ export const DefaultLayout = [
   { path: '/courses/:id', component: DetailCourse },
   { path: '/lessons/:id', component: Lessons, layout: null },
   { path: '/profile', component: Profile, layout: null },
+  { path: '/listVoucher', component: ListVoucher, layout: null },
   { path: "/login", component: Login, layout: null },
   { path: "/register", component: Register, layout: null },
   { path: '/forum', component: ForumPage },

@@ -152,22 +152,25 @@ export const forumApi = createApi({
         },
         body: data,
       }),
+      invalidatesTags: ['Feedbacks']
     }),
     updateFeedback: builder.mutation({
-      query: (id,data) => ({
-        url: `feedbacks/edit/${id}`,
-        method: 'PUT',
+      query: (data) => ({
+        url: `feedbacks/edit/${data.id}`,
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: data,
       }),
+      invalidatesTags: ['Feedbacks']
     }),
     removeFeedback: builder.mutation({
       query: (id) => ({
         url: `feedbacks/delete/${id}`,
         method: 'DELETE',
       }),
+      invalidatesTags: ['Feedbacks']
     }),
 
     getNotifications: builder.query({
