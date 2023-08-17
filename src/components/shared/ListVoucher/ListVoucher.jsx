@@ -1,17 +1,56 @@
-import {Avatar, Badge, Card, Col, Image, List, Popover, Row, Typography} from "antd";
-import { IoMdNotifications } from 'react-icons/io';
-import { Link } from "react-router-dom";
-
-import course from '../../../../public/images/course_3.png';
+import {Avatar, Badge, Button, Card, Col, Image, List, message, Popconfirm, Popover, Row, Typography} from "antd";
+import {Link} from "react-router-dom";
 import Logo from '../../../../public/images/logo_ong_vang.jpg';
 import profile from '../../../../public/images/profile.png';
 import UserMenu from '../UserMenu/index.jsx';
 import {useProfileQuery} from "../../../services/users/index.jsx"
-import {useGetCategoryQuery} from "../../../services/courses/index.jsx";
+import {useConvertVoucherMutation, useListVoucherQuery} from "../../../services/payment/index.jsx";
+import {useEffect, useState} from "react";
+import { SyncOutlined} from "@ant-design/icons";
+import {getVoucher} from "../../../services/base/baseQuery.jsx";
+import moment from "moment";
 function ListVoucher() {
+  const {data: user, isLoading} = useProfileQuery()
   const { Text, Title, Paragraph, } = Typography
+  const [listVoucher, setListVoucher] = useState([]);
 
-  const {data: user} = useProfileQuery()
+  console.log(listVoucher)
+  useEffect( () => {
+    (async () => {
+      if (user?.id) {
+        const {data} = await getVoucher(user.id)
+        setListVoucher(data)
+      }
+    })()
+  },[isLoading])
+  const [convertVoucher] = useConvertVoucherMutation()
+  const confirmConvert = async (idVoucher) => {
+    const {data} = await convertVoucher({user_id: user.id,exchange_rate: idVoucher})
+    const messageResponse = data?.message
+    if (!data.status) {
+      message.error(messageResponse);
+    } else {
+      message.success(messageResponse);
+    }
+  };
+
+  const dataVoucher = [
+    {
+      id: 1,
+      percent: 10,
+      point: 50
+    },
+    {
+      id: 2,
+      percent: 20,
+      point: 100
+    },
+    {
+      id: 3,
+      percent: 30,
+      point: 150
+    }
+  ]
 
   return (
     <div className="wrapper__profile">
@@ -29,15 +68,7 @@ function ListVoucher() {
             <Row justify="end" align="middle" className='navbar-action'>
               <>
                 <Col flex='60px' className='notification'>
-                  <Popover
-                    placement="bottomRight"
-                    title={<h4 className='title-notification'>Thông báo</h4>}
-                    trigger="click"
-                  >
-                    <Badge count={2} size="small">
-                      <IoMdNotifications size='2em' className='icon-light' />
-                    </Badge>
-                  </Popover>
+
                 </Col>
                 <Col flex='35px' className='avatar'>
                   <Popover
@@ -45,7 +76,7 @@ function ListVoucher() {
                     content={<UserMenu />}
                     trigger="click"
                   >
-                    <Avatar src={user.avatar || Logo} size={35} alt='avatar' />
+                    <Avatar src={user?.avatar || Logo} size={35} alt='avatar' />
                   </Popover>
                 </Col>
               </>
@@ -57,7 +88,7 @@ function ListVoucher() {
         <div className="background-profile" style={backgroundProfile}>
           <Row justify='space-between' align='bottom' className="info-my">
             <Col xl={9} className="avatar-user">
-              <Avatar src={user.avatar || Logo} size={156} alt='avatar' />
+              <Avatar src={user?.avatar || Logo} size={156} alt='avatar' />
             </Col>
             <Col xl={14} className="info--text">
               <h5>{user?.name}</h5>
@@ -65,21 +96,58 @@ function ListVoucher() {
           </Row>
         </div>
         <div className="course--my">
-          <Card type="inner" title="Voucher của tôi">
+          <Card type="inner" title="Voucher của tôi" >
             <List
               grid={{
                 gutter: 16,
-                column: 4,
+                column: 3,
               }}
-              dataSource={data}
+              dataSource={listVoucher}
               renderItem={(item) => (
                 <List.Item>
-                  <Card title={item.title}>Card content</Card>
+                  <Card title={item.unit === "Percent" ? `${item.value} %` : `${item.value} VND`} extra={moment(item.expired).format('LL')}>
+                    {item.code || "Bạn chưa có mã khuyến mãi loại này"}
+                  </Card>
                 </List.Item>
               )}
             />
           </Card>
         </div>
+        <div>
+          <Card type="inner" title="Đổi voucher" extra={`Số điểm hiện tại: ${user?.point}`}>
+            <List
+              grid={{
+                gutter: 16,
+                column: 3,
+              }}
+              dataSource={dataVoucher}
+              renderItem={(item) => (
+                <List.Item>
+                  <Card title={item.percent + "%"} extra={
+                    <Popconfirm
+                      title="Đổi voucher"
+                      description={`Bạn có chắc chắn muốn đổi ${item.point} điểm lấy voucher này?`}
+                      onConfirm={() => confirmConvert(item.id)}
+                      okText="Đổi"
+                      cancelText="Hủy"
+                    >
+                      <Button
+                        size="small"
+                        type="primary"
+                        icon={<SyncOutlined />}
+                      >
+                        Đổi Voucher
+                      </Button>
+                    </Popconfirm>
+                  }>
+                  </Card>
+                </List.Item>
+              )}
+            />
+
+          </Card>
+        </div>
+
       </div>
     </div>
 

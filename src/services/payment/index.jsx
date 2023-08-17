@@ -25,7 +25,20 @@ export const paymentApi = createApi({
         body: data
       }),
     }),
+    listVoucher: builder.query({
+      query: (id) => {`voucher/list-system/${id}`},
+    }),
+    convertVoucher: builder.mutation({
+      query: (data) => ({
+        url: "voucher/redeem-voucher",
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: data
+      }),
+    }),
   })
 });
 
-export const { usePaymentCourseMutation, useVoucherCourseMutation, useGetStatusPaymentQuery } = paymentApi;
+export const { usePaymentCourseMutation, useVoucherCourseMutation, useGetStatusPaymentQuery, useListVoucherQuery ,useConvertVoucherMutation } = paymentApi;
