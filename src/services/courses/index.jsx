@@ -55,7 +55,7 @@ export const courseApi = createApi({
 
     commentsCourse: builder.mutation(({
       query: (data) => ({
-        url: 'comments/addComments',
+        url: 'comments/addcomment',
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -68,6 +68,22 @@ export const courseApi = createApi({
       query: () => `comments/list`,
       providesTags: ['Courses']
     }),
+
+    getQuiz: builder.query({
+      query: (id) => `course/quiz/${id}`,
+      providesTags: ['Courses']
+    }),
+
+    sendQuiz: builder.mutation(({
+      query: (data) => ({
+        url: 'comments/addcomment',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: data,
+      })
+    })),
   })
 });
 
@@ -80,5 +96,6 @@ export const {
   useSaveHistoryCourseMutation,
   useGetHistoryCourseQuery,
   useCommentsCourseMutation,
-  useGetListCommentQuery
+  useGetListCommentQuery,
+  useGetQuizQuery
 } = courseApi;

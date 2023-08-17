@@ -1,6 +1,8 @@
-import { Avatar, Col, Drawer, Row, Input, Button, Space, Form } from 'antd';
-import { useDispatch, useSelector } from 'react-redux';
+import { Avatar, Button, Col, Drawer, Form, Input, Row } from 'antd';
 import { MdSend } from 'react-icons/md';
+import { useDispatch, useSelector } from 'react-redux';
+import { useCommentsCourseMutation } from '../../../services/courses';
+import { useProfileQuery } from '../../../services/users/index.jsx';
 
 import avatar1 from '../../../../public/images/images.jfif';
 import { onClose } from '../../../redux/features/comment/commentSlice';
@@ -8,9 +10,17 @@ import { onClose } from '../../../redux/features/comment/commentSlice';
 function DrawerComment({ courseId }) {
   const dispatch = useDispatch();
   const { isCompleted } = useSelector((state) => state.commentState);
+  const { data: users, isFetching } = useProfileQuery();
+  const [commentsCourse] = useCommentsCourseMutation();
 
   const sendComment = async (data) => {
-    console.log(data)
+    const res = await commentsCourse({
+      course_id: courseId,
+      user_id: users?.id,
+      content: data.content,
+      comment_id: 1
+    })
+    console.log(res)
   };
 
   return (
@@ -43,7 +53,7 @@ function DrawerComment({ courseId }) {
                       className='btn-send-comment'
                       htmlType='submit'
                     >
-                      <MdSend size={35} style={{paddingBottom: 4}} />
+                      <MdSend size={35} style={{ paddingBottom: 4 }} />
                     </Button>
                   </Form.Item>
                 </Col>
