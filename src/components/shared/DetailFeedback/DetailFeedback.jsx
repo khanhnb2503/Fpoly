@@ -1,35 +1,145 @@
-import {Link, useParams} from "react-router-dom";
-import {useGetFeedbackQuery, useSearchPostQuery} from "../../../services/forum/index.jsx";
+import {Link, useNavigate, useParams} from "react-router-dom";
+import {
+  useGetFeedbackQuery,
+  useGetPostsLatestQuery, useRemoveFeedbackMutation,
+  useSearchPostQuery,
+  useUpdateFeedbackMutation
+} from "../../../services/forum/index.jsx";
 import {
   AutoComplete, Avatar,
   Breadcrumb,
   Button,
   Card,
   Col,
-  Divider,
-  Modal,
-  Pagination,
+  Divider, message,
+  Modal, notification,
+  Pagination, Popconfirm,
   Popover,
   Rate,
   Row,
   Skeleton, Space,
-  Tag
+  Tag, Typography
 } from "antd";
 import Loading from "../Spin/index.jsx";
-import {FieldTimeOutlined, MoreOutlined, UserOutlined} from "@ant-design/icons";
+import {FieldTimeOutlined, FileOutlined, HomeOutlined, MoreOutlined, UserOutlined} from "@ant-design/icons";
 import moment from "moment/moment.js";
 import {handleDisplayCkeditor} from "../../../common/handleDisplayCkeditor.jsx";
-import {FaRocketchat, FaUserCheck} from "react-icons/fa";
+import {FaEdit, FaRocketchat, FaUserCheck} from "react-icons/fa";
 import {CKEditor} from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import {useState} from "react";
+import {useProfileQuery} from "../../../services/users/index.jsx";
+import {useGetCategoryQuery} from "../../../services/courses/index.jsx";
+import Logo from "../../../../public/images/logo_ong_vang.jpg";
 
 const DetailFeedback = () => {
   const [keyword, setKeyword] = useState('');
+  const {Title, Text, Paragraph} = Typography;
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [dataCKEditor, setDataCKEditor] = useState('');
+  const [api, contextHolder] = notification.useNotification();
+  const [openOptions, setOpenOptions] = useState(false)
 
   const {id} = useParams()
   const {data: feedback} = useGetFeedbackQuery(id)
   const {data: dataSearch} = useSearchPostQuery(keyword);
+  const {data: postLatest} = useGetPostsLatestQuery()
+  const {data: user} = useProfileQuery()
+  const {data: categories} = useGetCategoryQuery()
+  const [updateFeedback] = useUpdateFeedbackMutation(id)
+  const [removeFeedback] = useRemoveFeedbackMutation(id)
+
+  const routes = [{
+    path: '/', breadcrumbName: (<Link to={"/forum"}>
+      <div style={{display: "flex", alignItems: "center"}}>
+        <HomeOutlined/>
+        <span style={{marginLeft: 10}}>Forums</span>
+      </div>
+    </Link>)
+  },
+    {
+      path: '/forum/listFeedback', breadcrumbName: (<div style={{display: "flex", alignItems: "center", marginTop: 3}}>
+        <FileOutlined/>
+        <span style={{marginLeft: 5}}>ListPost</span>
+      </div>),
+    }, {
+      path: '',
+      breadcrumbName: (<div style={{display: "flex", alignItems: "center", marginTop: 3}}>
+        <FileOutlined/>
+        <span style={{marginLeft: 5}}>PostDetail</span>
+      </div>),
+    },];
+
+  function itemRender(route, params, routes, paths) {
+    const last = routes.indexOf(route) === routes.length - 1;
+    return last ? (<span>{route.breadcrumbName}</span>) : (<Link to={paths.join('/')}>{route.breadcrumbName}</Link>);
+  }
+
+
+  const showModal = () => {
+    if (feedback.data) {
+      setDataCKEditor(feedback.data.content)
+    }
+    setIsModalOpen(true)
+    setOpenOptions(false)
+  };
+  const handleOpenChange = (newOpen) => {
+    setOpenOptions(newOpen);
+  };
+
+  const handleUpdateFeedback = async () => {
+    const {data} = await updateFeedback({content: dataCKEditor, user_id: user, id: id})
+    if (data.status) {
+      openNotificationWithIcon('success', `Chỉnh sửa thành công!!`, 'Chỉnh sửa bài viết')
+      setIsModalOpen(false)
+      setDataCKEditor('')
+    }
+  }
+  const openNotificationWithIcon = (type, description, message) => {
+    api[type]({
+      message: message, description: description,
+    });
+  };
+  const contentPopover = () => {
+    const navigate = useNavigate()
+    const confirmRemovePost = async () => {
+      const {data} = await removeFeedback(id)
+      if (data.status) {
+        navigate("/forum")
+      }
+      message.success('Xóa thành công');
+    };
+
+    return (
+      <div style={{display: "flex", justifyContent: "space-between"}}>
+        <Button
+          style={{marginLeft: 5}}
+          type="primary"
+          icon={<FaRocketchat/>}
+          onClick={() => showModal()}
+        >
+          Sửa
+        </Button>
+        <Popconfirm
+          title="Xóa bài viết"
+          description="Bạn có chắc chắn muốn xóa bài viết này?"
+          onConfirm={confirmRemovePost}
+          okText="Xóa"
+          cancelText="Hủy"
+        >
+          <Button
+            size="middle"
+            type="primary"
+            danger
+            icon={<FaEdit/>}
+          >
+            Delete
+          </Button>
+        </Popconfirm>
+      </div>
+    )
+  }
+
   return (
     <div style={{marginTop: 10}}>
       <div className="header_forum">
@@ -37,7 +147,7 @@ const DetailFeedback = () => {
           <AutoComplete
             options={[{
               label: (
-                <Loading loading={isLoading} size='small'>
+                <Loading size='small'>
                   <div>
                     {dataSearch?.search_results.length < 0
                       ? <span>Nhập để tìm kiếm!</span>
@@ -79,12 +189,12 @@ const DetailFeedback = () => {
         </div>
         <div style={{display: "flex", alignItems: "center"}}>
           <FieldTimeOutlined style={{fontSize: 20}}/>
-          <span style={{marginLeft: 10}}>{moment(postData?.created_at).format('LLL')}</span>
+          <span style={{marginLeft: 10}}>{moment(feedback?.data?.created_at).format('LLL')}</span>
         </div>
       </div>
       <div className="wrapper__blog--page">
         {contextHolder}
-        {feedback.data && (
+        {feedback?.data && (
           <Row gutter={20}>
             <Col span={16}>
               <div className="card_title">
@@ -92,7 +202,7 @@ const DetailFeedback = () => {
                   Góp ý
                 </Tag>
                 <div style={{display: "flex", justifyContent: "space-between"}}>
-                  {/*<Title level={3}>{feedback?.data?.title}</Title>*/}
+                  <Title level={3}>{feedback?.data?.title || "Tiêu đề bài viết"}</Title>
                   <Popover
                     placement="left"
                     title="Tùy chọn"
@@ -120,19 +230,9 @@ const DetailFeedback = () => {
                         dangerouslySetInnerHTML={{__html: handleDisplayCkeditor(feedback?.data?.content)}}
                       ></span>
                       <div style={{display: "flex", justifyContent: "space-between"}}>
-                        <Title level={3}>
-                          Đánh giá bài viết
-                        </Title>
                         <div style={{marginTop: 10}}>
-                          <Button
-                            size="large"
-                            type="primary"
-                            icon={<FaRocketchat/>}
-                            onClick={() => showModal("Bình luận")}
-                          >
-                            Comment
-                          </Button>
-                          <Modal style={{zIndex: 10}} width={"50%"} title={titleModal} onOk={() => handleCommentPost()}
+                          <Modal style={{zIndex: 10}} width={"50%"} title={"Sửa góp ý"}
+                                 onOk={() => handleUpdateFeedback()}
                                  onCancel={() => setIsModalOpen(false)} open={isModalOpen}>
                             <CKEditor
                               editor={ClassicEditor}
@@ -145,10 +245,6 @@ const DetailFeedback = () => {
                           </Modal>
                         </div>
                       </div>
-                      <div>
-                        <Rate disabled={disable} onChange={(item) => handleCountStar(item)} allowHalf
-                              defaultValue={2.5}/>
-                      </div>
                     </Col>
                   </Row>
                   <Divider>Lượt xem</Divider>
@@ -158,26 +254,13 @@ const DetailFeedback = () => {
                       <span style={{marginLeft: 10}}>Có dangthais, khanhnb và 20 người khác đã xem</span>
                     </div>
                     <div style={{alignItems: "center"}}>
-                      <Text>Trung bình đánh giá</Text>np
+                      <Text>Trung bình đánh giá</Text>
                       <div>
                         <Rate disabled allowHalf defaultValue={4.5}/>
                       </div>
                     </div>
                   </div>
                 </Card>
-              </div>
-              <div>
-                {post?.comments.length > 0 && post?.comments.map((item, index) => {
-                  return (
-                    <div key={index}>
-                      <CommentBox comment={item}/>
-                    </div>)
-                })}
-              </div>
-              <div style={{marginLeft: "40%", marginBottom: 20}}>
-                {post?.comments.length > 5 && (
-                  <Pagination current={pageNumber} onChange={onChangePage} total={post?.comments.length}/>
-                )}
               </div>
             </Col>
             <Col span={8}>
@@ -222,20 +305,20 @@ const DetailFeedback = () => {
                       </div>
                     )
                   })}
-                  <div style={{marginTop: 20}}>
-                    <Title level={3}>Tags</Title>
-                    <Space size={[0, 8]} wrap>
-                      {options && options.map((item, index) => {
-                        return (
-                          <div key={index}>
-                            <Tag style={{padding: 10}} color={item.color}>
-                              {item.label}
-                            </Tag>
-                          </div>
-                        )
-                      })}
-                    </Space>
-                  </div>
+                  {/*<div style={{marginTop: 20}}>*/}
+                  {/*  <Title level={3}>Tags</Title>*/}
+                  {/*  <Space size={[0, 8]} wrap>*/}
+                  {/*    {options && options.map((item, index) => {*/}
+                  {/*      return (*/}
+                  {/*        <div key={index}>*/}
+                  {/*          <Tag style={{padding: 10}} color={item.color}>*/}
+                  {/*            {item.label}*/}
+                  {/*          </Tag>*/}
+                  {/*        </div>*/}
+                  {/*      )*/}
+                  {/*    })}*/}
+                  {/*  </Space>*/}
+                  {/*</div>*/}
                 </Space>
               </div>
             </Col>

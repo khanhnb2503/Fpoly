@@ -71,7 +71,6 @@ const ListPosts = () => {
       color: "#87d068"
     },
   ]
-
   function itemRender(route, params, routes, paths) {
     const last = routes.indexOf(route) === routes.length - 1;
     return last ? (<span>{route.breadcrumbName}</span>) : (<Link to={paths.join('/')}>{route.breadcrumbName}</Link>);
@@ -190,6 +189,7 @@ const ListPosts = () => {
               <Col span={24}>
                 <Card type="inner" title="Bài viết mới nhất">
                   {postLatest && postLatest.map((data, index) => {
+                    const color = data?.type.type === "Thắc mắc" ? "#2db7f5" : data?.type.type === "Câu hỏi" ? "#f50" : data?.type.type === "Thảo luận" ? "#108ee9" : "#87d068"
                     return (
                       <div key={index} style={{marginTop: 20, marginBottom: 20}}>
                         <Card>
@@ -204,8 +204,8 @@ const ListPosts = () => {
                               <div>
                                 <span className="dateTime">{moment(data.created_at).format('LLL')}</span>
                                 <div>
-                                  <Tag color="#55acee">
-                                    {/*{data?.type.type}*/}
+                                  <Tag color={color}>
+                                    {data?.type.type}
                                   </Tag>
 
                                 </div>
@@ -221,6 +221,8 @@ const ListPosts = () => {
               <Col span={24}>
                 <Card type="inner" title="Bài viết nổi bật">
                   {postLatest && postLatest.map((data, index) => {
+                    const color = data?.type.type === "Thắc mắc" ? "#2db7f5" : data?.type.type === "Câu hỏi" ? "#f50" : data?.type.type === "Thảo luận" ? "#108ee9" : "#87d068"
+
                     return (
                       <div key={index} style={{marginTop: 20, marginBottom: 20}}>
                         <Card>
@@ -236,8 +238,8 @@ const ListPosts = () => {
                                 <span className="dateTime">{moment(data.created_at).format('LLL')}</span>
                                 <span>{data.user.user}</span>
                                 <div>
-                                  <Tag color="#55acee">
-                                    {/*{data?.type.type}*/}
+                                  <Tag color={color}>
+                                    {data?.type.type}
                                   </Tag>
                                 </div>
                               </div>

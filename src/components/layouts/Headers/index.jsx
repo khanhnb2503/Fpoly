@@ -1,44 +1,53 @@
-import { AutoComplete, Avatar, Badge, Col, Popover, Row } from 'antd';
-import { useEffect, useState } from 'react';
-import { IoMdNotifications } from 'react-icons/io';
-import { Link } from 'react-router-dom';
+import {AutoComplete, Avatar, Badge, Col, Popover, Row, List, Skeleton, Button} from 'antd';
+import {useEffect, useState} from 'react';
+import {IoMdNotifications} from 'react-icons/io';
+import {Link} from 'react-router-dom';
 import Loading from '../../shared/Spin';
 
+
 import Logo from '../../../../public/images/logo_ong_vang.jpg';
-import { imageUrl } from '../../../common/imageUrl';
-import { RoutesConstant } from '../../../routes';
-import { useSearchQuery } from '../../../services/search';
-import { useProfileQuery } from '../../../services/users';
+import {imageUrl} from '../../../common/imageUrl';
+import {RoutesConstant} from '../../../routes';
+import {useSearchQuery} from '../../../services/search';
+import {useProfileQuery} from '../../../services/users';
 import UserMenu from '../../shared/UserMenu';
+import {useGetNotificationsQuery} from "../../../services/forum/index.jsx";
 
 function Headers() {
   const [options, setOptions] = useState([]);
   const [keyword, setKeyword] = useState('');
   const [filterHistory, setFilterHistory] = useState();
+  const [initLoading, setInitLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [dataNotifications, setDataNotifications] = useState([]);
+  const [list, setList] = useState([]);
 
-  const { data: users, isSuccess, isFetching } = useProfileQuery();
-  const { data: dataSearch, isLoading } = useSearchQuery(keyword);
+
+  const {data: users, isSuccess, isFetching} = useProfileQuery();
+  const {data: dataSearch, isLoading} = useSearchQuery(keyword);
+  const {data: notifications} = useGetNotificationsQuery()
 
   const url = window.location.href === 'http://localhost:4000/forum' || 'http://localhost:4000/forum/detailPost' || 'http://localhost:4000/forum/detailPostforum/listPosts'
   useEffect(() => {
     if (dataSearch?.data?.courses) {
-      const { courses } = dataSearch?.data;
+      const {courses} = dataSearch?.data;
       if (!isFetching) {
         if ((!users?.id)) return setFilterHistory(courses);
-      };
+      }
+      ;
 
       if (users) {
-        const { histories } = users;
+        const {histories} = users;
         if (histories.length <= 0) {
           return setFilterHistory(courses)
-        };
+        }
+        ;
 
         let filterCourse = histories.reduce((accumulator, currentValue) => {
           let existCourseId = accumulator.find((item) => item.course_id == currentValue.course_id);
           if (existCourseId) {
             existCourseId.lessonId.push(currentValue.lesson_id);
-          }
-          else {
+          } else {
             accumulator.push({
               course_id: currentValue.course_id,
               lessonId: [currentValue.lesson_id]
@@ -60,8 +69,9 @@ function Headers() {
           let existLesson = items;
           const checkExistCourseId = mapHistory.get(items.id);
           if (checkExistCourseId) {
-            existLesson = { ...items, completed: checkExistCourseId.lessonId }
-          };
+            existLesson = {...items, completed: checkExistCourseId.lessonId}
+          }
+          ;
           arrCourse.push(existLesson)
           return arrCourse
         });
@@ -69,14 +79,79 @@ function Headers() {
       }
     }
   }, [dataSearch, users]);
-  
+
+  useEffect(() => {
+    setInitLoading(false);
+    setDataNotifications(notifications);
+    setList(notifications);
+  }, [])
+
+  const count = 3
+  const handleNotifications = () => {
+    const onLoadMore = () => {
+      setLoading(true);
+      setList(
+        dataNotifications.concat(
+          [...new Array(count)].map(() => {
+            return (
+              {
+                loading: true,
+                title: {},
+                content: {},
+              }
+            )
+          }),
+        ),
+      );
+      const newData =  dataNotifications.concat(notifications);
+      setDataNotifications(newData);
+      setList(newData);
+      setLoading(false);
+      window.dispatchEvent(new Event('resize'));
+    };
+
+    const loadMore =
+      !initLoading && !loading ? (
+        <div
+          style={{
+            textAlign: 'center',
+            marginTop: 12,
+            height: 32,
+            lineHeight: '32px',
+          }}
+        >
+          <Button onClick={onLoadMore}>Xem thêm</Button>
+        </div>
+      ) : null;
+
+    return (
+      <List
+        className="demo-loadmore-list"
+        loading={initLoading}
+        itemLayout="horizontal"
+        loadMore={loadMore}
+        dataSource={list}
+        renderItem={(item) => (
+          <List.Item
+          >
+            <Skeleton avatar title={false} loading={item.loading} active>
+              <List.Item.Meta
+                title={item?.title}
+                description={item?.content}
+              />
+            </Skeleton>
+          </List.Item>
+        )}
+      />
+    )
+  }
   return (
     <div className='wrapper__header'>
       <Row align="middle" className='horizontal-header'>
         <Col sm={4} md={6} lg={8} xl={8}>
           <Row justify="start" align="middle" className='navbar-logo'>
             <Link to='/'>
-              <img src={Logo} alt='logo' />
+              <img src={Logo} alt='logo'/>
             </Link>
             <h4>BeeSquad</h4>
           </Row>
@@ -114,7 +189,7 @@ function Headers() {
                                     <div key={index}>
                                       <Row justify='start' align='middle' gutter={[5, 20]}>
                                         <Col>
-                                          <Avatar src={`${imageUrl}${course.image}`} />
+                                          <Avatar src={`${imageUrl}${course.image}`}/>
                                         </Col>
                                         <Col>
                                           <p><Link to={`courses/${course.id}`}>{course.name}</Link></p>
@@ -146,25 +221,25 @@ function Headers() {
               </Col>
             ) : (
               <>
-                <Col flex='60px' className='notification'>
+                <Col flex='80px' className='notification'>
                   <Popover
                     placement="bottomRight"
                     title={<h4 className='title-notification'>Thông báo</h4>}
-                    content={<span>Chưa có thông báo nào</span>}
+                    content={handleNotifications()}
                     trigger="click"
                   >
-                    <Badge count={2} size="small">
-                      <IoMdNotifications size='2em' className='icon-light' />
+                    <Badge count={notifications?.length} size="small">
+                      <IoMdNotifications size='2em' className='icon-light'/>
                     </Badge>
                   </Popover>
                 </Col>
                 <Col flex='35px' className='avatar'>
                   <Popover
                     placement="bottomRight"
-                    content={<UserMenu />}
+                    content={<UserMenu/>}
                     trigger="click"
                   >
-                    <Avatar src={Logo} size={35} alt='avatar' />
+                    <Avatar src={Logo} size={35} alt='avatar'/>
                   </Popover>
                 </Col>
               </>

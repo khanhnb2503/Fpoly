@@ -41,7 +41,7 @@ const ListNotifications = () => {
       </div>
     </Link>)
   }, {
-    path: '/forum/listPost/:id', breadcrumbName: (<div style={{display: "flex", alignItems: "center", marginTop: 3}}>
+    path: '/forum/listNotifications', breadcrumbName: (<div style={{display: "flex", alignItems: "center", marginTop: 3}}>
       <FileOutlined/>
       <span style={{marginLeft: 5}}>ListPost</span>
     </div>),
@@ -125,6 +125,7 @@ const ListNotifications = () => {
               <Col span={24}>
                 <Card type="inner" title="Bài viết mới nhất">
                   {postLatest && postLatest.map((data, index) => {
+                    const color = data?.type.type === "Thắc mắc" ? "#2db7f5" : data?.type.type === "Câu hỏi" ? "#f50" : data?.type.type === "Thảo luận" ? "#108ee9" : "#87d068"
                     return (
                       <div key={index} style={{marginTop: 20, marginBottom: 20}}>
                         <Card>
@@ -139,10 +140,9 @@ const ListNotifications = () => {
                               <div>
                                 <span className="dateTime">{moment(data.created_at).format('LLL')}</span>
                                 <div>
-                                  <Tag color="#55acee">
-                                    {/*{data?.type.type}*/}
+                                  <Tag color={color}>
+                                    {data?.type.type}
                                   </Tag>
-
                                 </div>
                               </div>
                             </Col>
@@ -156,6 +156,7 @@ const ListNotifications = () => {
               <Col span={24}>
                 <Card type="inner" title="Bài viết nổi bật">
                   {postLatest && postLatest.map((data, index) => {
+                    const color = data?.type.type === "Thắc mắc" ? "#2db7f5" : data?.type.type === "Câu hỏi" ? "#f50" : data?.type.type === "Thảo luận" ? "#108ee9" : "#87d068"
                     return (
                       <div key={index} style={{marginTop: 20, marginBottom: 20}}>
                         <Card>
@@ -171,8 +172,8 @@ const ListNotifications = () => {
                                 <span className="dateTime">{moment(data.created_at).format('LLL')}</span>
                                 <span>{data.user.user}</span>
                                 <div>
-                                  <Tag color="#55acee">
-                                    {/*{data?.type.type}*/}
+                                  <Tag color={color}>
+                                    {data?.type.type}
                                   </Tag>
                                 </div>
                               </div>

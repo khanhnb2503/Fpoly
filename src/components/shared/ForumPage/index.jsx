@@ -290,20 +290,16 @@ function ForumPage() {
                           Comments
                         </div>
                         <Text>
-                          {/*{notifications && notifications[0]?.comments.length}*/}
                         </Text>
                       </Col>
                       <Col span={9}>
                         <Row gutter={10}>
                           <Col span={4}>
-                            {/*<Avatar src={data?.posts[0]?.user_id?.avatar} size={35} alt='avatar'/>*/}
                           </Col>
                           <Col span={20}>
-                            {/*<Link to={`forum/listFeedbacks`} >*/}
                             <Text ellipsis={true} className="title">
                               {feedbacks?.data && feedbacks?.data[0]?.title}
                             </Text>
-                            {/*</Link>*/}
                             <div>
                               <span
                                 className="dateTime">{moment(feedbacks?.data && feedbacks?.data[0]?.created_at).format('LLL')}</span>

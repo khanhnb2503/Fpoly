@@ -66,7 +66,7 @@ const ListFeedback = () => {
       </div>
     </Link>)
   }, {
-    path: '/forum/listPost/:id', breadcrumbName: (<div style={{display: "flex", alignItems: "center", marginTop: 3}}>
+    path: '/forum/listFeedback', breadcrumbName: (<div style={{display: "flex", alignItems: "center", marginTop: 3}}>
       <FileOutlined/>
       <span style={{marginLeft: 5}}>ListPost</span>
     </div>),
@@ -199,7 +199,7 @@ const ListFeedback = () => {
                   <div key={index} style={{marginTop: 20, marginBottom: 20}}>
                     <Card>
                       <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
-                        <Text ellipsis={true} style={{fontWeight: 600, fontSize: 20}}>{data.title}</Text>
+                        <Text ellipsis={true} style={{fontWeight: 600, fontSize: 20}}>{data.title || "Bài viết 1"}</Text>
                         <div>
                           <span className="dateTime">{moment(data?.created_at).startOf('hour').fromNow()}</span>
                         </div>
@@ -227,6 +227,7 @@ const ListFeedback = () => {
               <Col span={24}>
                 <Card type="inner" title="Bài viết mới nhất">
                   {postLatest && postLatest.map((data, index) => {
+                    const color = data?.type.type === "Thắc mắc" ? "#2db7f5" : data?.type.type === "Câu hỏi" ? "#f50" : data?.type.type === "Thảo luận" ? "#108ee9" : "#87d068"
                     return (
                       <div key={index} style={{marginTop: 20, marginBottom: 20}}>
                         <Card>
@@ -241,10 +242,9 @@ const ListFeedback = () => {
                               <div>
                                 <span className="dateTime">{moment(data.created_at).format('LLL')}</span>
                                 <div>
-                                  <Tag color="#55acee">
-                                    {/*{data?.type.type}*/}
+                                  <Tag color={color}>
+                                    {data?.type.type}
                                   </Tag>
-
                                 </div>
                               </div>
                             </Col>
@@ -258,6 +258,8 @@ const ListFeedback = () => {
               <Col span={24}>
                 <Card type="inner" title="Bài viết nổi bật">
                   {postLatest && postLatest.map((data, index) => {
+                    const color = data?.type.type === "Thắc mắc" ? "#2db7f5" : data?.type.type === "Câu hỏi" ? "#f50" : data?.type.type === "Thảo luận" ? "#108ee9" : "#87d068"
+
                     return (
                       <div key={index} style={{marginTop: 20, marginBottom: 20}}>
                         <Card>
@@ -273,8 +275,8 @@ const ListFeedback = () => {
                                 <span className="dateTime">{moment(data.created_at).format('LLL')}</span>
                                 <span>{data.user.user}</span>
                                 <div>
-                                  <Tag color="#55acee">
-                                    {/*{data?.type.type}*/}
+                                  <Tag color={color}>
+                                    {data?.type.type}
                                   </Tag>
                                 </div>
                               </div>
