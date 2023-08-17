@@ -15,9 +15,8 @@ function Contact() {
                 <Banner />
                 <div className="wrapper__contact-title">
                     <div className="contact-body">
-
-                        <Row justify='start' align='middle' gutter={[30, 30]}>
-                            <Col xl={12} className="less-item">
+                        <Row justify='start' align='middle'>
+                            <Col xl={12} className="contact-item">
                                 <div className="item_title">
                                     <h2>Liên hệ </h2>
                                     <h6> Chúng tôi luôn sẵn sàng tiếp nhận mọi ý kiến ​đóng góp và giải đáp những yêu cầu của bạn.Hãy liên hệ ngay với chúng tôi</h6>
@@ -46,18 +45,7 @@ function Contact() {
                                     <h6>Học và tên</h6>
                                     <input type="text" placeholder="Nhập tên đầy đủ" />
                                 </div>
-                                <div className="item--email">
-                                    <h6>Email</h6>
-                                    <input type="email" placeholder="Nhập email" />
-                                </div>
-                                <div className="item--phone">
-                                    <h6>Điện thoại</h6>
-                                    <input type="text" placeholder="Nhập điện thoại" />
-                                </div>
-                                <div className="item--discription">
-                                    <h6>Nội dung</h6>
-                                    <textarea name="" id="" cols="30" rows="10"></textarea>
-                                </div>
+                               
                             </Col>
 
                         </Row>
