@@ -4,13 +4,13 @@ import {baseQuery, baseQueryWithReauth} from '../base/baseQuery';
 export const forumApi = createApi({
   reducerPath: 'forumApi',
   baseQuery,
-  tagTypes: ['Posts', 'Feedbacks', 'Comments'],
+  tagTypes: ['Posts', 'Feedbacks', 'Comments', 'Notifications'],
   endpoints: (builder) => ({
     // Posts
     getPosts: builder.query({
       query: (page) => {
         return {
-          url: `postforum/list?page=${page}`,
+          url: `postforum/list`,
           params: {page}
         }
       },
@@ -38,17 +38,14 @@ export const forumApi = createApi({
       query: () => {
         return {
           url: `postforum/postsCate`,
-          // params: {page}
         }
       },
       providesTags: ['Posts']
     }),
-
     getPost: builder.query({
       query: (id) => `postforum/detail/${id}`,
       providesTags: ['Posts']
     }),
-
     addPost: builder.mutation({
       query: (data) => ({
         url: 'postforum/addpost',
@@ -58,6 +55,7 @@ export const forumApi = createApi({
         },
         body: data,
       }),
+      invalidatesTags: ['Posts']
     }),
     updatePost: builder.mutation({
       query: (data) => ({
@@ -68,12 +66,14 @@ export const forumApi = createApi({
         },
         body: data,
       }),
+      invalidatesTags: ['Posts']
     }),
     removePost: builder.mutation({
       query: (id) => ({
         url: `postforum/delete/${id}`,
         method: 'DELETE',
       }),
+      invalidatesTags: ['Posts']
     }),
     addStarPost: builder.mutation({
       query: (id) => ({
@@ -81,6 +81,10 @@ export const forumApi = createApi({
         method: 'POST',
         body: id
       }),
+    }),
+
+    searchPost: builder.query({
+      query: (keyword) => (`postforum/search-posts?keyword=${keyword}`),
     }),
 
     // Comments
@@ -93,6 +97,7 @@ export const forumApi = createApi({
         },
         body: data,
       }),
+      invalidatesTags: ['Posts']
     }),
     replyComment: builder.mutation({
       query: (data) => ({
@@ -103,6 +108,7 @@ export const forumApi = createApi({
         },
         body: data,
       }),
+      invalidatesTags: ['Posts']
     }),
     updateComment: builder.mutation({
       query: (data) => ({
@@ -113,6 +119,7 @@ export const forumApi = createApi({
         },
         body: data,
       }),
+      invalidatesTags: ['Posts']
     }),
     removeComment: builder.mutation({
       query: (id) => ({
@@ -126,19 +133,19 @@ export const forumApi = createApi({
     getFeedbacks: builder.query({
       query: (page) => {
         return {
-          url: `feedback/list`,
+          url: `feedbacks/list`,
           params: {page}
         }
       },
       providesTags: ['Feedbacks']
     }),
     getFeedback: builder.query({
-      query: (id) => `feedback/detail/${id}`,
+      query: (id) => `feedbacks/detail/${id}`,
       providesTags: ['Feedbacks']
     }),
     addFeedback: builder.mutation({
       query: (data) => ({
-        url: 'feedback/addfeedback',
+        url: 'feedbacks/addfeedback',
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -148,7 +155,7 @@ export const forumApi = createApi({
     }),
     updateFeedback: builder.mutation({
       query: (id,data) => ({
-        url: `feedback/edit/${id}`,
+        url: `feedbacks/edit/${id}`,
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -158,9 +165,18 @@ export const forumApi = createApi({
     }),
     removeFeedback: builder.mutation({
       query: (id) => ({
-        url: `feedback/delete/${id}`,
+        url: `feedbacks/delete/${id}`,
         method: 'DELETE',
       }),
+    }),
+
+    getNotifications: builder.query({
+      query: (page) => {
+        return {
+          url: `notify/list?page=${page}`,
+        }
+      },
+      providesTags: ['Notifications']
     }),
   })
 });
@@ -175,6 +191,8 @@ export const {
   useRemovePostMutation,
   useAddStarPostMutation,
   useGetPostsCateQuery,
+  useSearchPostQuery,
+  useGetNotificationsQuery,
 
   useAddCommentMutation,
   useReplyCommentMutation,

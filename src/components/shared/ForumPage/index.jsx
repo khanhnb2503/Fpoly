@@ -18,19 +18,25 @@ import {
   Skeleton,
   Image
 } from "antd";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {CardForum} from "../CardForum/index.jsx";
 import SkeletonPage from "../SkeletonPage/index.jsx";
 import {FaEdit, FaRocketchat} from "react-icons/fa";
 import {CKEditor} from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import {
-  useAddPostMutation, useGetPostsLatestQuery, useGetPostsQuery, useGetPostsTrendingQuery
+  useAddPostMutation, useGetFeedbacksQuery,
+  useGetNotificationsQuery,
+  useGetPostsCateQuery,
+  useGetPostsLatestQuery,
+  useGetPostsQuery,
+  useGetPostsTrendingQuery
 } from "../../../services/forum/index.jsx";
 import {useGetCategoryQuery} from "../../../services/courses/index.jsx";
 import {FieldTimeOutlined, FolderOpenOutlined, HomeOutlined} from "@ant-design/icons";
 import moment from "moment";
 import {Link} from "react-router-dom"
+import CateHomePage from "../CateHomePage/CateHomePage.jsx";
 
 function ForumPage() {
   const {Title, Text} = Typography;
@@ -42,9 +48,6 @@ function ForumPage() {
   const [idCategory, setIdCategory] = useState(1);
   const [api, contextHolder] = notification.useNotification();
 
-  const gridStyle = {
-    width: "100%",
-  }
   const {data: posts, isLoading} = useGetPostsQuery(pageNumber)
 
   const {data: postTrending} = useGetPostsTrendingQuery()
@@ -55,12 +58,11 @@ function ForumPage() {
 
   const {data: categories} = useGetCategoryQuery()
 
-  const filterPostByIdCate = categories?.data.map((item) => {
-    const data = posts?.filter(post => post.category.id === item.id)
-    return {
-      ...item, posts: data
-    }
-  })
+  const {data: notifications} = useGetNotificationsQuery()
+
+  const {data: getPostsByCate} = useGetPostsCateQuery()
+
+  const {data: feedbacks} = useGetFeedbacksQuery()
   const showModal = () => {
     setIsModalOpen(true);
   };
@@ -70,15 +72,28 @@ function ForumPage() {
       value: item.id, label: item.name
     }
   })
-  const options = [{
-    value: 1, label: 'Thắc mắc',
-  }, {
-    value: 2, label: 'Câu hỏi',
-  }, {
-    value: 3, label: 'Thảo luận',
-  }, {
-    value: 4, label: 'Giải trí',
-  },]
+  const options = [
+    {
+      value: 1,
+      label: 'Thắc mắc',
+      color: "#2db7f5"
+    },
+    {
+      value: 2,
+      label: 'Câu hỏi',
+      color: "#f50"
+    },
+    {
+      value: 3,
+      label: 'Thảo luận',
+      color: "#108ee9"
+    },
+    {
+      value: 4,
+      label: 'Giải trí',
+      color: "#87d068"
+    },
+  ]
 
   const openNotificationWithIcon = (type) => {
     api[type]({
@@ -93,8 +108,7 @@ function ForumPage() {
   };
   const handleChangeTitle = (e) => {
     setTitlePost(e.target.value)
-  };
-
+  }
   const handleAddPost = async () => {
     const dataPost = {
       title: titlePost, content: dataCKEditor, type: idType, category_id: idCategory
@@ -128,9 +142,9 @@ function ForumPage() {
         <div>
           <Breadcrumb items={[{
             title: (<div style={{display: "flex", alignItems: "center"}}>
-                <HomeOutlined style={{fontSize: 20}}/>
-                <span style={{marginLeft: 10, fontSize: 20}}>Home</span>
-              </div>)
+              <HomeOutlined style={{fontSize: 20}}/>
+              <span style={{marginLeft: 10, fontSize: 20}}>Home</span>
+            </div>)
           },]}/>
         </div>
         <div style={{display: "flex", alignItems: "center"}}>
@@ -211,64 +225,112 @@ function ForumPage() {
               />
             </Modal>
             <div style={{marginTop: 30}}>
-              <Card type="inner" title="Forum">
-                {filterPostByIdCate && filterPostByIdCate.map((data, index) => {
-                  if (!filterPostByIdCate) {
-                    return <Skeleton />
-                  }
-                  const color = data?.posts.type.type === "Thắc mắc" ? "#2db7f5" : data?.posts.type.type === "Câu hỏi" ? "#f50" : data?.posts.type.name === "Thảo luận" ? "#108ee9" : "#87d068"
-                  return (
-                    <div key={index} style={{marginTop: 20, marginBottom: 20}}>
-                      <Card>
-                        <Row>
-                          <Col span={9}>
-                            <div style={{display: "flex", marginTop: 10}}>
-                              <FolderOpenOutlined style={{fontSize: 30, color: "#009DA6"}}/>
-                              <Link to={`/forum/listPosts/${data.id}`}>
-                                <Title level={3} style={{marginLeft: 10, color: "#F26F27"}}>{data.name}</Title>
-                              </Link>
-                            </div>
+              <div style={{marginTop: 20, marginBottom: 20}}>
+                <Card type="inner" title="Sảnh chung">
+                  <Card>
+                    <Row>
+                      <Col span={9}>
+                        <div style={{display: "flex", marginTop: 10}}>
+                          <FolderOpenOutlined style={{fontSize: 30, color: "#009DA6"}}/>
+                          <Link to={`/forum/listNotifications`}>
+                          <Title level={3} style={{marginLeft: 10, color: "#F26F27"}}>Thông báo</Title>
+                          </Link>
+                        </div>
+                      </Col>
+                      <Col span={3} style={{textAlign: "center"}}>
+                        <div style={{opacity: "60%"}}>
+                          Posts
+                        </div>
+                        <Text>
+                          {notifications && notifications.length}
+                        </Text>
+                      </Col>
+                      <Col span={9}>
+                        <Row gutter={10}>
+                          <Col span={4}>
+                            {/*<Avatar src={data?.posts[0]?.user_id?.avatar} size={35} alt='avatar'/>*/}
                           </Col>
-                          <Col span={3} style={{textAlign: "center"}}>
-                            <div style={{opacity: "60%"}}>
-                              Posts
-                            </div>
-                            <Text>
-                              {data?.posts && data?.posts.length}
+                          <Col span={20}>
+                            <Text ellipsis={true} className="title">
+                              {notifications && notifications[0]?.title}
                             </Text>
-                          </Col>
-                          <Col span={3} style={{textAlign: "center"}}>
-                            <div style={{opacity: "60%"}}>
-                              Comments
+                            <div>
+                              <span
+                                className="dateTime">{moment(notifications && notifications[0]?.created_at).format('LLL')}</span>
+                              <span>{notifications?.posts && notifications[0].user_id.user}</span>
                             </div>
-                            <Text>
-                              {data?.posts && data?.posts[0]?.comments.length}
-                            </Text>
-                          </Col>
-                          <Col span={9}>
-                            <Row gutter={10}>
-                              <Col span={4}>
-                                <Avatar src={data?.posts[0]?.user_id.avatar} size={35} alt='avatar'/>
-                              </Col>
-                              <Col span={20}>
-                                <Text ellipsis={true} className="title">
-                                  {data?.posts && data?.posts[0]?.title}
-                                </Text>
-                                <div>
-                                  <span className="dateTime">{moment(data?.posts[0]?.created_at).format('LLL')}</span>
-                                  <span>{data?.posts[0]?.user_id.user}</span>
-                                </div>
-                                <div>
-                                  <Tag color={color}>
-                                    {data?.posts[0]?.type.type}
-                                  </Tag>
-                                </div>
-                              </Col>
-                            </Row>
+                            <div>
+                              <Tag color={"red"}>
+                                Thông báo
+                              </Tag>
+                            </div>
                           </Col>
                         </Row>
-                      </Card>
-                    </div>)
+                      </Col>
+                    </Row>
+                  </Card>
+                  <Card style={{marginTop: 15}}>
+                    <Row>
+                      <Col span={9}>
+                        <div style={{display: "flex", marginTop: 10}}>
+                          <FolderOpenOutlined style={{fontSize: 30, color: "#009DA6"}}/>
+                          <Link to={`/forum/listFeedbacks`}>
+                          <Title level={3} style={{marginLeft: 10, color: "#F26F27"}}>Góp ý</Title>
+                          </Link>
+                        </div>
+                      </Col>
+                      <Col span={3} style={{textAlign: "center"}}>
+                        <div style={{opacity: "60%"}}>
+                          Posts
+                        </div>
+                        <Text>
+                          {feedbacks?.data && feedbacks?.data.length}
+                        </Text>
+                      </Col>
+                      <Col span={3} style={{textAlign: "center"}}>
+                        <div style={{opacity: "60%"}}>
+                          Comments
+                        </div>
+                        <Text>
+                          {/*{notifications && notifications[0]?.comments.length}*/}
+                        </Text>
+                      </Col>
+                      <Col span={9}>
+                        <Row gutter={10}>
+                          <Col span={4}>
+                            {/*<Avatar src={data?.posts[0]?.user_id?.avatar} size={35} alt='avatar'/>*/}
+                          </Col>
+                          <Col span={20}>
+                            {/*<Link to={`forum/listFeedbacks`} >*/}
+                            <Text ellipsis={true} className="title">
+                              {feedbacks?.data && feedbacks?.data[0]?.title}
+                            </Text>
+                            {/*</Link>*/}
+                            <div>
+                              <span
+                                className="dateTime">{moment(feedbacks?.data && feedbacks?.data[0]?.created_at).format('LLL')}</span>
+                              {/*<span>{feedbacks?.data && feedbacks?.data[0].user_id.user}</span>*/}
+                            </div>
+                            <div>
+                              <Tag color={"blue"}>
+                                Góp ý
+                              </Tag>
+                            </div>
+                          </Col>
+                        </Row>
+                      </Col>
+                    </Row>
+                  </Card>
+                </Card>
+
+              </div>
+              <Card type="inner" title="Bài viết theo danh mục">
+                {getPostsByCate && getPostsByCate?.data.map((item, index) => {
+                  return (
+                    <div key={index}>
+                      <CateHomePage filterPostByIdCate={item}/>
+                    </div>
+                  )
                 })}
               </Card>
             </div>
@@ -279,8 +341,9 @@ function ForumPage() {
                 <div style={{marginTop: 30}}>
                   <Card type="inner" title="Bài viết mới nhất">
                     {postTrending && postTrending.map((data, index) => {
+                      const color = data?.type.type === "Thắc mắc" ? "#2db7f5" : data?.type.type === "Câu hỏi" ? "#f50" : data?.type.type === "Thảo luận" ? "#108ee9" : "#87d068"
                       if (!postTrending) {
-                        return <Skeleton />
+                        return <Skeleton/>
                       }
                       return (
                         <div key={index} style={{marginTop: 20, marginBottom: 20}}>
@@ -290,9 +353,14 @@ function ForumPage() {
                                 <Avatar src={data?.user.avatar} size={35} alt='avatar'/>
                               </Col>
                               <Col span={19}>
-                                <Text ellipsis={true} className="title">{data.title}</Text>
+                                <Link to={`/forum/detailPost/${data.id}`}>
+                                  <Text ellipsis={true} className="title">{data.title}</Text>
+                                </Link>
                                 <div>
-                                  <span className="dateTime">{moment(data.created_at).format('LLL')}</span>
+                                  <Tag color={color}>
+                                    {data?.type.type}
+                                  </Tag>
+                                  <span className="dateTime">{moment(data?.created_at).format('LLL')}</span>
                                   <span>{data?.user.user}</span>
                                 </div>
                               </Col>
@@ -306,30 +374,31 @@ function ForumPage() {
               <Col span={24}>
                 <Card type="inner" title="Bài viết nổi bật">
                   {postLatest && postLatest.map((data, index) => {
+                    const color = data?.type.type === "Thắc mắc" ? "#2db7f5" : data?.type.type === "Câu hỏi" ? "#f50" : data?.type.type === "Thảo luận" ? "#108ee9" : "#87d068"
                     if (!postLatest) {
-                      return <Skeleton />
+                      return <Skeleton/>
                     }
                     return (<div key={index} style={{marginTop: 20, marginBottom: 20}}>
-                        <Card>
-                          <Row gutter={10}>
-                            <Col span={5}>
-                              <Avatar src={data.user.avatar} size={35} alt='avatar'/>
-                            </Col>
-                            <Col span={19}>
+                      <Card>
+                        <Row gutter={10}>
+                          <Col span={5}>
+                            <Avatar src={data.user.avatar} size={35} alt='avatar'/>
+                          </Col>
+                          <Col span={19}>
+                            <Link to={`/forum/detailPost/${data.id}`}>
                               <Text ellipsis={true} className="title">{data.title}</Text>
-                              <div>
-                                <span className="dateTime">{moment(data.created_at).format('LLL')}</span>
-                                <span>{data.user.user}</span>
-                                <div>
-                                  <Tag color="#55acee">
-                                    {/*{data?.type.type}*/}
-                                  </Tag>
-                                </div>
-                              </div>
-                            </Col>
-                          </Row>
-                        </Card>
-                      </div>)
+                            </Link>
+                            <div>
+                              <Tag color={color}>
+                                {data?.type.type}
+                              </Tag>
+                              <span className="dateTime">{moment(data.created_at).format('LLL')}</span>
+                              <span>{data.user.user}</span>
+                            </div>
+                          </Col>
+                        </Row>
+                      </Card>
+                    </div>)
                   })}
                 </Card>
               </Col>
@@ -338,10 +407,10 @@ function ForumPage() {
                 <Space size={[0, 8]} wrap>
                   {options && options.map((item, index) => {
                     return (<div key={index}>
-                        <Tag style={{padding: 10}} color="#55acee">
-                          {item.label}
-                        </Tag>
-                      </div>)
+                      <Tag style={{padding: 10}} color="#55acee">
+                        {item.label}
+                      </Tag>
+                    </div>)
                   })}
                 </Space>
               </Col>

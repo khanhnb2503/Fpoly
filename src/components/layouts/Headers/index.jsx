@@ -17,7 +17,7 @@ function Headers() {
   const { data: user, isSuccess } = useProfileQuery();
   const { data: dataSearch, isLoading } = useSearchQuery(keyword);
 
-  const url = window.location.href === 'http://localhost:4000/forum'
+  const url = window.location.href === 'http://localhost:4000/forum' || 'http://localhost:4000/forum/detailPost' || 'http://localhost:4000/forum/detailPostforum/listPosts'
   return (
     <div className='wrapper__header'>
       <Row align="middle" className='horizontal-header'>
