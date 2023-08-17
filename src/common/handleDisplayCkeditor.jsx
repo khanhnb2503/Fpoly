@@ -6,8 +6,8 @@ export const handleDisplayCkeditor = (data) => {
   let result = text.getElementsByTagName("img")
   if (result.length > 0) {
     for (let i = 0; i < result.length; i++) {
-      result[i].style.maxHeight = "200px"
-      result[i].style.maxWidth = "600px"
+      result[i].style.maxHeight = "400px"
+      result[i].style.maxWidth = "750px"
       result[i].src = `${url}${result[i].getAttribute("src")}`
     }
   }

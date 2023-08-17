@@ -1,8 +1,8 @@
 import {Link, useParams} from "react-router-dom";
 import {
+  useGetNotificationsQuery,
   useGetPostsCateQuery,
   useGetPostsLatestQuery,
-  useGetPostsQuery,
   useGetPostsTrendingQuery
 } from "../../../services/forum/index.jsx";
 import {useGetCategoryQuery} from "../../../services/courses/index.jsx";
@@ -18,18 +18,16 @@ import {
 } from "@ant-design/icons";
 import moment from "moment/moment.js";
 
-const ListPosts = () => {
+const ListNotifications = () => {
   const [pageNumber, setPageNumber] = useState(1);
   const {Title, Text, Paragraph} = Typography;
 
-  const {id} = useParams()
-  const {data: posts, isLoading} = useGetPostsQuery(pageNumber)
   const {data: categories} = useGetCategoryQuery()
   const {data: postCate} = useGetPostsCateQuery()
   const {data: postTrending} = useGetPostsTrendingQuery()
   const {data: postLatest} = useGetPostsLatestQuery()
-  const {data: getPostsByCate} = useGetPostsCateQuery()
 
+  const {data: notifications} = useGetNotificationsQuery()
   const onChangePage = (page) => {
     console.log(page)
     setPageNumber(page);
@@ -49,33 +47,11 @@ const ListPosts = () => {
     </div>),
   },];
 
-  const options = [
-    {
-      value: 1,
-      label: 'Thắc mắc',
-      color: "#2db7f5"
-    },
-    {
-      value: 2,
-      label: 'Câu hỏi',
-      color: "#f50"
-    },
-    {
-      value: 3,
-      label: 'Thảo luận',
-      color: "#108ee9"
-    },
-    {
-      value: 4,
-      label: 'Giải trí',
-      color: "#87d068"
-    },
-  ]
-
   function itemRender(route, params, routes, paths) {
     const last = routes.indexOf(route) === routes.length - 1;
     return last ? (<span>{route.breadcrumbName}</span>) : (<Link to={paths.join('/')}>{route.breadcrumbName}</Link>);
   }
+
   return (
     <div>
       <div className="header_forum">
@@ -116,64 +92,23 @@ const ListPosts = () => {
                   </div>
                 )
               })}
-              <div style={{marginTop: 20}}>
-                <Title level={3}>Tags</Title>
-                <Space size={[0, 8]} wrap>
-                  {options && options.map((item, index) => {
-                    return (
-                      <div key={index}>
-                        <Tag style={{padding: 10}} color={item.color}>
-                          {item.label}
-                        </Tag>
-                      </div>
-                    )
-                  })}
-                </Space>
-              </div>
             </Space>
           </Col>
           <Col span={13}>
-            <Card type="inner" title={getPostsByCate?.data[id - 1]?.category.name}>
-              {getPostsByCate && getPostsByCate?.data[id - 1]?.posts?.map((data, index) => {
-                const color = data?.type.type === "Thắc mắc" ? "#2db7f5" : data?.type.type === "Câu hỏi" ? "#f50" : data?.type.type === "Thảo luận" ? "#108ee9" : "#87d068"
+            <Card type="inner" title="Thông báo">
+              {notifications && notifications.map((data, index) => {
                 return (
                   <div key={index} style={{marginTop: 20, marginBottom: 20}}>
                     <Card>
-                      <Row gutter={10} style={{alignItems: "center"}}>
-                        <Col span={3}>
-                          <Avatar src={data?.user_id.avatar || ""} size={35} alt='avatar'/>
-                        </Col>
-                        <Col span={12}>
-                          <Link to={`/forum/detailPost/${data.id}`}>
-                            <Text ellipsis={true} className="title">{data.title}</Text>
-                          </Link>
-                          <div>
-                            <Tag color={color}>
-                              {data?.type.type}
-                            </Tag>
-                            <span className="dateTime">{moment(data?.created_at).startOf('hour').fromNow()}</span>
-                          </div>
-                        </Col>
-                        <Col span={7}>
-                          <Row gutter={[0, 20]}>
-                            <Col span={8} style={{display: "flex", alignItems: "center"}}>
-                              <HeartOutlined style={{fontSize: 20}}/>
-                              <span style={{marginLeft: 5}}>{data.star}</span>
-                            </Col>
-                            <Col span={8} style={{display: "flex", alignItems: "center"}}>
-                              <CommentOutlined style={{fontSize: 20}}/>
-                              <span style={{marginLeft: 5}}>{data.comments.length}</span>
-                            </Col>
-                            <Col span={8} style={{display: "flex", alignItems: "center"}}>
-                              <EyeOutlined style={{fontSize: 20}}/>
-                              <span style={{marginLeft: 5}}>{data.view}</span>
-                            </Col>
-
-                          </Row>
-
-                        </Col>
-
-                      </Row>
+                      <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
+                        <Text ellipsis={true} style={{fontWeight: 600, fontSize: 20}}>{data.title}</Text>
+                        <div>
+                          <span className="dateTime">{moment(data?.created_at).startOf('hour').fromNow()}</span>
+                        </div>
+                      </div>
+                      <div>
+                        <Text ellipsis={true} style={{marginLeft: 10, fontSize: 18, marginTop: 10}}>{data.content}</Text>
+                      </div>
                     </Card>
                     <div>
                     </div>
@@ -182,7 +117,7 @@ const ListPosts = () => {
               })}
             </Card>
             <div style={{marginLeft: "35%", marginTop: 10}}>
-              <Pagination current={pageNumber} onChange={onChangePage} total={posts?.length} />
+              <Pagination current={pageNumber} onChange={onChangePage} total={notifications?.length}/>
             </div>
           </Col>
           <Col span={7}>
@@ -257,4 +192,4 @@ const ListPosts = () => {
   )
 }
 
-export default ListPosts
+export default ListNotifications

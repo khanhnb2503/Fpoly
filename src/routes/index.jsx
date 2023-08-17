@@ -14,6 +14,14 @@ import DetailCourse from '../views/app-views/detailCourse';
 import Home from '../views/app-views/home';
 import Login from '../views/auth-views/components/Login';
 import Register from '../views/auth-views/components/Register';
+import {PaymentSuccess} from "../components/layouts/PaymentSuccess/index.jsx";
+import ForumPage from "../views/app-views/blog/index.jsx";
+import DetailPostForum from "../components/shared/DetailPostForum/index.jsx";
+import ListPost from "../components/shared/ListPost/ListPost.jsx";
+import ListPosts from "../components/shared/ListPost/ListPost.jsx";
+import ListNotifications from "../components/shared/ListNotification/ListNotification.jsx";
+import ListFeedback from "../components/shared/ListFeedbacks/ListFeedbacks.jsx";
+import DetailFeedback from "../components/shared/DetailFeedback/DetailFeedback.jsx";
 // List routes
 export const RoutesConstant = {
   LOGIN: '/login',
@@ -33,6 +41,9 @@ export const DefaultLayout = [
   { path: '/payment/:id', component: Payment },
   { path: '/paymentSuccess', component: PaymentSuccess },
   { path: '/forum/listPosts/:id', component: ListPosts },
+  { path: '/forum/listNotifications', component: ListNotifications },
+  { path: '/forum/listFeedbacks', component: ListFeedback },
+  { path: '/forum/detailFeedback/:id', component: DetailFeedback },
   { path: '/contact', component: Contact },
   { path: "*", component: NotFound, layout: null },
 ]

@@ -19,6 +19,7 @@ function Headers() {
   const { data: users, isSuccess, isFetching } = useProfileQuery();
   const { data: dataSearch, isLoading } = useSearchQuery(keyword);
 
+  const url = window.location.href === 'http://localhost:4000/forum' || 'http://localhost:4000/forum/detailPost' || 'http://localhost:4000/forum/detailPostforum/listPosts'
   useEffect(() => {
     if (dataSearch?.data?.courses) {
       const { courses } = dataSearch?.data;
@@ -68,8 +69,7 @@ function Headers() {
       }
     }
   }, [dataSearch, users]);
-
-  const url = window.location.href === 'http://localhost:4000/forum'
+  
   return (
     <div className='wrapper__header'>
       <Row align="middle" className='horizontal-header'>
