@@ -1,5 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { baseQuery } from '../base/baseQuery';
+// import { baseQueryWithReauth } from '../base/baseQuery';
 
 export const courseApi = createApi({
   reducerPath: 'courseApi',
@@ -50,8 +51,39 @@ export const courseApi = createApi({
         },
         body: data,
       })
-    }))
+    })),
 
+    commentsCourse: builder.mutation(({
+      query: (data) => ({
+        url: 'comments/addcomment',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: data,
+      })
+    })),
+
+    getListComment: builder.query({
+      query: () => `comments/list`,
+      providesTags: ['Courses']
+    }),
+
+    getQuiz: builder.query({
+      query: (id) => `course/quiz/${id}`,
+      providesTags: ['Courses']
+    }),
+
+    sendQuiz: builder.mutation(({
+      query: (data) => ({
+        url: 'comments/addcomment',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: data,
+      })
+    })),
   })
 });
 
@@ -62,5 +94,8 @@ export const {
   useGetLessonsQuery,
   useSubcribeCourseMutation,
   useSaveHistoryCourseMutation,
-  useGetHistoryCourseQuery
+  useGetHistoryCourseQuery,
+  useCommentsCourseMutation,
+  useGetListCommentQuery,
+  useGetQuizQuery
 } = courseApi;

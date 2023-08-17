@@ -74,43 +74,52 @@ function Courses() {
       <div className="courses">
         {loading && filterHistory.map((course) => (
           <div key={course.id} className="course-body">
-            <h3>{course.name}</h3>
-            <Row justify='start' align='middle' gutter={[50, 30]}>
-              {course?.courses?.map((item) => (
-                <Col key={item.id} xl={6} className="less-item">
-                  <Link
-                    to={item?.completed ? `/lessons/${item?.completed}` : `/courses/${item.id}`}
-                    className="thumbnail-link"
-                  >
-                    <img src={`${imageUrl}${item.image}`} alt={`lesson-${item.id}`} />
-                    <div className="overlay">
-                      {item?.completed
-                        ? <Button
-                          shape="round"
-                          className="btn-action-views"
-                          onClick={() => navigate(`/lessons/${item?.completed}`)}
-                        >Tiếp tục học
-                        </Button>
-                        : <Button shape="round" className="btn-action-views">Xem khóa học</Button>
-                      }
-                    </div>
-                  </Link>
-                  <Row justify='space-between' align='middle' className="horizontal-info">
-                    <Col xl={19}>
-                      <h6>
-                        <Link to={`oke`}>{item.name}</Link>
-                      </h6>
-                    </Col>
-                    <Col xl={3}>
-                      <div className="subcribe">
-                        <HiUserGroup size={18} />
-                        <span>357</span>
+            {course?.courses?.length > 0 && <>
+              <h3>{course.name}</h3>
+              <Row justify='start' align='middle' gutter={[50, 30]}>
+                {course?.courses?.map((item) => (
+                  <Col key={item.id} xl={6} md={6} className="less-item">
+                    <Link
+                      to={item?.completed ? `/lessons/${item?.completed}` : `/courses/${item.id}`}
+                      className="thumbnail-link"
+                    >
+                      <img
+                        src={`${imageUrl}${item.image}`}
+                        className="avatar-courses"
+                        alt={`lesson-${item.id}`}
+                      />
+                      <div className="check-has-free">
+                        <span>{item.is_free == 1 ? 'Miễn phí' : 'Mất phí'}</span>
                       </div>
-                    </Col>
-                  </Row>
-                </Col>
-              ))}
-            </Row>
+                      <div className="overlay">
+                        {item?.completed
+                          ? <Button
+                            shape="round"
+                            className="btn-action-views"
+                            onClick={() => navigate(`/lessons/${item?.completed}`)}
+                          >Tiếp tục học
+                          </Button>
+                          : <Button shape="round" className="btn-action-views">Xem khóa học</Button>
+                        }
+                      </div>
+                    </Link>
+                    <Row justify='space-between' align='middle' className="horizontal-info">
+                      <Col xl={19}>
+                        <h6>
+                          <Link to={`oke`}>{item.name}</Link>
+                        </h6>
+                      </Col>
+                      <Col xl={3}>
+                        <div className="subcribe">
+                          <HiUserGroup size={18} />
+                          <span>357</span>
+                        </div>
+                      </Col>
+                    </Row>
+                  </Col>
+                ))}
+              </Row>
+            </>}
           </div>
         ))}
       </div>

@@ -1,13 +1,29 @@
 import {Link, useParams} from "react-router-dom";
 import {
+  useAddFeedbackMutation,
+  useGetFeedbacksQuery,
+  useGetNotificationsQuery,
   useGetPostsCateQuery,
   useGetPostsLatestQuery,
-  useGetPostsQuery,
   useGetPostsTrendingQuery
 } from "../../../services/forum/index.jsx";
 import {useGetCategoryQuery} from "../../../services/courses/index.jsx";
 import {useState} from "react";
-import {Avatar, Breadcrumb, Card, Col, Input, Pagination, Row, Space, Tag, Typography} from "antd";
+import {
+  Avatar,
+  Breadcrumb,
+  Button,
+  Card,
+  Col, Divider,
+  Image,
+  Input, Modal,
+  notification,
+  Pagination,
+  Row, Select,
+  Space,
+  Tag,
+  Typography
+} from "antd";
 import {
   CommentOutlined,
   EyeOutlined,
@@ -17,19 +33,26 @@ import {
   HomeOutlined
 } from "@ant-design/icons";
 import moment from "moment/moment.js";
+import {FaEdit} from "react-icons/fa";
+import {CKEditor} from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
-const ListPosts = () => {
+const ListFeedback = () => {
   const [pageNumber, setPageNumber] = useState(1);
   const {Title, Text, Paragraph} = Typography;
+  const [api, contextHolder] = notification.useNotification();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [titlePost, setTitlePost] = useState('')
+  const [dataCKEditor, setDataCKEditor] = useState('')
 
-  const {id} = useParams()
-  const {data: posts, isLoading} = useGetPostsQuery(pageNumber)
   const {data: categories} = useGetCategoryQuery()
   const {data: postCate} = useGetPostsCateQuery()
   const {data: postTrending} = useGetPostsTrendingQuery()
   const {data: postLatest} = useGetPostsLatestQuery()
-  const {data: getPostsByCate} = useGetPostsCateQuery()
 
+  const {data: feedbacks} = useGetFeedbacksQuery()
+
+  const [addFeedback] = useAddFeedbackMutation()
   const onChangePage = (page) => {
     console.log(page)
     setPageNumber(page);
@@ -43,41 +66,60 @@ const ListPosts = () => {
       </div>
     </Link>)
   }, {
-    path: '/forum/listPost/:id', breadcrumbName: (<div style={{display: "flex", alignItems: "center", marginTop: 3}}>
+    path: '/forum/listFeedback', breadcrumbName: (<div style={{display: "flex", alignItems: "center", marginTop: 3}}>
       <FileOutlined/>
       <span style={{marginLeft: 5}}>ListPost</span>
     </div>),
   },];
+  const openNotificationWithIcon = (type) => {
+    api[type]({
+      message: 'Tạo bài viết', description: "Tạo bài viết thành công",
+    });
+  };
 
-  const options = [
-    {
-      value: 1,
-      label: 'Thắc mắc',
-      color: "#2db7f5"
-    },
-    {
-      value: 2,
-      label: 'Câu hỏi',
-      color: "#f50"
-    },
-    {
-      value: 3,
-      label: 'Thảo luận',
-      color: "#108ee9"
-    },
-    {
-      value: 4,
-      label: 'Giải trí',
-      color: "#87d068"
-    },
-  ]
   function itemRender(route, params, routes, paths) {
     const last = routes.indexOf(route) === routes.length - 1;
     return last ? (<span>{route.breadcrumbName}</span>) : (<Link to={paths.join('/')}>{route.breadcrumbName}</Link>);
   }
+
+  const handleChangeTitle = (e) => {
+    setTitlePost(e.target.value)
+  }
+  const handleAddFeedback = async () => {
+    const dataFeedback = {
+      title: titlePost, content: dataCKEditor
+    }
+    const {data} = await addFeedback(dataFeedback)
+    if (data.status) {
+      openNotificationWithIcon('success')
+      setDataCKEditor('')
+      setTitlePost('')
+      setIsModalOpen(false)
+    }
+  }
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
   return (
     <div>
       <div className="header_forum">
+        {contextHolder}
+        <Modal width={"50%"} title="Thêm góp ý" onOk={() => handleAddFeedback()}
+               onCancel={() => setIsModalOpen(false)}
+               open={isModalOpen}>
+          <Title level={4}>Tiêu đề</Title>
+          <Input placeholder="Tiêu đề" onChange={(e) => handleChangeTitle(e)}/>
+          <Divider/>
+          <CKEditor
+            editor={ClassicEditor}
+            data={dataCKEditor}
+            onChange={(event, editor) => {
+              const data = editor.getData();
+              setDataCKEditor(data)
+            }}
+          />
+        </Modal>
         <div className="header_search">
           <Input.Search
             placeholder="Tìm kiếm bài viết"
@@ -101,6 +143,8 @@ const ListPosts = () => {
           <span style={{marginLeft: 10}}>{moment(new Date()).format('LLL')}</span>
         </div>
       </div>
+      <div>
+      </div>
       <div className="wrapper_listPost">
         <Row gutter={[20, 10]}>
           <Col span={4}>
@@ -115,64 +159,58 @@ const ListPosts = () => {
                   </div>
                 )
               })}
-              <div style={{marginTop: 20}}>
-                <Title level={3}>Tags</Title>
-                <Space size={[0, 8]} wrap>
-                  {options && options.map((item, index) => {
-                    return (
-                      <div key={index}>
-                        <Tag style={{padding: 10}} color={item.color}>
-                          {item.label}
-                        </Tag>
-                      </div>
-                    )
-                  })}
-                </Space>
-              </div>
             </Space>
           </Col>
           <Col span={13}>
-            <Card type="inner" title={getPostsByCate?.data[id - 1]?.category.name}>
-              {getPostsByCate && getPostsByCate?.data[id - 1]?.posts?.map((data, index) => {
-                const color = data?.type.type === "Thắc mắc" ? "#2db7f5" : data?.type.type === "Câu hỏi" ? "#f50" : data?.type.type === "Thảo luận" ? "#108ee9" : "#87d068"
+            <div>
+              <Card>
+                <Row gutter={10}>
+                  <Col span={19}>
+                    <Row gutter={[30]}>
+                      <Col span={5}>
+                        <Image width={100}
+                               src={"https://html-template.spider-themes.net/docy/img/home_support/answer.png"}/>
+                      </Col>
+                      <Col span={18}>
+                        <Title level={3}>
+                          Bạn có trải nghiệm không tốt về trang web ?
+                        </Title>
+                        <Text>
+                          Hãy góp ý để chúng tôi nâng cấp trải nghiệm tốt nhất cho bạn!
+                        </Text>
+                      </Col>
+                    </Row>
+                  </Col>
+                  <Col span={3}>
+                    <Button
+                      type="primary"
+                      color="#FFF"
+                      size="large"
+                      icon={<FaEdit/>}
+                      onClick={() => showModal()}
+                    >Góp ý</Button>
+                  </Col>
+                </Row>
+              </Card>
+            </div>
+            <Card type="inner" title="Góp ý">
+              {feedbacks?.data && feedbacks?.data.map((data, index) => {
                 return (
                   <div key={index} style={{marginTop: 20, marginBottom: 20}}>
                     <Card>
-                      <Row gutter={10} style={{alignItems: "center"}}>
-                        <Col span={3}>
-                          <Avatar src={data?.user_id.avatar || ""} size={35} alt='avatar'/>
-                        </Col>
-                        <Col span={12}>
-                          <Link to={`/forum/detailPost/${data.id}`}>
-                            <Text ellipsis={true} className="title">{data.title}</Text>
-                          </Link>
-                          <div>
-                            <Tag color={color}>
-                              {data?.type.type}
-                            </Tag>
-                            <span className="dateTime">{moment(data?.created_at).startOf('hour').fromNow()}</span>
-                          </div>
-                        </Col>
-                        <Col span={7}>
-                          <Row gutter={[0, 20]}>
-                            <Col span={8} style={{display: "flex", alignItems: "center"}}>
-                              <HeartOutlined style={{fontSize: 20}}/>
-                              <span style={{marginLeft: 5}}>{data.star}</span>
-                            </Col>
-                            <Col span={8} style={{display: "flex", alignItems: "center"}}>
-                              <CommentOutlined style={{fontSize: 20}}/>
-                              <span style={{marginLeft: 5}}>{data.comments.length}</span>
-                            </Col>
-                            <Col span={8} style={{display: "flex", alignItems: "center"}}>
-                              <EyeOutlined style={{fontSize: 20}}/>
-                              <span style={{marginLeft: 5}}>{data.view}</span>
-                            </Col>
-
-                          </Row>
-
-                        </Col>
-
-                      </Row>
+                      <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
+                        <Text ellipsis={true} style={{fontWeight: 600, fontSize: 20}}>{data.title || "Bài viết 1"}</Text>
+                        <div>
+                          <span className="dateTime">{moment(data?.created_at).startOf('hour').fromNow()}</span>
+                        </div>
+                      </div>
+                      <div>
+                        <Link to={`/forum/detailFeedback/${data.id}`}>
+                          <Text ellipsis={true} style={{marginLeft: 10, fontSize: 18, marginTop: 10}}>
+                            {data.content}
+                          </Text>
+                        </Link>
+                      </div>
                     </Card>
                     <div>
                     </div>
@@ -181,7 +219,7 @@ const ListPosts = () => {
               })}
             </Card>
             <div style={{marginLeft: "35%", marginTop: 10}}>
-              <Pagination current={pageNumber} onChange={onChangePage} total={posts?.length} />
+              <Pagination current={pageNumber} onChange={onChangePage} total={feedbacks?.length}/>
             </div>
           </Col>
           <Col span={7}>
@@ -207,7 +245,6 @@ const ListPosts = () => {
                                   <Tag color={color}>
                                     {data?.type.type}
                                   </Tag>
-
                                 </div>
                               </div>
                             </Col>
@@ -259,4 +296,4 @@ const ListPosts = () => {
   )
 }
 
-export default ListPosts
+export default ListFeedback

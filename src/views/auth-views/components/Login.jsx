@@ -63,7 +63,7 @@ function Login() {
       <Loading loading={isLoading} size='large'>
         <div className='wrapper__login' style={backgroundStyles}>
           <Row justify='center' align='middle' className='min-vh-100'>
-            <Col lg={10} xl={5} className='content-body bg-light rounded-1'>
+            <Col xl={6} className='content-body bg-light rounded-1'>
               <div className='header-title'>
                 <h4>ĐĂNG NHẬP</h4>
               </div>

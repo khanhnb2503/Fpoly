@@ -33,6 +33,7 @@ function UserMenu() {
         <ul>
           <li><Link to='/profile'>Trang cá nhân</Link></li>
           <li><Link to=''>Bài viết của tôi</Link></li>
+          <li><Link to='/ListVoucher'>Voucher của tôi</Link></li>
           <li><Link onClick={handleLogout}>Đăng xuất</Link></li>
         </ul>
       </div>
