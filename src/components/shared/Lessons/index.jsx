@@ -1,19 +1,21 @@
-import { Button, Col, Collapse, Form, List, Progress, Row } from 'antd';
+import { Button, Col, Collapse, Form, List, Progress, Row, Card, Radio } from 'antd';
 import Carousel from 'nuka-carousel';
 import { useEffect, useState } from 'react';
 import {
   AiFillCheckSquare,
   AiOutlineLeft, AiOutlineLock,
-  AiOutlineVideoCamera
+  AiOutlineVideoCamera,
+  // AiOutlineComment,
+  // AiOutlineRight
 } from 'react-icons/ai';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { videoInfo } from '../../../redux/features/video/videoSlice';
 import { getHistoryCourse, queryVideo } from '../../../services/base/baseQuery.jsx';
+// import { onOpen } from '../../../redux/features/comment/commentSlice';
 import {
   useGetLessonsQuery,
-  useGetQuizQuery,
   useSaveHistoryCourseMutation
 } from '../../../services/courses/index.jsx';
 import { useProfileQuery } from '../../../services/users/index.jsx';
@@ -27,9 +29,9 @@ function Lessons() {
   const { data: lessons, isSuccess } = useGetLessonsQuery(id);
   const [saveHistoryCourse] = useSaveHistoryCourseMutation();
   const { data: users, isFetching } = useProfileQuery();
-  const { data: quizs } = useGetQuizQuery(1);
 
   const [completeCourse, setCompleteCourse] = useState([]);
+  const [quizs, setQuizs] = useState([]);
   const [progress, setProgress] = useState(false);
   const [checked, setChecked] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -54,6 +56,8 @@ function Lessons() {
       try {
         if (lessons) {
           const { data } = await queryVideo(lessons?.data?.video_id);
+          let quizs = lessons?.data?.course?.quiz[0];
+          setQuizs(quizs)
           dispatch(videoInfo({
             video_id: data.id,
             time: data?.duration,
@@ -119,7 +123,7 @@ function Lessons() {
 
   const handleQuiz = async () => {
 
-  }
+  };
 
   return (
     <>
@@ -149,12 +153,14 @@ function Lessons() {
                 <Col xl={18}>
                   <div className='quiz-content'>
                     <div className='box-large'>
-                      <Form onFinish={handleQuiz}>
-                        {/* {quizs?.data.questions.map((item) => (
+                      <h4>{quizs.name}</h4>
+                      <Form onFinish={handleQuiz} className='group-quiz'>
+                        {quizs?.questions.map((item) => (
                           <Card
                             title={item.name}
                             key={item.id}
                             type='inner'
+                            className='card-list-quiz'
                           >
                             {item.answers.map((quiz) => (
                               <Radio.Group key={quiz.id}>
@@ -162,7 +168,7 @@ function Lessons() {
                               </Radio.Group>
                             ))}
                           </Card>
-                        ))} */}
+                        ))}
                         <Button htmlType='submit' type='primary'>
                           Gửi
                         </Button>

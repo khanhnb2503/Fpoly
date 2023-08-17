@@ -48,8 +48,21 @@
   .box-large {
     background-color: white;
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, .1);
-    width: 70%;
+    width: 90%;
     padding: 20px;
+
+    h4 {
+      font-size:25px;
+      text-align: center;
+    }
+  }
+
+  .group-quiz {
+    margin-top: 10px;
+  }
+
+  .card-list-quiz {
+    margin-bottom:10px;
   }
 
   .video-scroll {
