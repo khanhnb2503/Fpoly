@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import Loading from '../../shared/Spin';
 
 import Logo from '../../../../public/images/logo_ong_vang.jpg';
+import { imageUrl } from '../../../common/imageUrl';
 import { RoutesConstant } from '../../../routes';
 import { useSearchQuery } from '../../../services/search';
 import { useProfileQuery } from '../../../services/users';
@@ -26,7 +27,7 @@ function Headers() {
             <Link to='/'>
               <img src={Logo} alt='logo' />
             </Link>
-            <h4>FptPolytechnic</h4>
+            <h4>BeeSquad</h4>
           </Row>
         </Col>
         <Col sm={16} md={12} lg={8} xl={8}>
@@ -60,9 +61,12 @@ function Headers() {
                                 <>
                                   {dataSearch.data.courses.map((course, index) => (
                                     <div key={index}>
-                                      <Row>
+                                      <Row justify='start' align='middle' gutter={[5, 20]}>
                                         <Col>
-                                          <p><Link>{course.name}</Link></p>
+                                          <Avatar src={`${imageUrl}${course.image}`} />
+                                        </Col>
+                                        <Col>
+                                          <p><Link to={`courses/${course.id}`}>{course.name}</Link></p>
                                         </Col>
                                       </Row>
                                     </div>
@@ -76,7 +80,7 @@ function Headers() {
                   )
                 }]}
                 onSearch={(value) => setKeyword(value)}
-                placeholder="Tìm kiếm video,khóa học,bài viết..."
+                placeholder="Tìm kiếm khóa học, bài viết..."
                 className='navbar-search-input'
               />
             </Row>

@@ -1,11 +1,16 @@
 import { FaBlogger } from 'react-icons/fa';
-import { IoIosAddCircle, IoMdBulb, IoMdHome } from 'react-icons/io';
+import { IoMdBulb, IoMdHome } from 'react-icons/io';
 import { NotFound } from '../components/layouts/NotFound';
+import { PaymentSuccess } from "../components/layouts/PaymentSuccess/index.jsx";
+import Contact from '../components/shared/Contact';
+import DetailPostForum from "../components/shared/DetailPostForum/index.jsx";
 import Lessons from '../components/shared/Lessons';
+import ListPosts from "../components/shared/ListPost/ListPost.jsx";
+import Payment from '../views/app-views/Payment';
 import Profile from '../views/app-views/Profile';
+import ForumPage from "../views/app-views/blog/index.jsx";
 import CoursePage from '../views/app-views/course';
 import DetailCourse from '../views/app-views/detailCourse';
-import Payment from '../views/app-views/Payment';
 import Home from '../views/app-views/home';
 import Login from '../views/auth-views/components/Login';
 import Register from '../views/auth-views/components/Register';
@@ -39,16 +44,11 @@ export const DefaultLayout = [
   { path: '/forum/listNotifications', component: ListNotifications },
   { path: '/forum/listFeedbacks', component: ListFeedback },
   { path: '/forum/detailFeedback/:id', component: DetailFeedback },
+  { path: '/contact', component: Contact },
   { path: "*", component: NotFound, layout: null },
 ]
 
 export const RoutesList = [
-  {
-    id: 0,
-    path: '',
-    name: 'Viết bài',
-    icon: <IoIosAddCircle size={50} color='#009DA6' />,
-  },
   {
     id: 1,
     path: '/',

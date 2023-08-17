@@ -1,7 +1,7 @@
 import { fetchBaseQuery } from '@reduxjs/toolkit/query';
 import axios from 'axios';
-import {getLocalStorage, setLocalStorage} from './useLocalStorage';
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { getLocalStorage, setLocalStorage } from './useLocalStorage';
 
 const token = getLocalStorage('access_token');
 const refresh_token = getLocalStorage('refresh_token')
@@ -75,7 +75,8 @@ export const baseQuery = fetchBaseQuery({
 });
 
 export const baseQueryWithReauth = async (args, api, extraOptions) => {
-  let result= await baseQuery(args, api, extraOptions)
+  let result = await baseQuery(args, api, extraOptions)
+  console.log(result)
   if (result?.error?.originalStatus === 401 || result?.data.error?.originalStatus === 403) {
     const navigate = useNavigate()
     // navigate("login")

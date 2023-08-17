@@ -1,5 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { baseQuery } from '../base/baseQuery';
+// import { baseQueryWithReauth } from '../base/baseQuery';
 
 export const courseApi = createApi({
   reducerPath: 'courseApi',
@@ -50,8 +51,23 @@ export const courseApi = createApi({
         },
         body: data,
       })
-    }))
+    })),
 
+    commentsCourse: builder.mutation(({
+      query: (data) => ({
+        url: 'comments/addComments',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: data,
+      })
+    })),
+
+    getListComment: builder.query({
+      query: () => `comments/list`,
+      providesTags: ['Courses']
+    }),
   })
 });
 
@@ -62,5 +78,7 @@ export const {
   useGetLessonsQuery,
   useSubcribeCourseMutation,
   useSaveHistoryCourseMutation,
-  useGetHistoryCourseQuery
+  useGetHistoryCourseQuery,
+  useCommentsCourseMutation,
+  useGetListCommentQuery
 } = courseApi;

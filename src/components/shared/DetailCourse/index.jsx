@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { AiOutlineSafety } from 'react-icons/ai';
 import { useNavigate, useParams } from 'react-router-dom';
 import { imageUrl } from "../../../common/imageUrl";
+import { queryVideo } from '../../../services/base/baseQuery';
 import { setLocalStorage } from '../../../services/base/useLocalStorage';
 import { useGetCourseQuery, useSubcribeCourseMutation } from '../../../services/courses/index.jsx';
 import { useProfileQuery } from '../../../services/users';

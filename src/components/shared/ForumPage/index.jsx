@@ -1,22 +1,20 @@
 import {
   Avatar,
-  Select,
   Breadcrumb,
   Button,
   Card,
   Col,
-  Pagination,
-  Popover,
-  Row,
-  Typography,
-  Modal,
   Divider,
+  Image,
   Input,
-  notification,
+  Modal,
+  Row,
+  Select,
+  Skeleton,
   Space,
   Tag,
-  Skeleton,
-  Image
+  Typography,
+  notification
 } from "antd";
 import {useEffect, useState} from "react";
 import {CardForum} from "../CardForum/index.jsx";
@@ -39,7 +37,7 @@ import {Link} from "react-router-dom"
 import CateHomePage from "../CateHomePage/CateHomePage.jsx";
 
 function ForumPage() {
-  const {Title, Text} = Typography;
+  const { Title, Text } = Typography;
   const [pageNumber, setPageNumber] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [dataCKEditor, setDataCKEditor] = useState('')
@@ -50,13 +48,13 @@ function ForumPage() {
 
   const {data: posts, isLoading} = useGetPostsQuery(pageNumber)
 
-  const {data: postTrending} = useGetPostsTrendingQuery()
+  const { data: postTrending } = useGetPostsTrendingQuery()
 
-  const {data: postLatest} = useGetPostsLatestQuery()
+  const { data: postLatest } = useGetPostsLatestQuery()
 
   const [addPost] = useAddPostMutation()
 
-  const {data: categories} = useGetCategoryQuery()
+  const { data: categories } = useGetCategoryQuery()
 
   const {data: notifications} = useGetNotificationsQuery()
 
@@ -113,7 +111,7 @@ function ForumPage() {
     const dataPost = {
       title: titlePost, content: dataCKEditor, type: idType, category_id: idCategory
     }
-    const {data} = await addPost(dataPost)
+    const { data } = await addPost(dataPost)
     if (data.status) {
       openNotificationWithIcon('success')
       setDataCKEditor('')
@@ -122,7 +120,7 @@ function ForumPage() {
     }
   }
   return (
-    <div style={{marginTop: 10}}>
+    <div style={{ marginTop: 10 }}>
       <div className="header_forum">
         <div className="header_search">
           <Input.Search
@@ -135,7 +133,7 @@ function ForumPage() {
               width: 600,
             }}
           />
-          <Title style={{marginLeft: 50, marginTop: 10}} level={5}>Tìm kiếm phổ biến : Backend, Frontend </Title>
+          <Title style={{ marginLeft: 50, marginTop: 10 }} level={5}>Tìm kiếm phổ biến : Backend, Frontend </Title>
         </div>
       </div>
       <div className="breadcrumb_header">
@@ -147,9 +145,9 @@ function ForumPage() {
             </div>)
           },]}/>
         </div>
-        <div style={{display: "flex", alignItems: "center"}}>
-          <FieldTimeOutlined style={{fontSize: 20}}/>
-          <span style={{marginLeft: 10}}>{moment(new Date()).format('LLL')}</span>
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <FieldTimeOutlined style={{ fontSize: 20 }} />
+          <span style={{ marginLeft: 10 }}>{moment(new Date()).format('LLL')}</span>
         </div>
       </div>
       <div className="wrapper__blog--page">
@@ -162,7 +160,7 @@ function ForumPage() {
                   <Row>
                     <Col span={5}>
                       <Image width={100}
-                             src={"https://html-template.spider-themes.net/docy/img/home_support/answer.png"}/>
+                        src={"https://html-template.spider-themes.net/docy/img/home_support/answer.png"} />
                     </Col>
                     <Col span={16}>
                       <Title level={3}>
@@ -179,15 +177,15 @@ function ForumPage() {
                     type="primary"
                     color="#FFF"
                     size="large"
-                    icon={<FaEdit/>}
+                    icon={<FaEdit />}
                     onClick={() => showModal()}
                   >Thêm bài viết</Button>
                 </Col>
               </Row>
             </Card>
             <Modal width={"50%"} title="Thêm bài viết" onOk={() => handleAddPost()}
-                   onCancel={() => setIsModalOpen(false)}
-                   open={isModalOpen}>
+              onCancel={() => setIsModalOpen(false)}
+              open={isModalOpen}>
               <Row>
                 <Col span={12}>
                   <Title level={4}>Chuyên mục</Title>
@@ -212,9 +210,9 @@ function ForumPage() {
                   />
                 </Col>
                 <Title level={4}>Tiêu đề</Title>
-                <Input placeholder="Tiêu đề" onChange={(e) => handleChangeTitle(e)}/>
+                <Input placeholder="Tiêu đề" onChange={(e) => handleChangeTitle(e)} />
               </Row>
-              <Divider/>
+              <Divider />
               <CKEditor
                 editor={ClassicEditor}
                 data={dataCKEditor}
@@ -335,10 +333,10 @@ function ForumPage() {
               </Card>
             </div>
           </Col>
-          <Col span={8} style={{marginTop: 10}}>
+          <Col span={8} style={{ marginTop: 10 }}>
             <Row gutter={[0, 30]}>
               <Col span={24}>
-                <div style={{marginTop: 30}}>
+                <div style={{ marginTop: 30 }}>
                   <Card type="inner" title="Bài viết mới nhất">
                     {postTrending && postTrending.map((data, index) => {
                       const color = data?.type.type === "Thắc mắc" ? "#2db7f5" : data?.type.type === "Câu hỏi" ? "#f50" : data?.type.type === "Thảo luận" ? "#108ee9" : "#87d068"
@@ -346,11 +344,11 @@ function ForumPage() {
                         return <Skeleton/>
                       }
                       return (
-                        <div key={index} style={{marginTop: 20, marginBottom: 20}}>
+                        <div key={index} style={{ marginTop: 20, marginBottom: 20 }}>
                           <Card>
                             <Row gutter={10}>
                               <Col span={5}>
-                                <Avatar src={data?.user.avatar} size={35} alt='avatar'/>
+                                <Avatar src={data?.user.avatar} size={35} alt='avatar' />
                               </Col>
                               <Col span={19}>
                                 <Link to={`/forum/detailPost/${data.id}`}>
@@ -402,7 +400,7 @@ function ForumPage() {
                   })}
                 </Card>
               </Col>
-              <Col span={24} style={{marginBottom: 10}}>
+              <Col span={24} style={{ marginBottom: 10 }}>
                 <Title level={3}>Tags</Title>
                 <Space size={[0, 8]} wrap>
                   {options && options.map((item, index) => {
