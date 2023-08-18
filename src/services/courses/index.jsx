@@ -76,7 +76,7 @@ export const courseApi = createApi({
 
     sendQuiz: builder.mutation(({
       query: (data) => ({
-        url: 'comments/addcomment',
+        url: `course/quiz/questions/answer-check`,
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -97,5 +97,6 @@ export const {
   useGetHistoryCourseQuery,
   useCommentsCourseMutation,
   useGetListCommentQuery,
-  useGetQuizQuery
+  useGetQuizQuery,
+  useSendQuizMutation
 } = courseApi;

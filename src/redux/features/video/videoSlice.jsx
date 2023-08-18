@@ -6,15 +6,17 @@ const videoSlice = createSlice({
     videoId: '',
     totalTime: 0,
     iframe: '',
-    course_id: undefined
+    course_id: undefined,
+    quizLength: undefined
   },
   reducers: {
     videoInfo: (state, action) => {
-      const { video_id, time, iframe, course_id } = action.payload;
+      const { video_id, time, iframe, course_id, totalElement } = action.payload;
       state.videoId = video_id;
       state.totalTime = time;
       state.iframe = iframe;
-      state.course_id = course_id
+      state.course_id = course_id;
+      state.quizLength = totalElement
     }
   }
 });
