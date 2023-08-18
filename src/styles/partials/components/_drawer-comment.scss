@@ -24,6 +24,26 @@
     padding: 8px;
     border-radius: 15px;
     min-width: 360px;
+
+    h5 {
+      font-weight: 600 !important;
+      padding-bottom:5px;
+    }
+  }
+
+  .comment-list {
+    margin-bottom: 15px;
+  }
+
+  .reply-comment {
+    padding-left:30px;
+
+    button {
+      font-size: 13px;
+      &:hover {
+        background-color: transparent !important;
+      }
+    }
   }
 }
 
@@ -38,3 +58,4 @@
     border-radius: 0 20px 20px 0 !important;
   }
 }
+

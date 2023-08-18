@@ -1,17 +1,19 @@
-import { Button, Card, Col, Collapse, List, Progress, Radio, Row, Space } from 'antd';
+import { Button, Card, Col, Collapse, List, Progress, Radio, Row, Space, message } from 'antd';
 import Carousel from 'nuka-carousel';
 import { useEffect, useState } from 'react';
 import {
   AiFillCheckSquare,
   AiOutlineLeft, AiOutlineLock,
   AiOutlineVideoCamera,
+  AiOutlineComment,
+  AiOutlineRight
 } from 'react-icons/ai';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { videoInfo } from '../../../redux/features/video/videoSlice';
 import { getHistoryCourse, queryVideo } from '../../../services/base/baseQuery.jsx';
-// import { onOpen } from '../../../redux/features/comment/commentSlice';
+import { onOpen } from '../../../redux/features/comment/commentSlice';
 import {
   useGetLessonsQuery,
   useSaveHistoryCourseMutation,
@@ -24,7 +26,8 @@ function Lessons() {
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { iframe, course_id, quizLength } = useSelector((state) => state.videoState);
+  const [messageApi, contextHolder] = message.useMessage();
+  const { iframe, course_id } = useSelector((state) => state.videoState);
   const { data: lessons, isSuccess } = useGetLessonsQuery(id);
   const [saveHistoryCourse] = useSaveHistoryCourseMutation();
   const [sendQuiz] = useSendQuizMutation();
@@ -82,6 +85,7 @@ function Lessons() {
         lessons?.data?.course?.modules.map((item) => {
           item.lessons.map((lesson) => lessonIds.push(lesson.id))
         });
+        console.log(lessonIds);
         const { data } = await getHistoryCourse(course_id);
 
         let status = 0;
@@ -142,7 +146,15 @@ function Lessons() {
     const response = await sendQuiz({ answer_chooses: arrAnswers });
     if (response?.data?.data?.length == 0) {
       setErrorQuiz([])
-      return;
+      messageApi.success(
+        <div style={{ width: 300, height: 70 }}>
+          <h4 style={{ fontSize: 25, marginTop: 10, textTransform: 'capitalize' }}>
+            Chúc mừng bạn hoàn thành khóa học
+          </h4>
+        </div>, 5
+      ),
+        confetti()
+      return
     };
 
     let errors = [];
@@ -158,6 +170,7 @@ function Lessons() {
 
   return (
     <>
+      {contextHolder}
       {isSuccess && loading && (
         <>
           <DrawerComment courseId={course_id} />
@@ -291,7 +304,6 @@ function Lessons() {
                             header={
                               <div className='details-course'>
                                 <h6>{`${item.id}.${item.name}`}</h6>
-                                <span>Tổng thời gian: 20 phút</span>
                               </div>
                             }>
                             <List
@@ -312,7 +324,6 @@ function Lessons() {
                                       <h6 className='topic-link'>{item.id}.{item.name}</h6>
                                       <Row justify='start' align='middle' gutter={3} className='hours-group'>
                                         <Col><AiOutlineVideoCamera /></Col>
-                                        <Col><span>15 phút</span></Col>
                                       </Row>
                                     </Col>
                                     <Col>
@@ -337,6 +348,11 @@ function Lessons() {
               </Row>
             </div>
           </div>
+          {/* <Modal title="Basic Modal" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+            <p>Some contents...</p>
+            <p>Some contents...</p>
+            <p>Some contents...</p>
+          </Modal> */}
         </>
       )}
     </>

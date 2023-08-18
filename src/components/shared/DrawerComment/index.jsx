@@ -1,4 +1,4 @@
-import { Avatar, Button, Col, Drawer, Form, Input, Row } from 'antd';
+import { Avatar, Button, Col, Drawer, Form, Input, Row, Collapse, List } from 'antd';
 import { MdSend } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
 import { useCommentsCourseMutation, useGetListCommentQuery } from '../../../services/courses';
@@ -16,6 +16,7 @@ function DrawerComment({ courseId }) {
   const [commentsCourse] = useCommentsCourseMutation();
 
   const [filterComment, setFilterComment] = useState([]);
+  const [replyComment, setReplyComment] = useState();
 
   useEffect(() => {
     if (!isLoading) {
@@ -27,7 +28,7 @@ function DrawerComment({ courseId }) {
         if (course_id == courseId) {
           filterByIdComment.push(items)
         }
-      })
+      });
 
       setFilterComment(filterByIdComment)
     }
@@ -56,13 +57,18 @@ function DrawerComment({ courseId }) {
             <Form onFinish={sendComment}>
               <Row>
                 <Col xl={20}>
-                  <Form.Item rules={[{
-                    required: true,
-                    message: 'Nhập nội dung bình luận!'
-                  }]}
+                  <Form.Item
+                    rules={[{
+                      required: true,
+                      message: 'Nhập nội dung bình luận!'
+                    }]}
+                    // initialValue={replyComment ? replyComment : ''}
                     name='content'
                   >
-                    <Input className='comment-groups' placeholder='Nhập bình luận...' />
+                    <Input
+                      className='comment-groups'
+                      placeholder='Nhập bình luận...'
+                    />
                   </Form.Item>
                 </Col>
                 <Col xl={4}>
@@ -84,17 +90,53 @@ function DrawerComment({ courseId }) {
       >
         {
           filterComment.length !== 0 && filterComment.map((comment) => (
-            <Row key={comment.id} justify="space-between" align="top">
-              <Col flex="40px">
-                <Avatar src={<img src={avatar1} alt="avatar" />} className='avatar' />
-              </Col>
-              <Col flex="auto">
-                <div className='content'>
-                  <h5>{comment?.user?.name}</h5>
-                  <p>{comment?.content}</p>
-                </div>
-              </Col>
-            </Row>
+            <div key={comment.id} className='comment-list'>
+              <Row justify="space-between" align="top">
+                <Col flex="40px">
+                  <Avatar src={<img src={avatar1} alt="avatar" />} className='avatar' />
+                </Col>
+                <Col flex="auto">
+                  <div className='content'>
+                    <h5>{comment?.user?.name}</h5>
+                    <p>{comment?.content}</p>
+                  </div>
+                </Col>
+              </Row>
+              <div className='reply-comment'>
+                <Button
+                  type='text'
+                  onClick={() => setReplyComment(comment?.user?.name)}
+                >Trả lời
+                </Button>
+              </div>
+              {comment?.length !== 0 && (
+                <Collapse
+                  accordion
+                  expandIconPosition={'end'}
+                >
+                  <Collapse.Panel
+                    header={<h4>Xem {comment?.length} câu trả lời</h4>}
+                  >
+                    <List
+                      dataSource={comment?.replies}
+                      renderItem={(item, index) => (
+                        <Row key={index} justify="space-between" align="top">
+                          <Col flex="40px">
+                            <Avatar src={<img src={avatar1} alt="avatar" />} className='avatar' />
+                          </Col>
+                          <Col flex="auto">
+                            <div className='content'>
+                              <h5>{item?.user?.name}</h5>
+                              <p>{item?.content}</p>
+                            </div>
+                          </Col>
+                        </Row>
+                      )}
+                    />
+                  </Collapse.Panel>
+                </Collapse>
+              )}
+            </div>
           ))
         }
       </Drawer>
