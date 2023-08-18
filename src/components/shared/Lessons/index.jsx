@@ -62,18 +62,18 @@ function Lessons() {
         if (lessons) {
           const { data } = await queryVideo(lessons?.data?.video_id);
           let quizs = lessons?.data?.course?.quiz[0];
-          setQuizs(quizs)
+          !quizs ? setQuizs([]) : setQuizs(quizs);
+
           dispatch(videoInfo({
             video_id: data.id,
             time: data?.duration,
             iframe: data.embed_code,
             course_id: lessons?.data?.course_id,
-            totalElement: quizs.questions.length
           }));
           setLoading(true);
         }
       } catch (error) {
-        navigate('/login')
+        // navigate('/login')
       }
     })()
   }, [lessons]);
@@ -85,7 +85,7 @@ function Lessons() {
         lessons?.data?.course?.modules.map((item) => {
           item.lessons.map((lesson) => lessonIds.push(lesson.id))
         });
-        console.log(lessonIds);
+
         const { data } = await getHistoryCourse(course_id);
 
         let status = 0;
@@ -195,82 +195,87 @@ function Lessons() {
             <div>
               <Row>
                 <Col xl={18}>
-                  <div className='quiz-content'>
-                    <div className='box-large'>
-                      <h4>{quizs.name}</h4>
-                      {quizs?.questions.map((item, index) => (
-                        <Card
-                          title={`${index + 1}.${item.name}`}
-                          key={item.id}
-                          type='inner'
-                          className='card-list-quiz'
-                        >
-                          <Radio.Group>
-                            <Space direction="vertical">
-                              {item.answers.map((quiz) => (
-                                <Radio
-                                  key={quiz.id}
-                                  className={`content-quiz ${errorQuiz.includes(quiz.id) ? 'hight-light-error' : ''}`}
-                                  value={quiz.id}
-                                  onClick={() => handleAddQuiz(item.id, quiz.id)}
-                                >{quiz.name}
-                                </Radio>
-                              ))}
-                            </Space>
-                          </Radio.Group>
-                        </Card>
-                      ))}
-                      <div className='message-quiz'>
-                        {errorQuiz.length !== 0 && (
-                          <h5>{errorQuiz.length} Câu trả lời sai !</h5>
-                        )}
-                      </div>
-                      <Button htmlType='submit' type='primary' onClick={handleQuiz}>
-                        Gửi
-                      </Button>
-                    </div>
-                  </div>
-                  {/* <div className='side-left-video'>
-                    <div className='video-scroll'>
-                      <Row justify='center'>
-                        <div
-                          dangerouslySetInnerHTML={{ __html: iframe }}
-                          className='video-player'
-                        ></div>
-                      </Row>
-                    </div>
-                    <div className='video-info-bio'>
-                      <Row justify='space-between' align='middle'>
-                        <Col xl={20}>
-                          <h3>{lessons?.data?.name}</h3>
-                        </Col>
-                        <Col xl={3}>
-                          <Button
-                            shape="round"
-                            className='btn-action-comment'
-                            onClick={() => dispatch(onOpen(true))}
-                          >
-                            <AiOutlineComment size={20} />
-                            <span>Thêm bình luận</span>
-                          </Button>
-                        </Col>
-                      </Row>
-                      <div className='action-next'>
-                        <Row justify='space-between' align='middle'>
-                          <Col>
-                            <Button onClick={() => navigate(`/lessons/${Number(id) - 1}`)}> <AiOutlineLeft /><span>Bài trước</span></Button>
-                          </Col>
-                          <Col>
-                            <Button
-                              onClick={() => navigate(`/lessons/${Number(id) + 1}`)}
+                  {false
+                    ? (
+                      <div className='quiz-content'>
+                        <div className='box-large'>
+                          <h4>{quizs.name}</h4>
+                          {quizs?.questions.map((item, index) => (
+                            <Card
+                              title={`${index + 1}.${item.name}`}
+                              key={item.id}
+                              type='inner'
+                              className='card-list-quiz'
                             >
-                              <span>Bài tiếp</span><AiOutlineRight />
-                            </Button>
-                          </Col>
-                        </Row>
+                              <Radio.Group>
+                                <Space direction="vertical">
+                                  {item.answers.map((quiz) => (
+                                    <Radio
+                                      key={quiz.id}
+                                      className={`content-quiz ${errorQuiz.includes(quiz.id) ? 'hight-light-error' : ''}`}
+                                      value={quiz.id}
+                                      onClick={() => handleAddQuiz(item.id, quiz.id)}
+                                    >{quiz.name}
+                                    </Radio>
+                                  ))}
+                                </Space>
+                              </Radio.Group>
+                            </Card>
+                          ))}
+                          <div className='message-quiz'>
+                            {errorQuiz.length !== 0 && (
+                              <h5>{errorQuiz.length} Câu trả lời sai !</h5>
+                            )}
+                          </div>
+                          <Button htmlType='submit' type='primary' onClick={handleQuiz}>
+                            Gửi
+                          </Button>
+                        </div>
                       </div>
-                    </div>
-                  </div> */}
+                    ) : (
+                      <div className='side-left-video'>
+                        <div className='video-scroll'>
+                          <Row justify='center'>
+                            <div
+                              dangerouslySetInnerHTML={{ __html: iframe }}
+                              className='video-player'
+                            ></div>
+                          </Row>
+                        </div>
+                        <div className='video-info-bio'>
+                          <Row justify='space-between' align='middle'>
+                            <Col xl={20}>
+                              <h3>{lessons?.data?.name}</h3>
+                            </Col>
+                            <Col xl={3}>
+                              <Button
+                                shape="round"
+                                className='btn-action-comment'
+                                onClick={() => dispatch(onOpen(true))}
+                              >
+                                <AiOutlineComment size={20} />
+                                <span>Thêm bình luận</span>
+                              </Button>
+                            </Col>
+                          </Row>
+                          <div className='action-next'>
+                            <Row justify='space-between' align='middle'>
+                              <Col>
+                                <Button onClick={() => navigate(`/lessons/${Number(id) - 1}`)}> <AiOutlineLeft /><span>Bài trước</span></Button>
+                              </Col>
+                              <Col>
+                                <Button
+                                  onClick={() => navigate(`/lessons/${Number(id) + 1}`)}
+                                >
+                                  <span>Bài tiếp</span><AiOutlineRight />
+                                </Button>
+                              </Col>
+                            </Row>
+                          </div>
+                        </div>
+                      </div>
+                    )
+                  }
                 </Col>
                 <Col xl={6} className='side-right-box'>
                   <div className='carousel-theory'>

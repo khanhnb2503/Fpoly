@@ -11,12 +11,11 @@ const videoSlice = createSlice({
   },
   reducers: {
     videoInfo: (state, action) => {
-      const { video_id, time, iframe, course_id, totalElement } = action.payload;
+      const { video_id, time, iframe, course_id } = action.payload;
       state.videoId = video_id;
       state.totalTime = time;
       state.iframe = iframe;
       state.course_id = course_id;
-      state.quizLength = totalElement
     }
   }
 });
