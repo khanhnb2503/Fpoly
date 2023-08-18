@@ -1,10 +1,24 @@
+import pdfjs from 'pdfjs-dist';
 import React, { useState, useEffect } from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import { fetchPdf } from "../../../services/base/convertFilePdf";
 
-function SlideViewer() {
+export async function fetchPdf(url) {
+  const pdfDoc = await pdfjs.getDocument(url).promise;
+  const slides = [];
+
+  for (let pageNum = 1; pageNum <= pdfDoc.numPages; pageNum++) {
+    const page = await pdfDoc.getPage(pageNum);
+    const textContent = await page.getTextContent();
+    const text = textContent.items.map(item => item.str).join(' ');
+    slides.push(text);
+  }
+  return slides;
+};
+
+
+function SlideViewer({ pdfUrl }) {
   const [slides, setSlides] = useState([]);
 
   useEffect(() => {

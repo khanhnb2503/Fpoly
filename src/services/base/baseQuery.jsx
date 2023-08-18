@@ -66,6 +66,10 @@ export const getHistoryCourse = (course_id) => {
   return config.get(`course/historyCourse?course_id=${course_id}`)
 }
 
+export const getVideoByTime = (lesson_id) => {
+  return config.get(`lesson/${lesson_id}`)
+};
+
 export const getVoucher = (id) => {
   return config.get(`voucher/list-system/${id}`)
 }

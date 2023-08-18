@@ -161,6 +161,7 @@
     z-index: 2;
     top: 0;
     right: 0;
+    width: 380px;
     margin-top: 55px;
     padding: 5px 5px;
     border-left: 1px solid #b2b2b2;
@@ -280,7 +281,8 @@
   }
 }
 
-.ant-message-custom-content, .ant-message-success {
+.ant-message-custom-content,
+.ant-message-success {
   span {
     svg {
       font-size: 40px;
