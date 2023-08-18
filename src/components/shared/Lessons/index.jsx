@@ -73,7 +73,7 @@ function Lessons() {
           setLoading(true);
         }
       } catch (error) {
-        // navigate('/login')
+        navigate('/login')
       }
     })()
   }, [lessons]);
