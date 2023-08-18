@@ -1,12 +1,10 @@
-import { Button, Col, Collapse, Form, List, Progress, Row, Card, Radio } from 'antd';
+import { Button, Card, Col, Collapse, List, Progress, Radio, Row, Space } from 'antd';
 import Carousel from 'nuka-carousel';
 import { useEffect, useState } from 'react';
 import {
   AiFillCheckSquare,
   AiOutlineLeft, AiOutlineLock,
   AiOutlineVideoCamera,
-  // AiOutlineComment,
-  // AiOutlineRight
 } from 'react-icons/ai';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -16,7 +14,8 @@ import { getHistoryCourse, queryVideo } from '../../../services/base/baseQuery.j
 // import { onOpen } from '../../../redux/features/comment/commentSlice';
 import {
   useGetLessonsQuery,
-  useSaveHistoryCourseMutation
+  useSaveHistoryCourseMutation,
+  useSendQuizMutation
 } from '../../../services/courses/index.jsx';
 import { useProfileQuery } from '../../../services/users/index.jsx';
 import DrawerComment from '../DrawerComment/index.jsx';
@@ -25,9 +24,10 @@ function Lessons() {
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { iframe, course_id } = useSelector((state) => state.videoState);
+  const { iframe, course_id, quizLength } = useSelector((state) => state.videoState);
   const { data: lessons, isSuccess } = useGetLessonsQuery(id);
   const [saveHistoryCourse] = useSaveHistoryCourseMutation();
+  const [sendQuiz] = useSendQuizMutation();
   const { data: users, isFetching } = useProfileQuery();
 
   const [completeCourse, setCompleteCourse] = useState([]);
@@ -35,6 +35,8 @@ function Lessons() {
   const [progress, setProgress] = useState(false);
   const [checked, setChecked] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [errorQuiz, setErrorQuiz] = useState([]);
+  const [results, setResults] = useState([]);
 
   if (!isFetching) {
     if (!users?.id) return navigate('/login');
@@ -62,7 +64,8 @@ function Lessons() {
             video_id: data.id,
             time: data?.duration,
             iframe: data.embed_code,
-            course_id: lessons?.data?.course_id
+            course_id: lessons?.data?.course_id,
+            totalElement: quizs.questions.length
           }));
           setLoading(true);
         }
@@ -121,8 +124,36 @@ function Lessons() {
     })()
   }, [progress, iframe]);
 
-  const handleQuiz = async () => {
+  let arr = results.length > 0 ? results : [];
+  let arrAnswers;
+  const handleAddQuiz = (question, answers) => {
+    const data = { question_id: question, answer_choose: answers };
+    arr.push(data);
 
+    const filteredObjects = Object.values(arr.reduce((result, obj) => {
+      result[obj.question_id] = obj;
+      return result;
+    }, {}));
+    arrAnswers = filteredObjects
+  };
+
+  const handleQuiz = async () => {
+    setResults(arrAnswers)
+    const response = await sendQuiz({ answer_chooses: arrAnswers });
+    if (response?.data?.data?.length == 0) {
+      setErrorQuiz([])
+      return;
+    };
+
+    let errors = [];
+    arrAnswers.map((item) => {
+      const { question_id, answer_choose } = item;
+      if (response?.data?.data?.includes(question_id)) {
+        errors.push(answer_choose)
+      }
+    });
+
+    setErrorQuiz(errors)
   };
 
   return (
@@ -154,25 +185,36 @@ function Lessons() {
                   <div className='quiz-content'>
                     <div className='box-large'>
                       <h4>{quizs.name}</h4>
-                      <Form onFinish={handleQuiz} className='group-quiz'>
-                        {quizs?.questions.map((item) => (
-                          <Card
-                            title={item.name}
-                            key={item.id}
-                            type='inner'
-                            className='card-list-quiz'
-                          >
-                            {item.answers.map((quiz) => (
-                              <Radio.Group key={quiz.id}>
-                                <Radio value={quiz.id}>{quiz.name}</Radio>
-                              </Radio.Group>
-                            ))}
-                          </Card>
-                        ))}
-                        <Button htmlType='submit' type='primary'>
-                          Gửi
-                        </Button>
-                      </Form>
+                      {quizs?.questions.map((item, index) => (
+                        <Card
+                          title={`${index + 1}.${item.name}`}
+                          key={item.id}
+                          type='inner'
+                          className='card-list-quiz'
+                        >
+                          <Radio.Group>
+                            <Space direction="vertical">
+                              {item.answers.map((quiz) => (
+                                <Radio
+                                  key={quiz.id}
+                                  className={`content-quiz ${errorQuiz.includes(quiz.id) ? 'hight-light-error' : ''}`}
+                                  value={quiz.id}
+                                  onClick={() => handleAddQuiz(item.id, quiz.id)}
+                                >{quiz.name}
+                                </Radio>
+                              ))}
+                            </Space>
+                          </Radio.Group>
+                        </Card>
+                      ))}
+                      <div className='message-quiz'>
+                        {errorQuiz.length !== 0 && (
+                          <h5>{errorQuiz.length} Câu trả lời sai !</h5>
+                        )}
+                      </div>
+                      <Button htmlType='submit' type='primary' onClick={handleQuiz}>
+                        Gửi
+                      </Button>
                     </div>
                   </div>
                   {/* <div className='side-left-video'>
