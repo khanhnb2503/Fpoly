@@ -14,6 +14,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { videoInfo } from '../../../redux/features/video/videoSlice';
 import { getHistoryCourse, queryVideo } from '../../../services/base/baseQuery.jsx';
 import { onOpen } from '../../../redux/features/comment/commentSlice';
+import SlideViewer from '../SlideViewer';
+
 import {
   useGetLessonsQuery,
   useSaveHistoryCourseMutation,
@@ -27,7 +29,7 @@ function Lessons() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [messageApi, contextHolder] = message.useMessage();
-  const { iframe, course_id } = useSelector((state) => state.videoState);
+  const { iframe, course_id, document } = useSelector((state) => state.videoState);
   const { data: lessons, isSuccess } = useGetLessonsQuery(id);
   const [saveHistoryCourse] = useSaveHistoryCourseMutation();
   const [sendQuiz] = useSendQuizMutation();
@@ -69,11 +71,12 @@ function Lessons() {
             time: data?.duration,
             iframe: data.embed_code,
             course_id: lessons?.data?.course_id,
+            document: lessons?.data.document
           }));
           setLoading(true);
         }
       } catch (error) {
-        // navigate('/login')
+        navigate('/login')
       }
     })()
   }, [lessons]);
@@ -280,20 +283,7 @@ function Lessons() {
                 <Col xl={6} className='side-right-box'>
                   <div className='carousel-theory'>
                     <h4>Lý thuyết</h4>
-                    <Carousel
-                      autoplay={true}
-                      dragging={true}
-                      wrapAround={true}
-                      speed={1000}
-                      autoplayInterval={5000}
-                    >
-                      <div className='content-box'>
-                        React Player là một thư viện phát video rất linh hoạt cho các ReactJs app.
-                        Tuỳ vào cách sử dụng của bạn, thư viện này có thể phát nhiều định dạng video
-                        từ nhiều nguồn khác nhau như YouTube, Facebook, Twitch, SoundCloud, Vimeo.
-                        React Player là một thư viện phát video rất linh hoạt cho các ReactJs app.
-                      </div>
-                    </Carousel>
+                    <SlideViewer pdfUrl={document} />
                   </div>
                   <div className='content-lesson'>
                     <h4>Nội dung bài học</h4>
