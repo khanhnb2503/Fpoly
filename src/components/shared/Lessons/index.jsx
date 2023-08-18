@@ -1,21 +1,19 @@
 import { Button, Card, Col, Collapse, List, Progress, Radio, Row, Space, message } from 'antd';
-import Carousel from 'nuka-carousel';
 import { useEffect, useState } from 'react';
 import {
   AiFillCheckSquare,
-  AiOutlineLeft, AiOutlineLock,
-  AiOutlineVideoCamera,
   AiOutlineComment,
-  AiOutlineRight
+  AiOutlineLeft, AiOutlineLock,
+  AiOutlineRight,
+  AiOutlineVideoCamera
 } from 'react-icons/ai';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { videoInfo } from '../../../redux/features/video/videoSlice';
-import { getHistoryCourse, queryVideo } from '../../../services/base/baseQuery.jsx';
+import { formatTime } from '../../../common/formatTime';
 import { onOpen } from '../../../redux/features/comment/commentSlice';
-import SlideViewer from '../SlideViewer';
-
+import { videoInfo } from '../../../redux/features/video/videoSlice';
+import { getHistoryCourse, getVideoByTime, queryVideo } from '../../../services/base/baseQuery.jsx';
 import {
   useGetLessonsQuery,
   useSaveHistoryCourseMutation,
@@ -42,6 +40,9 @@ function Lessons() {
   const [loading, setLoading] = useState(false);
   const [errorQuiz, setErrorQuiz] = useState([]);
   const [results, setResults] = useState([]);
+  const [lastTime, setLastTime] = useState();
+  const [currentTimeVideo, setCurrentTimeVideo] = useState();
+  const [showQuiz, setShowQuiz] = useState(false)
 
   if (!isFetching) {
     if (!users?.id) return navigate('/login');
@@ -51,7 +52,14 @@ function Lessons() {
     if (!e.data?.source) {
       const listener = JSON.parse(e.data);
       let currentTime = 0;
-      if (listener.type === 'progress') currentTime = (listener?.data?.percent).toFixed(1);
+      if (listener.type === 'progress') {
+        let time = formatTime(listener.data.time)
+        if ((id == lastTime) && (currentTimeVideo === time)) {
+          setShowQuiz(true)
+        }
+        currentTime = (listener?.data?.percent).toFixed(1);
+      };
+
       if (currentTime >= 0.9) {
         setProgress(true);
       }
@@ -83,12 +91,23 @@ function Lessons() {
 
   useEffect(() => {
     (async () => {
+      if (lastTime) {
+        const { data: lessonId } = await getVideoByTime(lastTime);
+        const { data } = await queryVideo(lessonId?.data?.video_id);
+        setCurrentTimeVideo(formatTime(data.duration));
+      }
+    })()
+  }, [checked]);
+
+  useEffect(() => {
+    (async () => {
       if (course_id) {
         let lessonIds = [];
         lessons?.data?.course?.modules.map((item) => {
           item.lessons.map((lesson) => lessonIds.push(lesson.id))
         });
 
+        setLastTime(lessonIds.pop());
         const { data } = await getHistoryCourse(course_id);
 
         let status = 0;
@@ -167,7 +186,6 @@ function Lessons() {
         errors.push(answer_choose)
       }
     });
-
     setErrorQuiz(errors)
   };
 
@@ -198,7 +216,7 @@ function Lessons() {
             <div>
               <Row>
                 <Col xl={18}>
-                  {false
+                  {showQuiz
                     ? (
                       <div className='quiz-content'>
                         <div className='box-large'>
@@ -283,7 +301,7 @@ function Lessons() {
                 <Col xl={6} className='side-right-box'>
                   <div className='carousel-theory'>
                     <h4>Lý thuyết</h4>
-                    <SlideViewer pdfUrl={document} />
+                    {/* <SlideViewer pdfUrl={document} /> */}
                   </div>
                   <div className='content-lesson'>
                     <h4>Nội dung bài học</h4>
