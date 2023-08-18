@@ -171,7 +171,7 @@ function DetailCourse() {
                   </Button>
                 </Col>
                 <Col>
-                  {course?.data?.is_free == 1
+                  {course?.data?.studies.length > 0
                     ? (
                       <Button
                         className='button-free'

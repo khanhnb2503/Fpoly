@@ -14,7 +14,6 @@ function ListVoucher() {
   const { Text, Title, Paragraph, } = Typography
   const [listVoucher, setListVoucher] = useState([]);
 
-  console.log(listVoucher)
   useEffect( () => {
     (async () => {
       if (user?.id) {
@@ -105,8 +104,9 @@ function ListVoucher() {
               dataSource={listVoucher}
               renderItem={(item) => (
                 <List.Item>
-                  <Card title={item.unit === "Percent" ? `${item.value} %` : `${item.value} VND`} extra={moment(item.expired).format('LL')}>
+                  <Card title={item.unit === "Percent" ? `Giảm giá: ${item.value} %` : `Giảm giá: ${item.value} VND`}>
                     {item.code || "Bạn chưa có mã khuyến mãi loại này"}
+                    <div style={{marginTop: 10, fontWeight: "bold", color: "#74ACFA"}}>Ngày hết hạn: {moment(item.expired).format('L')}</div>
                   </Card>
                 </List.Item>
               )}
@@ -123,7 +123,7 @@ function ListVoucher() {
               dataSource={dataVoucher}
               renderItem={(item) => (
                 <List.Item>
-                  <Card title={item.percent + "%"} extra={
+                  <Card title={"Giảm giá: " + item.percent + "%"} extra={
                     <Popconfirm
                       title="Đổi voucher"
                       description={`Bạn có chắc chắn muốn đổi ${item.point} điểm lấy voucher này?`}
@@ -140,6 +140,8 @@ function ListVoucher() {
                       </Button>
                     </Popconfirm>
                   }>
+                    <Title level={4}>Điểm cần để đổi : {item.point}</Title>
+
                   </Card>
                 </List.Item>
               )}

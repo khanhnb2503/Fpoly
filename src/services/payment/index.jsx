@@ -3,7 +3,7 @@ import {baseQuery, baseQueryWithReauth} from "../base/baseQuery.jsx";
 export const paymentApi = createApi({
   reducerPath: 'paymentApi',
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['Payment'],
+  tagTypes: ['Payment', "Voucher"],
   endpoints: (builder) => ({
     paymentCourse: builder.mutation({
       query: (data) => ({
@@ -14,6 +14,7 @@ export const paymentApi = createApi({
         },
         body: data
       }),
+      providesTags: ['Payment']
     }),
     voucherCourse: builder.mutation({
       query: (data) => ({
@@ -24,9 +25,11 @@ export const paymentApi = createApi({
         },
         body: data
       }),
+      invalidatesTags: ['Voucher']
     }),
     listVoucher: builder.query({
       query: (id) => {`voucher/list-system/${id}`},
+      providesTags: ['Voucher']
     }),
     convertVoucher: builder.mutation({
       query: (data) => ({
@@ -37,6 +40,7 @@ export const paymentApi = createApi({
         },
         body: data
       }),
+      invalidatesTags: ['Voucher']
     }),
   })
 });
