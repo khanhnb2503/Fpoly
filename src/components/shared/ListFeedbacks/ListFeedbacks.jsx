@@ -36,6 +36,7 @@ import moment from "moment/moment.js";
 import {FaEdit} from "react-icons/fa";
 import {CKEditor} from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import {useProfileQuery} from "../../../services/users/index.jsx";
 
 const ListFeedback = () => {
   const [pageNumber, setPageNumber] = useState(1);
@@ -46,9 +47,10 @@ const ListFeedback = () => {
   const [dataCKEditor, setDataCKEditor] = useState('')
 
   const {data: categories} = useGetCategoryQuery()
-  const {data: postCate} = useGetPostsCateQuery()
-  const {data: postTrending} = useGetPostsTrendingQuery()
+  // const {data: postCate} = useGetPostsCateQuery()
+  // const {data: postTrending} = useGetPostsTrendingQuery()
   const {data: postLatest} = useGetPostsLatestQuery()
+  const {data: user} = useProfileQuery()
 
   const {data: feedbacks} = useGetFeedbacksQuery()
 
@@ -87,10 +89,10 @@ const ListFeedback = () => {
   }
   const handleAddFeedback = async () => {
     const dataFeedback = {
-      title: titlePost, content: dataCKEditor
+      title: titlePost, content: dataCKEditor, user_id: user.id
     }
     const {data} = await addFeedback(dataFeedback)
-    if (data.status) {
+    if (data?.status) {
       openNotificationWithIcon('success')
       setDataCKEditor('')
       setTitlePost('')
@@ -199,17 +201,18 @@ const ListFeedback = () => {
                   <div key={index} style={{marginTop: 20, marginBottom: 20}}>
                     <Card>
                       <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
-                        <Text ellipsis={true} style={{fontWeight: 600, fontSize: 20}}>{data.title || "Bài viết 1"}</Text>
+                        <Link to={`/forum/detailFeedback/${data.id}`}>
+                          <Text ellipsis={true}
+                                style={{fontWeight: 600, fontSize: 20}}>{data.title || "Tiêu đề góp ý"}</Text>
+                        </Link>
                         <div>
                           <span className="dateTime">{moment(data?.created_at).startOf('hour').fromNow()}</span>
                         </div>
                       </div>
                       <div>
-                        <Link to={`/forum/detailFeedback/${data.id}`}>
-                          <Text ellipsis={true} style={{marginLeft: 10, fontSize: 18, marginTop: 10}}>
-                            {data.content}
-                          </Text>
-                        </Link>
+                        <Text ellipsis={true} style={{marginLeft: 10, fontSize: 18, marginTop: 10}}>
+                          {data.content}
+                        </Text>
                       </div>
                     </Card>
                     <div>

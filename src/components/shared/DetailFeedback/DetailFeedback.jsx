@@ -11,9 +11,12 @@ import {
   Button,
   Card,
   Col,
-  Divider, message,
-  Modal, notification,
-  Pagination, Popconfirm,
+  Divider,
+  Input,
+  message,
+  Modal,
+  notification,
+  Popconfirm,
   Popover,
   Rate,
   Row,
@@ -27,27 +30,36 @@ import {handleDisplayCkeditor} from "../../../common/handleDisplayCkeditor.jsx";
 import {FaEdit, FaRocketchat, FaUserCheck} from "react-icons/fa";
 import {CKEditor} from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useProfileQuery} from "../../../services/users/index.jsx";
 import {useGetCategoryQuery} from "../../../services/courses/index.jsx";
 import Logo from "../../../../public/images/logo_ong_vang.jpg";
 
 const DetailFeedback = () => {
+  const {id} = useParams()
+  const {data: feedback, isLoading} = useGetFeedbackQuery(id)
+  const {data: postLatest} = useGetPostsLatestQuery()
+  const {data: user} = useProfileQuery()
+  const {data: categories} = useGetCategoryQuery()
+  const [updateFeedback] = useUpdateFeedbackMutation(id)
+  const [removeFeedback] = useRemoveFeedbackMutation(id)
+
   const [keyword, setKeyword] = useState('');
   const {Title, Text, Paragraph} = Typography;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [dataCKEditor, setDataCKEditor] = useState('');
   const [api, contextHolder] = notification.useNotification();
   const [openOptions, setOpenOptions] = useState(false)
+  const [titlePost, setTitlePost] = useState(feedback?.data.title);
 
-  const {id} = useParams()
-  const {data: feedback} = useGetFeedbackQuery(id)
   const {data: dataSearch} = useSearchPostQuery(keyword);
-  const {data: postLatest} = useGetPostsLatestQuery()
-  const {data: user} = useProfileQuery()
-  const {data: categories} = useGetCategoryQuery()
-  const [updateFeedback] = useUpdateFeedbackMutation(id)
-  const [removeFeedback] = useRemoveFeedbackMutation(id)
+
+  useEffect(() => {
+    if (feedback !== undefined) {
+      setTitlePost(feedback.data.title)
+    }
+  },[isLoading])
+
 
   const routes = [{
     path: '/', breadcrumbName: (<Link to={"/forum"}>
@@ -75,7 +87,9 @@ const DetailFeedback = () => {
     return last ? (<span>{route.breadcrumbName}</span>) : (<Link to={paths.join('/')}>{route.breadcrumbName}</Link>);
   }
 
-
+  const handleChangeTitle = (e) => {
+    setTitlePost(e.target.value)
+  }
   const showModal = () => {
     if (feedback.data) {
       setDataCKEditor(feedback.data.content)
@@ -88,9 +102,13 @@ const DetailFeedback = () => {
   };
 
   const handleUpdateFeedback = async () => {
-    const {data} = await updateFeedback({content: dataCKEditor, user_id: user, id: id})
-    if (data.status) {
+    const {data} = await updateFeedback({content: dataCKEditor, user_id: user.id, id: id})
+    if (data?.status) {
       openNotificationWithIcon('success', `Chỉnh sửa thành công!!`, 'Chỉnh sửa bài viết')
+      setIsModalOpen(false)
+      setDataCKEditor('')
+    } else {
+      openNotificationWithIcon('success', `Chỉnh sửa thất bại`, `${data.message}`)
       setIsModalOpen(false)
       setDataCKEditor('')
     }
@@ -104,10 +122,14 @@ const DetailFeedback = () => {
     const navigate = useNavigate()
     const confirmRemovePost = async () => {
       const {data} = await removeFeedback(id)
-      if (data.status) {
+      console.log(data)
+      const messageResponse = data?.status.message
+      if (data?.status) {
         navigate("/forum")
+        message.success('Xóa thành công');
+      } else {
+        message.error(messageResponse || "Xóa thất bại");
       }
-      message.success('Xóa thành công');
     };
 
     return (
@@ -211,7 +233,9 @@ const DetailFeedback = () => {
                     content={contentPopover}
                     onOpenChange={handleOpenChange}
                   >
-                    <MoreOutlined style={{fontSize: 30}}/>
+                    {user?.id === feedback?.data.user.id && (
+                      <MoreOutlined style={{fontSize: 30}}/>
+                    )}
                   </Popover>
                 </div>
                 <div style={{display: "flex", alignItems: "center", marginTop: 10, marginBottom: 5}}>
@@ -219,7 +243,7 @@ const DetailFeedback = () => {
                   <span className="dateTime">{moment(feedback?.data?.created_at).format('LLL')}</span>
                   <div style={{display: "flex", alignItems: "center"}}>
                     <UserOutlined/>
-                    <span style={{marginLeft: 5}}>{feedback?.data?.name || "anonymous"}</span>
+                    <span style={{marginLeft: 5}}>{feedback?.data?.user.name}</span>
                   </div>
                 </div>
                 <Card>
@@ -234,6 +258,9 @@ const DetailFeedback = () => {
                           <Modal style={{zIndex: 10}} width={"50%"} title={"Sửa góp ý"}
                                  onOk={() => handleUpdateFeedback()}
                                  onCancel={() => setIsModalOpen(false)} open={isModalOpen}>
+                            <Title level={4}>Tiêu đề</Title>
+                            <Input value={titlePost} placeholder="Tiêu đề" onChange={(e) => handleChangeTitle(e)}/>
+                            <Divider/>
                             <CKEditor
                               editor={ClassicEditor}
                               data={dataCKEditor}

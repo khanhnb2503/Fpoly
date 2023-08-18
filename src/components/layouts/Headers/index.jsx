@@ -4,7 +4,6 @@ import {IoMdNotifications} from 'react-icons/io';
 import {Link} from 'react-router-dom';
 import Loading from '../../shared/Spin';
 
-
 import Logo from '../../../../public/images/logo_ong_vang.jpg';
 import {imageUrl} from '../../../common/imageUrl';
 import {RoutesConstant} from '../../../routes';
@@ -12,8 +11,12 @@ import {useSearchQuery} from '../../../services/search';
 import {useProfileQuery} from '../../../services/users';
 import UserMenu from '../../shared/UserMenu';
 import {useGetNotificationsQuery} from "../../../services/forum/index.jsx";
+import listNotification from "../../shared/ListNotification/ListNotification.jsx";
 
 function Headers() {
+  const {data: users, isSuccess, isFetching} = useProfileQuery();
+  const {data: notifications} = useGetNotificationsQuery()
+
   const [options, setOptions] = useState([]);
   const [keyword, setKeyword] = useState('');
   const [filterHistory, setFilterHistory] = useState();
@@ -22,12 +25,18 @@ function Headers() {
   const [dataNotifications, setDataNotifications] = useState([]);
   const [list, setList] = useState([]);
 
-
-  const {data: users, isSuccess, isFetching} = useProfileQuery();
   const {data: dataSearch, isLoading} = useSearchQuery(keyword);
-  const {data: notifications} = useGetNotificationsQuery()
 
   const url = window.location.href === 'http://localhost:4000/forum' || 'http://localhost:4000/forum/detailPost' || 'http://localhost:4000/forum/detailPostforum/listPosts'
+  useEffect(() => {
+    if (notifications !== undefined) {
+      const notificationSlice = notifications.slice(0, 2)
+      setDataNotifications(notificationSlice)
+      setList(notificationSlice);
+      setInitLoading(false);
+    }
+  }, [notifications])
+
   useEffect(() => {
     if (dataSearch?.data?.courses) {
       const {courses} = dataSearch?.data;
@@ -80,34 +89,25 @@ function Headers() {
     }
   }, [dataSearch, users]);
 
-  useEffect(() => {
-    setInitLoading(false);
-    setDataNotifications(notifications);
-    setList(notifications);
-  }, [])
-
-  const count = 3
+  const count = 1
   const handleNotifications = () => {
     const onLoadMore = () => {
-      setLoading(true);
-      setList(
-        dataNotifications.concat(
-          [...new Array(count)].map(() => {
-            return (
-              {
-                loading: true,
-                title: {},
-                content: {},
-              }
-            )
-          }),
-        ),
-      );
-      const newData =  dataNotifications.concat(notifications);
-      setDataNotifications(newData);
-      setList(newData);
-      setLoading(false);
-      window.dispatchEvent(new Event('resize'));
+      setList(dataNotifications.concat(
+        [...new Array(count)].map(() => ({
+          loading: true,
+          title: {},
+          content: {},
+        })),
+      ))
+      fetch('http://143.198.91.100/api/notify/list')
+        .then((res) => res.json())
+        .then((res) => {
+          const newData = [...dataNotifications, ...res]
+          setDataNotifications(newData);
+          setList(newData);
+          setLoading(false);
+          window.dispatchEvent(new Event('resize'));
+        });
     };
 
     const loadMore =
@@ -123,7 +123,6 @@ function Headers() {
           <Button onClick={onLoadMore}>Xem thêm</Button>
         </div>
       ) : null;
-
     return (
       <List
         className="demo-loadmore-list"
@@ -136,15 +135,15 @@ function Headers() {
           >
             <Skeleton avatar title={false} loading={item.loading} active>
               <List.Item.Meta
-                title={item?.title}
-                description={item?.content}
+                title={item.title}
+                description={item.content}
               />
             </Skeleton>
           </List.Item>
         )}
       />
     )
-  }
+  };
   return (
     <div className='wrapper__header'>
       <Row align="middle" className='horizontal-header'>
@@ -225,7 +224,7 @@ function Headers() {
                   <Popover
                     placement="bottomRight"
                     title={<h4 className='title-notification'>Thông báo</h4>}
-                    content={handleNotifications()}
+                    content={() => handleNotifications()}
                     trigger="click"
                   >
                     <Badge count={notifications?.length} size="small">

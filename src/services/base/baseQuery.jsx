@@ -66,6 +66,9 @@ export const getHistoryCourse = (course_id) => {
   return config.get(`course/historyCourse?course_id=${course_id}`)
 }
 
+export const getVoucher = (id) => {
+  return config.get(`voucher/list-system/${id}`)
+}
 export const baseQuery = fetchBaseQuery({
   baseUrl: import.meta.env.VITE_BASE_URL,
   prepareHeaders: (headers) => {

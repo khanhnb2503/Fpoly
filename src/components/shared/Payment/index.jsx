@@ -5,6 +5,7 @@ import {useGetCourseQuery} from '../../../services/courses';
 import {usePaymentCourseMutation, useVoucherCourseMutation} from "../../../services/payment/index.jsx";
 import Community from "../Community";
 import PaymentForm from "../PaymentForm";
+import {setLocalStorage} from "../../../services/base/useLocalStorage.jsx";
 const Payment = () => {
   const {Title, Text} = Typography
   const {Search} = Input
@@ -64,9 +65,11 @@ const Payment = () => {
 
   const handlePayment = async () => {
     const {data} = await paymentCourse({course_id: id, amount: priceTotal})
+    if (data) {
+      setLocalStorage("course_id", id)
+    }
     window.location.replace(data.data);
   }
-
   const price = () => {
     return (
       <div>
