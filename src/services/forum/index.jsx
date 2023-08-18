@@ -81,10 +81,12 @@ export const forumApi = createApi({
         method: 'POST',
         body: id
       }),
+      invalidatesTags: ['Posts']
     }),
 
     searchPost: builder.query({
       query: (keyword) => (`postforum/search-posts?keyword=${keyword}`),
+      providesTags: ['Posts']
     }),
 
     // Comments

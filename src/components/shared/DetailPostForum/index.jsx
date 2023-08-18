@@ -58,7 +58,6 @@ const DetailPostForum = () => {
   const {data: postLatest} = useGetPostsLatestQuery()
   const {data: categories} = useGetCategoryQuery()
   const {data: dataSearch} = useSearchPostQuery(keyword);
-  console.log(post)
 
   useEffect(() => {
     if (post) {
@@ -124,7 +123,7 @@ const DetailPostForum = () => {
   const showModal = (title) => {
     setTitleModal(title)
     if (title === "Sửa bài viết") {
-      setDataCKEditor(postData?.data.content)
+      setDataCKEditor(postData?.data?.content)
     } else {
       setDataCKEditor('')
     }
@@ -289,70 +288,70 @@ const DetailPostForum = () => {
             {
               comment.chillden && comment.chillden.map(reply => {
                 return (
-                    <Row gutter={10} style={{alignItems: "center", justifyContent: "space-between", marginTop: 15}}>
-                      <Col span={2}>
-                        <div style={{textAlign: "center"}}>
-                          <Avatar src={Logo} size={35} alt='avatar'/>
-                          <div>{user?.name}</div>
-                        </div>
-                      </Col>
-                      <Col span={14}>
+                  <Row gutter={10} style={{alignItems: "center", justifyContent: "space-between", marginTop: 15}}>
+                    <Col span={2}>
+                      <div style={{textAlign: "center"}}>
+                        <Avatar src={Logo} size={35} alt='avatar'/>
+                        <div>{user?.name}</div>
+                      </div>
+                    </Col>
+                    <Col span={14}>
                        <span
                          style={{fontSize: 15, fontWeight: 500}}
                          dangerouslySetInnerHTML={{__html: handleDisplayCkeditor(reply?.content)}}
                        >
                         </span>
-                      </Col>
-                      <Col span={7}>
-                        <Row>
-                          {user?.id === comment.user_id ? (<>
-                            <Col span={14}>
-                              <Button
-                                size="small"
-                                type="primary"
-                                icon={<FaEdit/>}
-                                onClick={() => {
-                                  showModal("Chỉnh sửa")
-                                  setIdComment(comment.id)
-                                }}
-                              >
-                                Chỉnh sửa
-                              </Button>
-                            </Col>
-                            <Col span={5}>
-                              <Popconfirm
-                                title="Xóa bình luận"
-                                description="Bạn có chắc chắn muốn xóa bình luận này?"
-                                onConfirm={confirm}
-                                okText="Xóa"
-                                cancelText="Hủy"
-                              >
-                                <Button
-                                  size="small"
-                                  type="primary"
-                                  danger
-                                  icon={<FaEdit/>}
-                                >
-                                  Delete
-                                </Button>
-                              </Popconfirm>
-                            </Col>
-                          </>) : (<>
+                    </Col>
+                    <Col span={7}>
+                      <Row>
+                        {user?.id === comment.user_id ? (<>
+                          <Col span={14}>
                             <Button
                               size="small"
                               type="primary"
-                              icon={<FaRocketchat/>}
+                              icon={<FaEdit/>}
                               onClick={() => {
-                                showModal("Trả lời")
+                                showModal("Chỉnh sửa")
                                 setIdComment(comment.id)
                               }}
                             >
-                              Trả lời
+                              Chỉnh sửa
                             </Button>
-                          </>)}
-                        </Row>
-                      </Col>
-                    </Row>
+                          </Col>
+                          <Col span={5}>
+                            <Popconfirm
+                              title="Xóa bình luận"
+                              description="Bạn có chắc chắn muốn xóa bình luận này?"
+                              onConfirm={confirm}
+                              okText="Xóa"
+                              cancelText="Hủy"
+                            >
+                              <Button
+                                size="small"
+                                type="primary"
+                                danger
+                                icon={<FaEdit/>}
+                              >
+                                Delete
+                              </Button>
+                            </Popconfirm>
+                          </Col>
+                        </>) : (<>
+                          <Button
+                            size="small"
+                            type="primary"
+                            icon={<FaRocketchat/>}
+                            onClick={() => {
+                              showModal("Trả lời")
+                              setIdComment(comment.id)
+                            }}
+                          >
+                            Trả lời
+                          </Button>
+                        </>)}
+                      </Row>
+                    </Col>
+                  </Row>
                 )
               })
             }
@@ -434,7 +433,9 @@ const DetailPostForum = () => {
                     content={contentPopover}
                     onOpenChange={handleOpenChange}
                   >
-                    <MoreOutlined style={{fontSize: 30}}/>
+                    {user?.id === postData.user.id && (
+                      <MoreOutlined style={{fontSize: 30}}/>
+                    )}
                   </Popover>
                 </div>
                 <div style={{display: "flex", alignItems: "center", marginTop: 10, marginBottom: 5}}>
@@ -457,14 +458,17 @@ const DetailPostForum = () => {
                           Đánh giá bài viết
                         </Title>
                         <div style={{marginTop: 10}}>
-                          <Button
-                            size="large"
-                            type="primary"
-                            icon={<FaRocketchat/>}
-                            onClick={() => showModal("Bình luận")}
-                          >
-                            Comment
-                          </Button>
+                          {user?.id && (
+                            <Button
+                              size="large"
+                              type="primary"
+                              icon={<FaRocketchat/>}
+                              onClick={() => showModal("Bình luận")}
+                            >
+                              Comment
+                            </Button>
+                          )}
+
                           <Modal style={{zIndex: 10}} width={"50%"} title={titleModal} onOk={() => handleCommentPost()}
                                  onCancel={() => setIsModalOpen(false)} open={isModalOpen}>
                             <CKEditor
