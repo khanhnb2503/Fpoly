@@ -33,8 +33,9 @@ import {
 import {useGetCategoryQuery} from "../../../services/courses/index.jsx";
 import {FieldTimeOutlined, FolderOpenOutlined, HomeOutlined} from "@ant-design/icons";
 import moment from "moment";
-import {Link} from "react-router-dom"
+import {Link, useNavigate} from "react-router-dom"
 import CateHomePage from "../CateHomePage/CateHomePage.jsx";
+import {useProfileQuery} from "../../../services/users/index.jsx";
 
 function ForumPage() {
   const { Title, Text } = Typography;
@@ -52,6 +53,8 @@ function ForumPage() {
 
   const { data: postLatest } = useGetPostsLatestQuery()
 
+  const {data: user} = useProfileQuery()
+
   const [addPost] = useAddPostMutation()
 
   const { data: categories } = useGetCategoryQuery()
@@ -61,7 +64,12 @@ function ForumPage() {
   const {data: getPostsByCate} = useGetPostsCateQuery()
 
   const {data: feedbacks} = useGetFeedbacksQuery()
+
+  const navigate = useNavigate()
   const showModal = () => {
+    if (!user) {
+      navigate('/login')
+    }
     setIsModalOpen(true);
   };
 

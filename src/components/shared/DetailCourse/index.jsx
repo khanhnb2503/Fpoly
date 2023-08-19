@@ -1,12 +1,12 @@
-import { Button, Col, Collapse, List, Modal, Row, Typography } from 'antd';
-import { useEffect, useState } from 'react';
-import { AiOutlineSafety, AiOutlineVideoCamera } from 'react-icons/ai';
-import { useNavigate, useParams } from 'react-router-dom';
-import { imageUrl } from "../../../common/imageUrl";
-import { queryVideo } from '../../../services/base/baseQuery';
-import { setLocalStorage } from '../../../services/base/useLocalStorage';
-import { useGetCourseQuery, useSubcribeCourseMutation } from '../../../services/courses/index.jsx';
-import { useProfileQuery } from '../../../services/users';
+import {Button, Col, Collapse, List, Modal, Row, Typography} from 'antd';
+import {useEffect, useState} from 'react';
+import {AiOutlineSafety, AiOutlineVideoCamera} from 'react-icons/ai';
+import {useNavigate, useParams} from 'react-router-dom';
+import {imageUrl} from "../../../common/imageUrl";
+import {queryVideo} from '../../../services/base/baseQuery';
+import {setLocalStorage} from '../../../services/base/useLocalStorage';
+import {useGetCourseQuery, useSubcribeCourseMutation} from '../../../services/courses/index.jsx';
+import {useProfileQuery} from '../../../services/users';
 import Community from '../Community/index.jsx';
 import _ from 'lodash';
 
@@ -21,8 +21,8 @@ function DetailCourse() {
   const [isFreeCourse, setIsFreeCourse] = useState(false);
 
   const [subcribeCourse] = useSubcribeCourseMutation();
-  const { data: course, isSuccess } = useGetCourseQuery(id);
-  const { data: users } = useProfileQuery();
+  const {data: course, isSuccess} = useGetCourseQuery(id);
+  const {data: users} = useProfileQuery();
 
   const handleSubcribeCourse = async () => {
     if (!id || !users?.id) {
@@ -30,10 +30,8 @@ function DetailCourse() {
       navigate('/login')
     } else {
       const {data} = await subcribeCourse({course_id: id});
-      if (data.success) {
-        let lesson_id = course?.data?.modules[0]?.lessons[0]?.id;
-        navigate(`/lessons/${lesson_id}`)
-      }
+      let lesson_id = course?.data?.modules[0]?.lessons[0]?.id;
+      navigate(`/lessons/${lesson_id}`)
     }
   };
 
@@ -50,7 +48,7 @@ function DetailCourse() {
     try {
       (async () => {
         if (videoId) {
-          const { data } = await queryVideo(videoId);
+          const {data} = await queryVideo(videoId);
           setVideos(data);
           setLoading(true);
         }
@@ -77,7 +75,8 @@ function DetailCourse() {
       let defaultFree = course?.data?.is_free == 0 ? true : false;
       setIsFreeCourse(defaultFree)
       return;
-    };
+    }
+    ;
 
     if (course, users?.id) {
       let defaultFree = course?.data?.is_free == 0 ? true : false;
@@ -116,7 +115,7 @@ function DetailCourse() {
                     {value.is_trial_lesson === 1 &&
                       (<Row justify='space-between' align='middle'>
                         <Col xl={20}><h6>{value.name}</h6></Col>
-                        <Col xl={2}><AiOutlineVideoCamera /></Col>
+                        <Col xl={2}><AiOutlineVideoCamera/></Col>
                       </Row>)
                     }
                   </div>
@@ -206,7 +205,7 @@ function DetailCourse() {
                         shape='round'
                         size={'large'}
                         onClick={handleSubcribeCourse}
-                      >Đăng kí khóa học
+                      >Vào học
                       </Button>
                     )
                   }
