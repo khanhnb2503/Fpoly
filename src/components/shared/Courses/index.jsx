@@ -69,6 +69,7 @@ function Courses() {
       setLoading(true);
     }
   }, [courses, users, isFetching]);
+  // window.location.reload(false);
 
   return (
     <div className="wrapper__courses">

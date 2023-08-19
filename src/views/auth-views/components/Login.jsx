@@ -1,5 +1,5 @@
 
-import { Button, Col, Form, Input, Row, Typography } from 'antd';
+import { Button, Col, Form, Input, Row, Typography, notification } from 'antd';
 import { useEffect, useState } from 'react';
 import { AiOutlineGithub, AiOutlineLock, AiOutlineUser } from 'react-icons/ai';
 import { FcGoogle } from 'react-icons/fc';
@@ -18,20 +18,34 @@ function Login() {
   const navigate = useNavigate();
   const [message, setMessage] = useState('');
   const [courses, setCourses] = useState(null);
+  const [usersCurrent, setUsersCurrent] = useState();
   const [authLogin, { isLoading }] = useAuthLoginMutation();
   const [subcribeCourse] = useSubcribeCourseMutation();
+  const [api, contextHolder] = notification.useNotification();
 
   const handleLogin = async (values) => {
     const { data, error } = await authLogin(values);
+    if (error) {
+      api.error({
+        description: 'Tài khoản hoặc mật khẩu không đúng!',
+      });
+      return;
+    };
+
     if (data) {
+      api.success({
+        description: 'Đăng nhập thành công!',
+      });
       const { access_token, refresh_token } = data;
       setLocalStorage('access_token', access_token);
       setLocalStorage('refresh_token', refresh_token);
     };
 
     if (!courses) {
-      navigate('/')
-      location.reload();
+      setTimeout(() => {
+        navigate('/')
+        location.reload();
+      }, 3000)
       return;
     };
 
@@ -60,6 +74,7 @@ function Login() {
 
   return (
     <>
+      {contextHolder}
       <Loading loading={isLoading} size='large'>
         <div className='wrapper__login' style={backgroundStyles}>
           <Row justify='center' align='middle' className='min-vh-100'>

@@ -70,6 +70,11 @@ export const getVideoByTime = (lesson_id) => {
   return config.get(`lesson/${lesson_id}`)
 };
 
+export const profile = () => {
+  return config.get(`user`)
+};
+
+
 export const getVoucher = (id) => {
   return config.get(`voucher/list-system/${id}`)
 }

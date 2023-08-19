@@ -1,4 +1,4 @@
-import { Button, Col, Form, Input, Row, Typography } from 'antd';
+import { Button, Col, Form, Input, Row, Typography, notification } from 'antd';
 import { AiOutlineLock, AiOutlineMail, AiOutlineUser } from 'react-icons/ai';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -16,20 +16,33 @@ function Register() {
 	const navigate = useNavigate();
 	const [courses, setCourses] = useState(null);
 
+	const [api, contextHolder] = notification.useNotification();
 	const [authRegister, { isLoading }] = useAuthRegisterMutation();
 	const [subcribeCourse] = useSubcribeCourseMutation();
 
 	const handleRegister = async (values) => {
-		const { data, error } = await authRegister(values);
+		const { error, data } = await authRegister(values);
+		if (error) {
+			api.error({
+				description: 'Tài khoản người dùng đã tồn tại!',
+			});
+			return;
+		};
+
 		if (data) {
+			api.success({
+				description: 'Tạo tài khoản thành công!',
+			});
 			const { access_token, refresh_token } = data;
 			setLocalStorage('access_token', access_token);
 			setLocalStorage('refresh_token', refresh_token);
 		};
 
 		if (!courses) {
-			navigate('/')
-			location.reload();
+			setTimeout(() => {
+				navigate('/')
+				location.reload();
+			}, 3000);
 			return;
 		};
 
@@ -58,6 +71,7 @@ function Register() {
 
 	return (
 		<>
+			{contextHolder}
 			<Loading loading={isLoading} size='large'>
 				<div className='wrapper__register' style={backgroundStyles}>
 					<Row justify='center' align='middle' className='min-vh-100'>
