@@ -27,7 +27,7 @@
 
     h5 {
       font-weight: 600 !important;
-      padding-bottom:5px;
+      padding-bottom: 5px;
     }
   }
 
@@ -35,11 +35,16 @@
     margin-bottom: 15px;
   }
 
+  .comment-children {
+    margin-left: 40px;
+  }
+
   .reply-comment {
-    padding-left:30px;
+    padding-left: 30px;
 
     button {
       font-size: 13px;
+
       &:hover {
         background-color: transparent !important;
       }
@@ -58,4 +63,3 @@
     border-radius: 0 20px 20px 0 !important;
   }
 }
-

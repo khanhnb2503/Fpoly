@@ -1,47 +1,54 @@
 import pdfjs from 'pdfjs-dist';
-import React, { useState, useEffect } from 'react';
-import Slider from 'react-slick';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
+import React, { useEffect, useState } from 'react';
+import { Carousel } from 'react-responsive-carousel';
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
-export async function fetchPdf(url) {
-  const pdfDoc = await pdfjs.getDocument(url).promise;
-  const slides = [];
+async function extractPdfPagesToImages(pdfUrl) {
+  console.log(pdfUrl)
+  const pdf = await pdfjs.getDocument(pdfUrl).promise;
+  const images = [];
 
-  for (let pageNum = 1; pageNum <= pdfDoc.numPages; pageNum++) {
-    const page = await pdfDoc.getPage(pageNum);
-    const textContent = await page.getTextContent();
-    const text = textContent.items.map(item => item.str).join(' ');
-    slides.push(text);
+  for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber++) {
+    const page = await pdf.getPage(pageNumber);
+    const viewport = page.getViewport({ scale: 1.0 });
+    const canvas = document.createElement('canvas');
+    const canvasContext = canvas.getContext('2d');
+
+    canvas.width = viewport.width;
+    canvas.height = viewport.height;
+
+    const renderContext = {
+      canvasContext,
+      viewport,
+    };
+    await page.render(renderContext).promise;
+    images.push(canvas.toDataURL('image/jpeg'));
   }
-  return slides;
-};
-
-
-function SlideViewer({ pdfUrl }) {
-  const [slides, setSlides] = useState([]);
-
-  useEffect(() => {
-    fetchPdf(pdfUrl).then(pdfSlides => setSlides(pdfSlides));
-  }, [pdfUrl]);
-
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1
-  };
-
-  return (
-    <Slider {...settings}>
-      {slides.map((slide, index) => (
-        <div key={index}>
-          <p>{slide}</p>
-        </div>
-      ))}
-    </Slider>
-  );
+  return images;
 }
 
-export default SlideViewer;
+
+function PdfSlider({ pdfUrl }) {
+  const [images, setImages] = useState([]);
+
+  useEffect(() => {
+    async function fetchImages() {
+      const extractedImages = await extractPdfPagesToImages(pdfUrl);
+      setImages(extractedImages);
+    }
+
+    fetchImages();
+  }, [pdfUrl]);
+
+  return (
+    <Carousel>
+      {images.map((imageDataUrl, index) => (
+        <div key={index}>
+          <img src={imageDataUrl} alt={`Page ${index + 1}`} />
+        </div>
+      ))}
+    </Carousel>
+  );
+};
+
+export default PdfSlider

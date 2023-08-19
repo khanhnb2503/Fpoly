@@ -1,12 +1,12 @@
-import { Avatar, Button, Col, Drawer, Form, Input, Row, Collapse, List } from 'antd';
+import { Avatar, Button, Col, Drawer, Form, Input, Row } from 'antd';
 import { MdSend } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
 import { useCommentsCourseMutation, useGetListCommentQuery } from '../../../services/courses';
 import { useProfileQuery } from '../../../services/users/index.jsx';
 
+import { useEffect, useState } from 'react';
 import avatar1 from '../../../../public/images/images.jfif';
 import { onClose } from '../../../redux/features/comment/commentSlice';
-import { useEffect, useState } from 'react';
 
 function DrawerComment({ courseId }) {
   const dispatch = useDispatch();
@@ -41,13 +41,12 @@ function DrawerComment({ courseId }) {
       content: data.content,
       comment_id: null
     })
-    console.log(res)
   };
 
   return (
     <div>
       <Drawer
-        width={450}
+        width={500}
         placement="right"
         className='wrapper__drawer'
         onClose={() => dispatch(onClose(false))}
@@ -110,31 +109,19 @@ function DrawerComment({ courseId }) {
                 </Button>
               </div>
               {comment?.length !== 0 && (
-                <Collapse
-                  accordion
-                  expandIconPosition={'end'}
-                >
-                  <Collapse.Panel
-                    header={<h4>Xem {comment?.length} câu trả lời</h4>}
-                  >
-                    <List
-                      dataSource={comment?.replies}
-                      renderItem={(item, index) => (
-                        <Row key={index} justify="space-between" align="top">
-                          <Col flex="40px">
-                            <Avatar src={<img src={avatar1} alt="avatar" />} className='avatar' />
-                          </Col>
-                          <Col flex="auto">
-                            <div className='content'>
-                              <h5>{item?.user?.name}</h5>
-                              <p>{item?.content}</p>
-                            </div>
-                          </Col>
-                        </Row>
-                      )}
-                    />
-                  </Collapse.Panel>
-                </Collapse>
+                comment.replies.map((item, index) => (
+                  <Row key={index} justify="space-between" align="top" className='comment-children'>
+                    <Col flex="40px">
+                      <Avatar src={<img src={avatar1} alt="avatar" />} className='avatar' />
+                    </Col>
+                    <Col flex="auto">
+                      <div className='content'>
+                        <h5>{item?.user?.name}</h5>
+                        <p>{item?.content}</p>
+                      </div>
+                    </Col>
+                  </Row>
+                ))
               )}
             </div>
           ))
