@@ -122,7 +122,6 @@ const DetailFeedback = () => {
     const navigate = useNavigate()
     const confirmRemovePost = async () => {
       const {data} = await removeFeedback(id)
-      console.log(data)
       const messageResponse = data?.status.message
       if (data?.status) {
         navigate("/forum")

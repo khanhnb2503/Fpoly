@@ -139,7 +139,7 @@ const DetailPostForum = () => {
         }
       }
       if (titleModal === "Trả lời") {
-        const {data} = await replyComment({content: dataCKEditor, parent_id: idComment, post_id: id})
+        const {data} = await replyComment({content: dataCKEditor, parent_id: idComment, post_id: id, user_id: user?.id})
         if (data.status) {
           openNotificationWithIcon('success', `Trả lời thành công!!`, 'Trả lời bình luận')
         }
@@ -236,7 +236,7 @@ const DetailPostForum = () => {
             </Col>
             <Col span={7} style={{display: "flex"}}>
               <Row>
-                {user?.id === comment.user_id ? (<>
+                {user?.id === comment.user_id.id ? (<>
                   <Col span={14}>
                     <Button
                       size="small"
@@ -304,7 +304,8 @@ const DetailPostForum = () => {
                     </Col>
                     <Col span={7}>
                       <Row>
-                        {user?.id === comment.user_id ? (<>
+                        {user?.id === reply.user_id ? (
+                          <>
                           <Col span={14}>
                             <Button
                               size="small"

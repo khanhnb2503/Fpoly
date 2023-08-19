@@ -13,6 +13,7 @@ function ListVoucher() {
   const {data: user, isLoading} = useProfileQuery()
   const { Text, Title, Paragraph, } = Typography
   const [listVoucher, setListVoucher] = useState([]);
+  console.log(user)
 
   useEffect( () => {
     (async () => {
@@ -37,17 +38,17 @@ function ListVoucher() {
     {
       id: 1,
       percent: 10,
-      point: 50
+      point: 500
     },
     {
       id: 2,
       percent: 20,
-      point: 100
+      point: 1000
     },
     {
       id: 3,
       percent: 30,
-      point: 150
+      point: 1500
     }
   ]
 
