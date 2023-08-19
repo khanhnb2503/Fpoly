@@ -79,9 +79,8 @@ function DetailCourse() {
     };
 
     if (course, users?.id) {
-      const { studies } = course?.data?.studies;
       let defaultFree = course?.data?.is_free == 0 ? true : false;
-      let existUserInCourse = studies.some((item) => item.user_id == users.id);
+      let existUserInCourse = course?.data?.studies.some((item) => item.user_id == users.id);
       if (defaultFree && !existUserInCourse) setIsFreeCourse(true)
     }
   }, [course]);

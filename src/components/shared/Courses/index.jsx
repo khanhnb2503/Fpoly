@@ -58,7 +58,7 @@ function Courses() {
           let existLesson = course;
           const checkExistUserInCourse = studies.some((item) => item.user_id == users.id);
           const checkExistCourseId = mapHistory.get(course.id);
-          if (checkExistCourseId && checkExistUserInCourse) {
+          if (checkExistCourseId) {
             existLesson = { ...course, completed: checkExistCourseId.lessonId }
           };
           arrCourse.push(existLesson)

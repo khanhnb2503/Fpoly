@@ -4,7 +4,6 @@ import {
   AiFillCheckSquare,
   AiOutlineComment,
   AiOutlineLeft, AiOutlineLock,
-  AiOutlineRight,
   AiOutlineVideoCamera
 } from 'react-icons/ai';
 import { useDispatch, useSelector } from 'react-redux';
@@ -287,20 +286,6 @@ function Lessons() {
                               </Button>
                             </Col>
                           </Row>
-                          <div className='action-next'>
-                            <Row justify='space-between' align='middle'>
-                              <Col>
-                                <Button onClick={() => navigate(`/lessons/${Number(id) - 1}`)}> <AiOutlineLeft /><span>Bài trước</span></Button>
-                              </Col>
-                              <Col>
-                                <Button
-                                  onClick={() => navigate(`/lessons/${Number(id) + 1}`)}
-                                >
-                                  <span>Bài tiếp</span><AiOutlineRight />
-                                </Button>
-                              </Col>
-                            </Row>
-                          </div>
                         </div>
                       </div>
                     )
