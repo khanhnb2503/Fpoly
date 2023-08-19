@@ -16,6 +16,19 @@ export const paymentApi = createApi({
       }),
       providesTags: ['Payment']
     }),
+
+    paymentCourseTransfer: builder.mutation({
+      query: (data) => ({
+        url: "course/register-course",
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: data
+      }),
+      invalidatesTags: ['Payment']
+    }),
+
     voucherCourse: builder.mutation({
       query: (data) => ({
         url: "voucher/checkVoucher",
@@ -45,4 +58,4 @@ export const paymentApi = createApi({
   })
 });
 
-export const { usePaymentCourseMutation, useVoucherCourseMutation, useGetStatusPaymentQuery, useListVoucherQuery ,useConvertVoucherMutation } = paymentApi;
+export const { usePaymentCourseMutation, useVoucherCourseMutation, useGetStatusPaymentQuery, useListVoucherQuery ,useConvertVoucherMutation, usePaymentCourseTransferMutation } = paymentApi;

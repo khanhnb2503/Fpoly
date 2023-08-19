@@ -2,15 +2,22 @@ import {Button, Card, Col, Input, List, Modal, Row, Statistic, Typography} from 
 import {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import {useGetCourseQuery} from '../../../services/courses';
-import {usePaymentCourseMutation, useVoucherCourseMutation} from "../../../services/payment/index.jsx";
+import {
+  usePaymentCourseMutation,
+  usePaymentCourseTransferMutation,
+  useVoucherCourseMutation
+} from "../../../services/payment/index.jsx";
 import Community from "../Community";
 import PaymentForm from "../PaymentForm";
 import {setLocalStorage} from "../../../services/base/useLocalStorage.jsx";
+import {useProfileQuery} from "../../../services/users/index.jsx";
 const Payment = () => {
   const {Title, Text} = Typography
   const {Search} = Input
   const {id} = useParams()
   const {data: course} = useGetCourseQuery(id)
+  const { data: user } = useProfileQuery();
+
 
   const [voucherCourse] = useVoucherCourseMutation()
   const dataInfor = [
@@ -28,9 +35,11 @@ const Payment = () => {
   const [textDiscount, setTextDiscount] = useState('');
   const [status, setStatus] = useState(false);
   const [priceTotal, setPriceTotal] = useState(course?.data?.price);
+  const [codeVoucher, setCodeVoucher] = useState('');
   const [discountPrice, setDiscountPrice] = useState(0);
 
   const [paymentCourse, loading] = usePaymentCourseMutation()
+  const [paymentCourseTransfer] = usePaymentCourseTransferMutation()
 
   const disable = !!discountPrice
   const showModal = () => {
@@ -44,7 +53,7 @@ const Payment = () => {
 
   const handleCheckDiscount = async (codeDiscount) => {
     setIsLoading(true)
-    const {data} = await voucherCourse({voucher: codeDiscount})
+    const {data} = await voucherCourse({user_id: user.id ,code: codeDiscount})
     if (!data.status) {
       setStatus(data.status)
       setTimeout(() => {
@@ -62,9 +71,12 @@ const Payment = () => {
       }, 2000)
     }
   }
-
+  const handleTransfer = async () => {
+    const {data} = await paymentCourseTransfer({course_id: id, amount: priceTotal, voucher_code: codeVoucher || ''})
+    showModal()
+  }
   const handlePayment = async () => {
-    const {data} = await paymentCourse({course_id: id, amount: priceTotal})
+    const {data} = await paymentCourse({course_id: id, amount: priceTotal })
     if (data) {
       setLocalStorage("course_id", id)
     }
@@ -138,7 +150,7 @@ const Payment = () => {
                     loading={isLoadingPay}
                     className="btn-bank color-text"
                     size={"large"}
-                    onClick={() => showModal()}
+                    onClick={() => handleTransfer()}
                   >Thanh toán chuyển khoản</Button>
                 </Col>
               </Row>

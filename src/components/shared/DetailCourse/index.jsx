@@ -8,10 +8,11 @@ import { setLocalStorage } from '../../../services/base/useLocalStorage';
 import { useGetCourseQuery, useSubcribeCourseMutation } from '../../../services/courses/index.jsx';
 import { useProfileQuery } from '../../../services/users';
 import Community from '../Community/index.jsx';
+import _ from 'lodash';
 
 function DetailCourse() {
-  const { id } = useParams();
-  const { Title, Text } = Typography;
+  const {id} = useParams();
+  const {Title, Text} = Typography;
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -28,7 +29,7 @@ function DetailCourse() {
       setLocalStorage('hd-course', course.data);
       navigate('/login')
     } else {
-      const { data } = await subcribeCourse({ course_id: id });
+      const {data} = await subcribeCourse({course_id: id});
       if (data.success) {
         let lesson_id = course?.data?.modules[0]?.lessons[0]?.id;
         navigate(`/lessons/${lesson_id}`)
@@ -100,7 +101,7 @@ function DetailCourse() {
             className='video-trial-content'
           >
             <div
-              dangerouslySetInnerHTML={{ __html: videos.embed_code }}
+              dangerouslySetInnerHTML={{__html: videos.embed_code}}
               className='video-player-modal'
             ></div>
             <h4>Video học thử miễn phí</h4>
@@ -128,7 +129,7 @@ function DetailCourse() {
               <div className='details'>
                 <h5>{course.data?.name}</h5>
                 <div
-                  dangerouslySetInnerHTML={{ __html: course.data?.description }}
+                  dangerouslySetInnerHTML={{__html: course.data?.description}}
                   className='video-player-modal'
                 ></div>
                 <Title
@@ -140,18 +141,18 @@ function DetailCourse() {
                   renderItem={(item, index) => (
                     <List.Item>
                       <List.Item.Meta
-                        avatar={<AiOutlineSafety size={20} />}
+                        avatar={<AiOutlineSafety size={20}/>}
                         title={<p>{item.name}</p>}
                       />
                     </List.Item>
-                  )} />
+                  )}/>
                 <Row justify='space-between' className='list-description'>
                   <Col>
                     <Title level={3}>Nội dung khóa học: </Title>
                   </Col>
                 </Row>
                 <Row className='content'>
-                  <Collapse accordion size={'large'} style={{ width: '100%' }} expandIconPosition={'end'}>
+                  <Collapse accordion size={'large'} style={{width: '100%'}} expandIconPosition={'end'}>
                     {course.data.modules.length > 0 && course.data.modules.map(item => (
                       <Collapse.Panel key={item.id} header={<h6>{item.name}</h6>}>
                         <List
@@ -159,23 +160,23 @@ function DetailCourse() {
                           renderItem={(item, index) => (
                             <List.Item>
                               <List.Item.Meta
-                                avatar={<AiOutlineSafety />}
+                                avatar={<AiOutlineSafety/>}
                                 title={<p>{item.name}</p>}
                               />
                             </List.Item>
-                          )} />
+                          )}/>
                       </Collapse.Panel>
                     ))}
                   </Collapse>
                 </Row>
                 <Row justify='center'>
-                  <Community />
+                  <Community/>
                 </Row>
               </div>
             </Col>
             <Col xl={9} className='thumbnail'>
               <div className='reviewer-course'>
-                <img src={`${imageUrl}${course.data?.image}`} alt='' />
+                <img src={`${imageUrl}${course.data?.image}`} alt=''/>
               </div>
               <Row justify='space-evenly' className='content'>
                 <Col>

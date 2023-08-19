@@ -48,8 +48,7 @@ const PaymentForm = ({setIsModalOpen,data, priceTotal, price}) => {
                          value={priceTotal}/>
             </div>
           </Card>
-          <Button loading={loading} onClick={() => handleCheckPayment()} className="btn-payment">Kiểm tra thanh
-            toán</Button>
+          <Button loading={loading} onClick={() => handleCheckPayment()} className="btn-payment">Đã chuyển khoản thành công</Button>
           {!status && (
             <Title style={{color: "red"}} level={3}>{textPayment}</Title>
           )}
