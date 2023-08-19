@@ -21,6 +21,7 @@ import {
 } from '../../../services/courses/index.jsx';
 import { useProfileQuery } from '../../../services/users/index.jsx';
 import DrawerComment from '../DrawerComment/index.jsx';
+import PdfSlider from '../SlideViewer';
 
 function Lessons() {
   const { id } = useParams();
@@ -43,6 +44,7 @@ function Lessons() {
   const [lastTime, setLastTime] = useState();
   const [currentTimeVideo, setCurrentTimeVideo] = useState();
   const [showQuiz, setShowQuiz] = useState(false)
+  const [completeRate, setCompleteRate] = useState();
 
   if (!isFetching) {
     if (!users?.id) return navigate('/login');
@@ -103,13 +105,15 @@ function Lessons() {
     (async () => {
       if (course_id) {
         let lessonIds = [];
+        let endLessonIds = [];
         lessons?.data?.course?.modules.map((item) => {
           item.lessons.map((lesson) => lessonIds.push(lesson.id))
+          item.lessons.map((lesson) => endLessonIds.push(lesson.id))
         });
 
-        setLastTime(lessonIds.pop());
+        setLastTime(endLessonIds.pop());
         const { data } = await getHistoryCourse(course_id);
-
+        setCompleteRate(data.complete_rate)
         let status = 0;
         let ids = [];
         let nextLesson = [];
@@ -138,19 +142,22 @@ function Lessons() {
             let index = lessonIds[nextLesson.length];
             setChecked((state) => state.includes(Number(id)) ? [...state, index] : [...state])
           }
-          // return await saveHistoryCourse({ course_id: course_id, lesson_id: id, status: status });
-          return;
+          const resHistory = await saveHistoryCourse({ course_id: course_id, lesson_id: id, status: status });
+          setCompleteRate(resHistory.data.complete_rate)
+          return
         };
 
         setCompleteCourse((state) => !state.includes(Number(id)) ? [...state, Number(id)] : [...state]);
         let index = lessonIds[nextLesson.length];
         setChecked((state) => state.includes(Number(id)) ? [...state, index] : [...state]);
-        // return await saveHistoryCourse({ course_id: course_id, lesson_id: id, status: 1 });
+        const historyNew = await saveHistoryCourse({ course_id: course_id, lesson_id: id, status: 1 });
+        setCompleteRate(historyNew.data.complete_rate)
+        return;
       }
     })()
   }, [progress, iframe]);
 
-  let arr = results.length > 0 ? results : [];
+  let arr = results?.length > 0 ? results : [];
   let arrAnswers;
   const handleAddQuiz = (question, answers) => {
     const data = { question_id: question, answer_choose: answers };
@@ -168,6 +175,7 @@ function Lessons() {
     const response = await sendQuiz({ answer_chooses: arrAnswers });
     if (response?.data?.data?.length == 0) {
       setErrorQuiz([])
+      setResults(arrAnswers)
       messageApi.success(
         <div style={{ width: 300, height: 70 }}>
           <h4 style={{ fontSize: 25, marginTop: 10, textTransform: 'capitalize' }}>
@@ -207,7 +215,7 @@ function Lessons() {
                   <Row justify='end' align='middle' gutter={10} className='progress-learn'>
                     <Col><span>Tiến độ</span></Col>
                     <Col>
-                      <Progress size={40} type="circle" percent={15} />
+                      <Progress size={40} type="circle" percent={completeRate} />
                     </Col>
                   </Row>
                 </Col>
@@ -301,7 +309,7 @@ function Lessons() {
                 <Col xl={6} className='side-right-box'>
                   <div className='carousel-theory'>
                     <h4>Lý thuyết</h4>
-                    {/* <SlideViewer pdfUrl={document} /> */}
+                    <PdfSlider pdfUrl={document} />
                   </div>
                   <div className='content-lesson'>
                     <h4>Nội dung bài học</h4>

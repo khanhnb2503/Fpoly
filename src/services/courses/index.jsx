@@ -5,7 +5,7 @@ import { baseQuery } from '../base/baseQuery';
 export const courseApi = createApi({
   reducerPath: 'courseApi',
   baseQuery: baseQuery,
-  tagTypes: ['Courses', "Category"],
+  tagTypes: ['Courses', "Category", "Comments"],
   endpoints: (builder) => ({
     getCourses: builder.query({
       query: () => 'course/category-course',
@@ -16,6 +16,7 @@ export const courseApi = createApi({
       query: () => `course/category-course`,
       providesTags: ['Category']
     }),
+
     getCourse: builder.query({
       query: (id) => `course/${id}`,
       providesTags: ['Courses']
@@ -50,8 +51,14 @@ export const courseApi = createApi({
           'Content-Type': 'application/json',
         },
         body: data,
-      })
+      }),
+      invalidatesTags: ['Courses']
     })),
+
+    getListComment: builder.query({
+      query: () => `comments/list`,
+      providesTags: ['Courses']
+    }),
 
     commentsCourse: builder.mutation(({
       query: (data) => ({
@@ -61,13 +68,9 @@ export const courseApi = createApi({
           'Content-Type': 'application/json',
         },
         body: data,
-      })
+      }),
+      invalidatesTags: ['Courses']
     })),
-
-    getListComment: builder.query({
-      query: () => `comments/list`,
-      providesTags: ['Courses']
-    }),
 
     getQuiz: builder.query({
       query: (id) => `course/quiz/${id}`,
@@ -82,7 +85,8 @@ export const courseApi = createApi({
           'Content-Type': 'application/json',
         },
         body: data,
-      })
+      }),
+      invalidatesTags: ['Courses']
     })),
   })
 });

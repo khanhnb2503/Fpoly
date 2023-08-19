@@ -9,10 +9,9 @@ import { useProfileQuery } from '../../../services/users';
 
 function Courses() {
   const navigate = useNavigate();
-  const [complete, setComplete] = useState(false);
   const [loading, setLoading] = useState(false);
   const [filterHistory, setFilterHistory] = useState();
-  const { data: courses, isSuccess } = useGetCoursesQuery();
+  const { data: courses } = useGetCoursesQuery();
   const { data: users, isFetching } = useProfileQuery();
 
   useEffect(() => {
@@ -24,7 +23,7 @@ function Courses() {
 
     if (courses && users) {
       const { histories } = users;
-      if (histories.length <= 0) {
+      if (histories.length == 0) {
         const { data } = courses;
         setLoading(true);
         return setFilterHistory(data);
@@ -55,9 +54,11 @@ function Courses() {
       let newCourse = courses.data.map((items) => {
         let arrCourse = [];
         items.courses.map((course) => {
+          const { studies } = course;
           let existLesson = course;
+          const checkExistUserInCourse = studies.some((item) => item.user_id == users.id);
           const checkExistCourseId = mapHistory.get(course.id);
-          if (checkExistCourseId) {
+          if (checkExistCourseId && checkExistUserInCourse) {
             existLesson = { ...course, completed: checkExistCourseId.lessonId }
           };
           arrCourse.push(existLesson)

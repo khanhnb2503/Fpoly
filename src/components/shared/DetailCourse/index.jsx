@@ -17,6 +17,7 @@ function DetailCourse() {
   const [loading, setLoading] = useState(false);
   const [videoId, setVideoId] = useState();
   const [videos, setVideos] = useState();
+  const [isFreeCourse, setIsFreeCourse] = useState(false);
 
   const [subcribeCourse] = useSubcribeCourseMutation();
   const { data: course, isSuccess } = useGetCourseQuery(id);
@@ -47,9 +48,11 @@ function DetailCourse() {
   useEffect(() => {
     try {
       (async () => {
-        const { data } = await queryVideo(videoId);
-        setVideos(data);
-        setLoading(true);
+        if (videoId) {
+          const { data } = await queryVideo(videoId);
+          setVideos(data);
+          setLoading(true);
+        }
       })()
     } catch (error) {
       navigate('/not-found')
@@ -68,6 +71,21 @@ function DetailCourse() {
     }
   }, [course]);
 
+  useEffect(() => {
+    if (!users?.id && course) {
+      let defaultFree = course?.data?.is_free == 0 ? true : false;
+      setIsFreeCourse(defaultFree)
+      return;
+    };
+
+    if (course, users?.id) {
+      const { studies } = course?.data?.studies;
+      let defaultFree = course?.data?.is_free == 0 ? true : false;
+      let existUserInCourse = studies.some((item) => item.user_id == users.id);
+      if (defaultFree && !existUserInCourse) setIsFreeCourse(true)
+    }
+  }, [course]);
+
   return (
     <div className='wrapper__detail-course'>
       {loading && course && (
@@ -79,7 +97,7 @@ function DetailCourse() {
             onCancel={() => setOpen(false)}
             open={open}
             footer={null}
-            width='35.4%'
+            width='43%'
             className='video-trial-content'
           >
             <div
@@ -171,14 +189,15 @@ function DetailCourse() {
                   </Button>
                 </Col>
                 <Col>
-                  {course?.data?.studies.length > 0
+                  {isFreeCourse
                     ? (
+
                       <Button
                         className='button-free'
                         shape='round'
                         size={'large'}
-                        onClick={handleSubcribeCourse}
-                      >Đăng kí khóa học
+                        onClick={() => handlePayment()}
+                      >Mua khóa học
                       </Button>
                     )
                     : (
@@ -186,8 +205,8 @@ function DetailCourse() {
                         className='button-free'
                         shape='round'
                         size={'large'}
-                        onClick={() => handlePayment()}
-                      >Mua khóa học
+                        onClick={handleSubcribeCourse}
+                      >Đăng kí khóa học
                       </Button>
                     )
                   }
