@@ -17,6 +17,11 @@ export const courseApi = createApi({
       providesTags: ['Category']
     }),
 
+    getTrialLesson: builder.query({
+      query: () => `lesson/trial-lesson`,
+      providesTags: ['Courses']
+    }),
+
     getCourse: builder.query({
       query: (id) => `course/${id}`,
       providesTags: ['Courses']
@@ -102,5 +107,6 @@ export const {
   useCommentsCourseMutation,
   useGetListCommentQuery,
   useGetQuizQuery,
-  useSendQuizMutation
+  useSendQuizMutation,
+  useGetTrialLessonQuery
 } = courseApi;

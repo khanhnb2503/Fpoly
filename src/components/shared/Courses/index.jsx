@@ -69,7 +69,6 @@ function Courses() {
       setLoading(true);
     }
   }, [courses, users, isFetching]);
-  // window.location.reload(false);
 
   return (
     <div className="wrapper__courses">
@@ -78,7 +77,7 @@ function Courses() {
           <div key={course.id} className="course-body">
             {course?.courses?.length > 0 && <>
               <h3>{course.name}</h3>
-              <Row justify='start' align='middle' gutter={[50, 30]}>
+              <Row justify='start' align='middle' gutter={[40, 30]}>
                 {course?.courses?.map((item) => (
                   <Col key={item.id} xl={6} md={6} className="less-item">
                     <Link
@@ -108,7 +107,7 @@ function Courses() {
                     <Row justify='space-between' align='middle' className="horizontal-info">
                       <Col xl={19}>
                         <h6>
-                          <Link to={`oke`}>{item.name}</Link>
+                          <Link to={`/courses/${item.id}`}>{item.name}</Link>
                         </h6>
                       </Col>
                       <Col xl={3}>
