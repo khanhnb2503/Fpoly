@@ -72,7 +72,8 @@ const Payment = () => {
     }
   }
   const handleTransfer = async () => {
-    const { data } = await paymentCourseTransfer({ course_id: Number(id), amount: priceTotal, voucher_code: codeVoucher || '' })
+    const {data} = await paymentCourseTransfer({course_id: id, amount: priceTotal, voucher_code: codeVoucher || ''})
+    console.log(data)
     showModal()
   }
   const handlePayment = async () => {

@@ -1,3 +1,4 @@
+
 import { Button, Col, Collapse, List, Modal, Row, Typography } from 'antd';
 import { useEffect, useState } from 'react';
 import { AiOutlineSafety, AiOutlineVideoCamera } from 'react-icons/ai';
@@ -24,19 +25,17 @@ function DetailCourse() {
   const { videoFree, isCompleted } = useSelector((state) => state.videoState.videoTrial);
 
   const [subcribeCourse] = useSubcribeCourseMutation();
-  const { data: course, isSuccess } = useGetCourseQuery(id);
-  const { data: users } = useProfileQuery();
+  const {data: course, isSuccess} = useGetCourseQuery(id);
+  const {data: users} = useProfileQuery();
 
   const handleSubcribeCourse = async () => {
     if (!id || !users?.id) {
       setLocalStorage('hd-course', course.data);
       navigate('/login')
     } else {
-      const { data } = await subcribeCourse({ course_id: id });
-      if (data.success) {
-        let lesson_id = course?.data?.modules[0]?.lessons[0]?.id;
-        navigate(`/lessons/${lesson_id}`)
-      }
+      const {data} = await subcribeCourse({course_id: id});
+      let lesson_id = course?.data?.modules[0]?.lessons[0]?.id;
+      navigate(`/lessons/${lesson_id}`)
     }
   };
 
@@ -53,7 +52,7 @@ function DetailCourse() {
     try {
       (async () => {
         if (videoId) {
-          const { data } = await queryVideo(videoId);
+          const {data} = await queryVideo(videoId);
           setVideos(data);
           setLoading(true);
         }
@@ -80,7 +79,8 @@ function DetailCourse() {
       let defaultFree = course?.data?.is_free == 0 ? true : false;
       setIsFreeCourse(defaultFree)
       return;
-    };
+    }
+    ;
 
     if (course, users?.id) {
       let defaultFree = course?.data?.is_free == 0 ? true : false;
@@ -119,7 +119,7 @@ function DetailCourse() {
                     {value.is_trial_lesson === 1 &&
                       (<Row justify='space-between' align='middle'>
                         <Col xl={20}><h6>{value.name}</h6></Col>
-                        <Col xl={2}><AiOutlineVideoCamera /></Col>
+                        <Col xl={2}><AiOutlineVideoCamera/></Col>
                       </Row>)
                     }
                   </div>
@@ -209,7 +209,7 @@ function DetailCourse() {
                         shape='round'
                         size={'large'}
                         onClick={handleSubcribeCourse}
-                      >Đăng kí khóa học
+                      >Vào học
                       </Button>
                     )
                   }
