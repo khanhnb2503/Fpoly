@@ -171,7 +171,7 @@ function Lessons() {
 
   const handleQuiz = async () => {
     setResults(arrAnswers)
-    const response = await sendQuiz({ answer_chooses: arrAnswers });
+    const response = await sendQuiz({ answer_chooses: arrAnswers, course_id: course_id });
     if (response?.data?.data?.length == 0) {
       setErrorQuiz([])
       setResults(arrAnswers)

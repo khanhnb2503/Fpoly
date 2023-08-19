@@ -1,6 +1,6 @@
 import { Button, Col, Collapse, List, Modal, Row, Typography } from 'antd';
 import { useEffect, useState } from 'react';
-import { AiOutlineSafety } from 'react-icons/ai';
+import { AiOutlineSafety, AiOutlineVideoCamera } from 'react-icons/ai';
 import { useNavigate, useParams } from 'react-router-dom';
 import { imageUrl } from "../../../common/imageUrl";
 import { queryVideo } from '../../../services/base/baseQuery';
@@ -115,7 +115,7 @@ function DetailCourse() {
                     {value.is_trial_lesson === 1 &&
                       (<Row justify='space-between' align='middle'>
                         <Col xl={20}><h6>{value.name}</h6></Col>
-                        <Col xl={2}><span>20 phút</span></Col>
+                        <Col xl={2}><AiOutlineVideoCamera /></Col>
                       </Row>)
                     }
                   </div>
