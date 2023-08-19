@@ -1,4 +1,4 @@
-import {Link, useParams} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import {
   useAddFeedbackMutation,
   useGetFeedbacksQuery,
@@ -99,7 +99,12 @@ const ListFeedback = () => {
       setIsModalOpen(false)
     }
   }
+  const navigate = useNavigate()
+
   const showModal = () => {
+    if (!user) {
+      navigate('/login')
+    }
     setIsModalOpen(true);
   };
 

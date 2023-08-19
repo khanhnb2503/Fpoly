@@ -444,7 +444,7 @@ const DetailPostForum = () => {
                   <span className="dateTime">{moment(post?.created_at).format('LLL')}</span>
                   <div style={{display: "flex", alignItems: "center"}}>
                     <UserOutlined/>
-                    <span style={{marginLeft: 5}}>{user?.name || "anonymous"}</span>
+                    <span style={{marginLeft: 5}}>{post?.user?.name || "anonymous"}</span>
                   </div>
                 </div>
                 <Card>
