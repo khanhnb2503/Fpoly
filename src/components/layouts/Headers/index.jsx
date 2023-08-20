@@ -4,7 +4,8 @@ import { IoMdNotifications } from 'react-icons/io';
 import { Link } from 'react-router-dom';
 import Loading from '../../shared/Spin';
 
-import Logo from '../../../../public/images/logo_ong_vang.jpg';
+import Logo from '../../../../public/images/beesquad-logo.png';
+import AvatarImage from '../../../../public/images/logo_ong_vang.jpg';
 import { imageUrl } from '../../../common/imageUrl';
 import { RoutesConstant } from '../../../routes';
 import { useGetNotificationsQuery } from "../../../services/forum/index.jsx";
@@ -241,7 +242,7 @@ function Headers() {
                     content={<UserMenu />}
                     trigger="click"
                   >
-                    <Avatar src={Logo} size={35} alt='avatar' />
+                    <Avatar src={AvatarImage} size={35} alt='avatar' />
                   </Popover>
                 </Col>
               </>

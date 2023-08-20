@@ -1,10 +1,9 @@
-import { Button, Card, Col, Collapse, List, Progress, Radio, Row, Space, message } from 'antd';
+import { Button, Card, Col, Collapse, List, Progress, Radio, Row, Space, Tag, message, notification } from 'antd';
 import { useEffect, useState } from 'react';
 import {
   AiFillCheckSquare,
   AiOutlineComment,
-  AiOutlineLeft, AiOutlineLock,
-  AiOutlineVideoCamera
+  AiOutlineLeft, AiOutlineLock
 } from 'react-icons/ai';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -21,11 +20,11 @@ import {
 import { useProfileQuery } from '../../../services/users/index.jsx';
 import DrawerComment from '../DrawerComment/index.jsx';
 
-
 function Lessons() {
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [api, context] = notification.useNotification();
   const [messageApi, contextHolder] = message.useMessage();
   const { iframe, course_id, document } = useSelector((state) => state.videoState);
   const { data: lessons, isSuccess } = useGetLessonsQuery(id);
@@ -157,7 +156,7 @@ function Lessons() {
   }, [progress, iframe]);
 
   let arr = results?.length > 0 ? results : [];
-  let arrAnswers;
+  let arrAnswers = [];
   const handleAddQuiz = (question, answers) => {
     const data = { question_id: question, answer_choose: answers };
     arr.push(data);
@@ -170,6 +169,11 @@ function Lessons() {
   };
 
   const handleQuiz = async () => {
+    if (arrAnswers.length < quizs?.questions.length) {
+      api.error({ message: "Bạn phải chọn đầy đủ đáp án!" });
+      return
+    };
+
     setResults(arrAnswers)
     const response = await sendQuiz({ answer_chooses: arrAnswers, course_id: course_id });
     if (response?.data?.data?.length == 0) {
@@ -199,6 +203,7 @@ function Lessons() {
   return (
     <>
       {contextHolder}
+      {context}
       {isSuccess && loading && (
         <>
           <DrawerComment courseId={course_id} />
@@ -310,6 +315,9 @@ function Lessons() {
                             header={
                               <div className='details-course'>
                                 <h6>{`${item.id}.${item.name}`}</h6>
+                                <Tag color="green" className='tag-title'>
+                                  {formatTime(item.lessons.reduce((acc, cul) => acc.time + cul.time) - 2)}
+                                </Tag>
                               </div>
                             }>
                             <List
@@ -323,13 +331,18 @@ function Lessons() {
                                     className={`items-list ${id == item.id ? 'active-info' : ''} `}
                                     onClick={() => {
                                       setProgress(false)
+                                      setShowQuiz(false)
                                       checked.includes(item.id) ? navigate(`/lessons/${item.id}`) : null
                                     }}
                                   >
                                     <Col>
                                       <h6 className='topic-link'>{item.id}.{item.name}</h6>
                                       <Row justify='start' align='middle' gutter={3} className='hours-group'>
-                                        <Col><AiOutlineVideoCamera /></Col>
+                                        <Col>
+                                          <Tag color="cyan" className='tag-title' style={{ marginTop: 5 }}>
+                                            {formatTime(item.time - 1)}
+                                          </Tag>
+                                        </Col>
                                       </Row>
                                     </Col>
                                     <Col>
