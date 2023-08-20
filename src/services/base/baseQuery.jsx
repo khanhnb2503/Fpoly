@@ -9,47 +9,6 @@ const instance = axios.create({
   baseURL: import.meta.env.VITE_BASE_VIDEO_URL
 });
 
-export function refreshToken() {
-  return instance.post("refresh-token", {
-    refreshToken: getLocalStorage("access_token"),
-  });
-  // return getLocalStorage("access_token")
-}
-
-instance.interceptors.response.use(
-  (res) => {
-    return res;
-  },
-  async (err) => {
-    const originalConfig = err.config;
-    if (err.response) {
-      // Access Token was expired
-      if (err.response?.status === 401 || err.response?.status === 403 && !originalConfig._retry) {
-        originalConfig._retry = true;
-        try {
-          const rs = await refreshToken();
-          const { accessToken } = rs.data;
-          setLocalStorage("access_token", accessToken)
-          config.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
-          return instance(originalConfig);
-        } catch (_error) {
-          if (_error.response && _error.response.data) {
-            return Promise.reject(_error.response.data);
-          }
-          return Promise.reject(_error);
-        }
-      }
-      if (err.response.status === 403 && err.response.data) {
-        return Promise.reject(err.response.data);
-      }
-    }
-
-    return Promise.reject(err);
-  }
-);
-
-
-
 const config = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL
 });
@@ -88,20 +47,21 @@ export const baseQuery = fetchBaseQuery({
 
 export const baseQueryWithReauth = async (args, api, extraOptions) => {
   let result = await baseQuery(args, api, extraOptions)
-  console.log(result)
   if (result?.error?.originalStatus === 401 || result?.data.error?.originalStatus === 403) {
     const navigate = useNavigate()
-    // navigate("login")
+    navigate("/login")
   }
 
-  // const refreshResult = await baseQuery({
-  //   url: 'refresh-token',
-  //   method: 'POST'
-  // }, api, extraOptions)
-  // if (refreshResult){
-  //   setLocalStorage("access_token", refreshResult?.accessToken)
-  // }
-  // retry the original query with new access token
+  const refreshResult = await baseQuery({
+    url: 'refresh-token',
+    method: 'POST',
+  }, api, extraOptions);
+
+  if (refreshResult?.data) {
+    const { access_token, refresh_token } = refreshResult?.data;
+    setLocalStorage("access_token", access_token)
+    setLocalStorage("refresh_token", refresh_token)
+  }
   result = await baseQuery(args, api, extraOptions)
   return result
 }

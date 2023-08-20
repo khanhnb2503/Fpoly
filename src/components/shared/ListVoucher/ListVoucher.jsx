@@ -1,27 +1,27 @@
-import {Avatar, Badge, Button, Card, Col, Image, List, message, Popconfirm, Popover, Row, Typography} from "antd";
-import {Link} from "react-router-dom";
+import { SyncOutlined } from "@ant-design/icons";
+import { Avatar, Button, Card, Col, List, message, Popconfirm, Popover, Row, Typography } from "antd";
+import moment from "moment";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import Logo from '../../../../public/images/logo_ong_vang.jpg';
 import profile from '../../../../public/images/profile.png';
+import { getVoucher } from "../../../services/base/baseQuery.jsx";
+import { useConvertVoucherMutation } from "../../../services/payment/index.jsx";
+import { useProfileQuery } from "../../../services/users/index.jsx";
 import UserMenu from '../UserMenu/index.jsx';
-import {useProfileQuery} from "../../../services/users/index.jsx"
-import {useConvertVoucherMutation, useListVoucherQuery} from "../../../services/payment/index.jsx";
-import {useEffect, useState} from "react";
-import { SyncOutlined} from "@ant-design/icons";
-import {getVoucher} from "../../../services/base/baseQuery.jsx";
-import moment from "moment";
 function ListVoucher() {
-  const {data: user, isLoading} = useProfileQuery()
+  const { data: user, isLoading } = useProfileQuery()
   const { Text, Title, Paragraph, } = Typography
   const [listVoucher, setListVoucher] = useState([]);
 
-  useEffect( () => {
+  useEffect(() => {
     (async () => {
       if (user?.id) {
-        const {data} = await getVoucher(user.id)
+        const { data } = await getVoucher(user.id)
         setListVoucher(data)
       }
     })()
-  },[isLoading])
+  }, [isLoading])
   const [convertVoucher] = useConvertVoucherMutation()
   const confirmConvert = async (idVoucher) => {
     const {data} = await convertVoucher({exchange_rate: idVoucher})
@@ -106,7 +106,7 @@ function ListVoucher() {
                 <List.Item>
                   <Card title={item.unit === "Percent" ? `Giảm giá: ${item.value} %` : `Giảm giá: ${item.value} VND`}>
                     {item.code || "Bạn chưa có mã khuyến mãi loại này"}
-                    <div style={{marginTop: 10, fontWeight: "bold", color: "#74ACFA"}}>Ngày hết hạn: {moment(item.expired).format('L')}</div>
+                    <div style={{ marginTop: 10, fontWeight: "bold", color: "#74ACFA" }}>Ngày hết hạn: {moment(item.expired).format('L')}</div>
                   </Card>
                 </List.Item>
               )}

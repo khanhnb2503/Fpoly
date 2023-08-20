@@ -4,8 +4,7 @@ import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
 async function extractPdfPagesToImages(pdfUrl) {
-  console.log(pdfUrl)
-  const pdf = await pdfjs.getDocument(pdfUrl).promise;
+  const pdf = await pdfjs.getDocument().promise;
   const images = [];
 
   for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber++) {
@@ -28,7 +27,7 @@ async function extractPdfPagesToImages(pdfUrl) {
 }
 
 
-function PdfSlider({ pdfUrl }) {
+function SlideViewer({ pdfUrl }) {
   const [images, setImages] = useState([]);
 
   useEffect(() => {
@@ -51,4 +50,4 @@ function PdfSlider({ pdfUrl }) {
   );
 };
 
-export default PdfSlider
+export default SlideViewer

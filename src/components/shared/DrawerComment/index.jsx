@@ -88,8 +88,8 @@ function DrawerComment({ courseId }) {
         }
       >
         {
-          filterComment.length !== 0 && filterComment.map((comment) => (
-            <div key={comment.id} className='comment-list'>
+          filterComment.length !== 0 && filterComment.map((comment, index) => (
+            <div key={index} className='comment-list'>
               <Row justify="space-between" align="top">
                 <Col flex="40px">
                   <Avatar src={<img src={avatar1} alt="avatar" />} className='avatar' />
@@ -110,17 +110,26 @@ function DrawerComment({ courseId }) {
               </div>
               {comment?.length !== 0 && (
                 comment.replies.map((item, index) => (
-                  <Row key={index} justify="space-between" align="top" className='comment-children'>
-                    <Col flex="40px">
-                      <Avatar src={<img src={avatar1} alt="avatar" />} className='avatar' />
-                    </Col>
-                    <Col flex="auto">
-                      <div className='content'>
-                        <h5>{item?.user?.name}</h5>
-                        <p>{item?.content}</p>
-                      </div>
-                    </Col>
-                  </Row>
+                  <>
+                    <Row key={index} justify="space-between" align="top" className='comment-children'>
+                      <Col flex="40px">
+                        <Avatar src={<img src={avatar1} alt="avatar" />} className='avatar' />
+                      </Col>
+                      <Col flex="auto">
+                        <div className='content'>
+                          <h5>{item?.user?.name}</h5>
+                          <p>{item?.content}</p>
+                        </div>
+                      </Col>
+                    </Row>
+                    <div className='reply-comment-children'>
+                      <Button
+                        type='text'
+                        onClick={() => setReplyComment(comment?.user?.name)}
+                      >Trả lời
+                      </Button>
+                    </div>
+                  </>
                 ))
               )}
             </div>

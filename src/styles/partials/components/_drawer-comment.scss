@@ -32,7 +32,7 @@
   }
 
   .comment-list {
-    margin-bottom: 15px;
+    margin-bottom: 17px;
   }
 
   .comment-children {
@@ -40,7 +40,7 @@
   }
 
   .reply-comment {
-    padding-left: 30px;
+    padding-left: 27px;
 
     button {
       font-size: 13px;
@@ -62,4 +62,8 @@
     height: 42px;
     border-radius: 0 20px 20px 0 !important;
   }
+}
+
+.reply-comment-children {
+  margin-left: 67px;
 }

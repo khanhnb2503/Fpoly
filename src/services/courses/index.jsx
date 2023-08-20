@@ -1,10 +1,10 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { baseQuery } from '../base/baseQuery';
-// import { baseQueryWithReauth } from '../base/baseQuery';
+// import { baseQuery } from '../base/baseQuery';
+import { baseQueryWithReauth } from '../base/baseQuery';
 
 export const courseApi = createApi({
   reducerPath: 'courseApi',
-  baseQuery: baseQuery,
+  baseQuery: baseQueryWithReauth,
   tagTypes: ['Courses', "Category", "Comments"],
   endpoints: (builder) => ({
     getCourses: builder.query({
@@ -15,6 +15,11 @@ export const courseApi = createApi({
     getCategory: builder.query({
       query: () => `course/category-course`,
       providesTags: ['Category']
+    }),
+
+    getTrialLesson: builder.query({
+      query: () => `lesson/trial-lesson`,
+      providesTags: ['Courses']
     }),
 
     getCourse: builder.query({
@@ -108,5 +113,6 @@ export const {
   useCommentsCourseMutation,
   useGetListCommentQuery,
   useGetQuizQuery,
-  useSendQuizMutation
+  useSendQuizMutation,
+  useGetTrialLessonQuery
 } = courseApi;
