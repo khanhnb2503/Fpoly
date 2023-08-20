@@ -1,14 +1,14 @@
 .wrapper__lessons {
 
   .header {
-    padding: 7px 50px;
+    padding: 10px 50px;
     position: sticky;
     right: 0;
     left: 0;
     top: 0;
     z-index: 20;
     border-bottom: 1px solid $border-bottom-color;
-    background-color: #b3b3b3;
+    background-color: #ededed;
 
     .btn-come-back {
       display: flex;
@@ -30,9 +30,30 @@
     }
   }
 
+  .side-left-video {
+    width: 100%;
+    max-height: 100vh;
+    overflow-y: scroll;
 
+    &::-webkit-scrollbar {
+      width: 5px;
+    }
 
-  .side-left-video,
+    &::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 5px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: #888;
+      border-radius: 5px;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background: #555;
+    }
+  }
+
   .quiz-content {
     width: 100%;
     max-height: 100%;
@@ -116,8 +137,8 @@
   }
 
   .video-player {
-    width: 85% !important;
-    height: 670px !important;
+    width: 90% !important;
+    height: 600px !important;
     cursor: pointer;
 
     iframe {
@@ -161,7 +182,7 @@
     z-index: 2;
     top: 0;
     right: 0;
-    width: 380px;
+    width: 50%;
     margin-top: 55px;
     padding: 5px 5px;
     border-left: 1px solid #b2b2b2;
@@ -170,7 +191,7 @@
 
   .carousel-theory {
     h4 {
-      padding: 0 0 10px 0;
+      padding: 5px;
       font-size: 20px;
       text-transform: uppercase;
     }

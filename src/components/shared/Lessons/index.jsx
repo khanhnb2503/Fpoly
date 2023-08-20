@@ -20,7 +20,9 @@ import {
 } from '../../../services/courses/index.jsx';
 import { useProfileQuery } from '../../../services/users/index.jsx';
 import DrawerComment from '../DrawerComment/index.jsx';
-import PdfSlider from '../SlideViewer';
+import SlideViewer from '../SlideViewer';
+
+import filePdf from '../../../../public/images/baocaothuctap.pdf';
 
 function Lessons() {
   const { id } = useParams();
@@ -141,16 +143,16 @@ function Lessons() {
             let index = lessonIds[nextLesson.length];
             setChecked((state) => state.includes(Number(id)) ? [...state, index] : [...state])
           }
-          const resHistory = await saveHistoryCourse({ course_id: course_id, lesson_id: id, status: status });
-          setCompleteRate(resHistory.data.complete_rate)
+          // const resHistory = await saveHistoryCourse({ course_id: course_id, lesson_id: id, status: status });
+          // setCompleteRate(resHistory.data.complete_rate)
           return
         };
 
         setCompleteCourse((state) => !state.includes(Number(id)) ? [...state, Number(id)] : [...state]);
         let index = lessonIds[nextLesson.length];
         setChecked((state) => state.includes(Number(id)) ? [...state, index] : [...state]);
-        const historyNew = await saveHistoryCourse({ course_id: course_id, lesson_id: id, status: 1 });
-        setCompleteRate(historyNew.data.complete_rate)
+        // const historyNew = await saveHistoryCourse({ course_id: course_id, lesson_id: id, status: 1 });
+        // setCompleteRate(historyNew.data.complete_rate)
         return;
       }
     })()
@@ -294,7 +296,7 @@ function Lessons() {
                 <Col xl={6} className='side-right-box'>
                   <div className='carousel-theory'>
                     <h4>Lý thuyết</h4>
-                    <PdfSlider pdfUrl={document} />
+                    <SlideViewer pdfUrl={filePdf} />
                   </div>
                   <div className='content-lesson'>
                     <h4>Nội dung bài học</h4>

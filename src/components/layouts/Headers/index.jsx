@@ -1,21 +1,20 @@
-import {AutoComplete, Avatar, Badge, Col, Popover, Row, List, Skeleton, Button} from 'antd';
-import {useEffect, useState} from 'react';
-import {IoMdNotifications} from 'react-icons/io';
-import {Link} from 'react-router-dom';
+import { AutoComplete, Avatar, Badge, Button, Col, List, Popover, Row, Skeleton } from 'antd';
+import { useEffect, useState } from 'react';
+import { IoMdNotifications } from 'react-icons/io';
+import { Link } from 'react-router-dom';
 import Loading from '../../shared/Spin';
 
 import Logo from '../../../../public/images/logo_ong_vang.jpg';
-import {imageUrl} from '../../../common/imageUrl';
-import {RoutesConstant} from '../../../routes';
-import {useSearchQuery} from '../../../services/search';
-import {useProfileQuery} from '../../../services/users';
+import { imageUrl } from '../../../common/imageUrl';
+import { RoutesConstant } from '../../../routes';
+import { useGetNotificationsQuery } from "../../../services/forum/index.jsx";
+import { useSearchQuery } from '../../../services/search';
+import { useProfileQuery } from '../../../services/users';
 import UserMenu from '../../shared/UserMenu';
-import {useGetNotificationsQuery} from "../../../services/forum/index.jsx";
-import listNotification from "../../shared/ListNotification/ListNotification.jsx";
 
 function Headers() {
-  const {data: users, isSuccess, isFetching} = useProfileQuery();
-  const {data: notifications} = useGetNotificationsQuery()
+  const { data: users, isSuccess, isFetching } = useProfileQuery();
+  const { data: notifications } = useGetNotificationsQuery()
 
   const [options, setOptions] = useState([]);
   const [keyword, setKeyword] = useState('');
@@ -25,9 +24,13 @@ function Headers() {
   const [dataNotifications, setDataNotifications] = useState([]);
   const [list, setList] = useState([]);
 
-  const {data: dataSearch, isLoading} = useSearchQuery(keyword);
+  const { data: dataSearch, isLoading } = useSearchQuery(keyword);
 
-  const url = window.location.href === 'http://localhost:4000/forum' || 'http://localhost:4000/forum/detailPost' || 'http://localhost:4000/forum/detailPostforum/listPosts'
+  const url = window.location.href ==
+    'http://localhost:4000/forum' &&
+    'http://localhost:4000/forum/detailPost' &&
+    'http://localhost:4000/forum/detailPostforum/listPosts' ? true : false;
+
   useEffect(() => {
     if (notifications !== undefined) {
       const notificationSlice = notifications.slice(0, 2)
@@ -39,14 +42,14 @@ function Headers() {
 
   useEffect(() => {
     if (dataSearch?.data?.courses) {
-      const {courses} = dataSearch?.data;
+      const { courses } = dataSearch?.data;
       if (!isFetching) {
         if ((!users?.id)) return setFilterHistory(courses);
       }
       ;
 
       if (users) {
-        const {histories} = users;
+        const { histories } = users;
         if (histories.length <= 0) {
           return setFilterHistory(courses)
         }
@@ -78,7 +81,7 @@ function Headers() {
           let existLesson = items;
           const checkExistCourseId = mapHistory.get(items.id);
           if (checkExistCourseId) {
-            existLesson = {...items, completed: checkExistCourseId.lessonId}
+            existLesson = { ...items, completed: checkExistCourseId.lessonId }
           }
           ;
           arrCourse.push(existLesson)
@@ -150,7 +153,7 @@ function Headers() {
         <Col sm={4} md={6} lg={8} xl={8}>
           <Row justify="start" align="middle" className='navbar-logo'>
             <Link to='/'>
-              <img src={Logo} alt='logo'/>
+              <img src={Logo} alt='logo' />
             </Link>
             <h4>BeeSquad</h4>
           </Row>
@@ -188,7 +191,7 @@ function Headers() {
                                     <div key={index}>
                                       <Row justify='start' align='middle' gutter={[5, 20]}>
                                         <Col>
-                                          <Avatar src={`${imageUrl}${course.image}`}/>
+                                          <Avatar src={`${imageUrl}${course.image}`} />
                                         </Col>
                                         <Col>
                                           <p><Link to={`courses/${course.id}`}>{course.name}</Link></p>
@@ -228,17 +231,17 @@ function Headers() {
                     trigger="click"
                   >
                     <Badge count={notifications?.length} size="small">
-                      <IoMdNotifications size='2em' className='icon-light'/>
+                      <IoMdNotifications size='2em' className='icon-light' />
                     </Badge>
                   </Popover>
                 </Col>
                 <Col flex='35px' className='avatar'>
                   <Popover
                     placement="bottomRight"
-                    content={<UserMenu/>}
+                    content={<UserMenu />}
                     trigger="click"
                   >
-                    <Avatar src={Logo} size={35} alt='avatar'/>
+                    <Avatar src={Logo} size={35} alt='avatar' />
                   </Popover>
                 </Col>
               </>
