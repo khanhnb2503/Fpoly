@@ -1,5 +1,5 @@
 .wrapper__header {
-  padding: 0 50px;
+  padding: 0 43px;
   position: sticky;
   right: 0;
   left: 0;
@@ -14,9 +14,9 @@
 
   .navbar-logo {
     img {
-      height: 40px;
+      height: 60px;
       border-radius: 5px;
-      object-fit: contain;
+      // object-fit: contain;
     }
 
     h4 {

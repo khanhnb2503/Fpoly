@@ -88,8 +88,8 @@ function DrawerComment({ courseId }) {
         }
       >
         {
-          filterComment.length !== 0 && filterComment.map((comment, index) => (
-            <div key={index} className='comment-list'>
+          filterComment.length !== 0 && filterComment.map((comment) => (
+            <div key={comment.id} className='comment-list'>
               <Row justify="space-between" align="top">
                 <Col flex="40px">
                   <Avatar src={<img src={avatar1} alt="avatar" />} className='avatar' />

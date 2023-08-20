@@ -82,6 +82,10 @@
       color: red;
     }
 
+    .answer-success {
+      color: green;
+    }
+
     .message-quiz {
       h5 {
         padding: 7px 0;
@@ -256,6 +260,7 @@
       font-size: 17px;
       color: #170e58;
       font-weight: 600;
+      padding-bottom: 5px;
     }
 
     span {
@@ -270,7 +275,7 @@
 
   .items-list {
     margin-bottom: 8px;
-    padding: 8px 8px 0 16px !important;
+    padding: 8px 8px 0 20px !important;
 
     &:hover {
       background-color: rgb(239, 237, 237);
