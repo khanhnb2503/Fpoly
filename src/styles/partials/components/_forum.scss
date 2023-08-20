@@ -5,4 +5,17 @@
 		margin-top: 20px;
 	}
 
+	.item-forums {
+		.ant-card-body {
+			padding: 10px !important;
+		}
+	}
+
+	.title-forums {
+		padding: 13px 0;
+
+		.ant-card-meta-title {
+			color: #10114c !important;
+		}
+	}
 }

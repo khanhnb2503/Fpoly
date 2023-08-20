@@ -1,4 +1,4 @@
-import { Button, Col, Row } from "antd";
+import { Badge, Button, Col, Row, Tag } from "antd";
 import { HiUserGroup } from 'react-icons/hi';
 import { Link, useNavigate } from "react-router-dom";
 
@@ -84,14 +84,16 @@ function Courses() {
                       to={item?.completed ? `/lessons/${item?.completed}` : `/courses/${item.id}`}
                       className="thumbnail-link"
                     >
-                      <img
-                        src={`${imageUrl}${item.image}`}
-                        className="avatar-courses"
-                        alt={`lesson-${item.id}`}
-                      />
-                      <div className="check-has-free">
-                        <span>{item.is_free == 1 ? 'Miễn phí' : 'Mất phí'}</span>
-                      </div>
+                      <Badge.Ribbon
+                        text={item.is_free == 1 ? 'Miễn phí' : 'Mất phí'}
+                        color={item.is_free == 1 ? 'cyan' : 'volcano'}
+                      >
+                        <img
+                          src={`${imageUrl}${item.image}`}
+                          className="avatar-courses"
+                          alt={`lesson-${item.id}`}
+                        />
+                      </Badge.Ribbon>
                       <div className="overlay">
                         {item?.completed
                           ? <Button
@@ -105,15 +107,17 @@ function Courses() {
                       </div>
                     </Link>
                     <Row justify='space-between' align='middle' className="horizontal-info">
-                      <Col xl={19}>
+                      <Col xl={18}>
                         <h6>
                           <Link to={`/courses/${item.id}`}>{item.name}</Link>
                         </h6>
                       </Col>
-                      <Col xl={3}>
+                      <Col xl={4}>
                         <div className="subcribe">
-                          <HiUserGroup size={18} />
-                          <span>357</span>
+                          <Tag color="blue">
+                            <HiUserGroup style={{ paddingBottom: 3 }} size={16} />
+                            <span>{item.study_count}</span>
+                          </Tag>
                         </div>
                       </Col>
                     </Row>

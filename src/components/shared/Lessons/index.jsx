@@ -20,9 +20,7 @@ import {
 } from '../../../services/courses/index.jsx';
 import { useProfileQuery } from '../../../services/users/index.jsx';
 import DrawerComment from '../DrawerComment/index.jsx';
-import SlideViewer from '../SlideViewer';
 
-import filePdf from '../../../../public/images/baocaothuctap.pdf';
 
 function Lessons() {
   const { id } = useParams();
@@ -296,7 +294,7 @@ function Lessons() {
                 <Col xl={6} className='side-right-box'>
                   <div className='carousel-theory'>
                     <h4>Lý thuyết</h4>
-                    <SlideViewer pdfUrl={filePdf} />
+                    {/* <SlideViewer pdfUrl={filePdf} /> */}
                   </div>
                   <div className='content-lesson'>
                     <h4>Nội dung bài học</h4>
