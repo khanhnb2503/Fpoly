@@ -26,7 +26,12 @@ export const paymentApi = createApi({
         },
         body: data
       }),
-      invalidatesTags: ['Payment']
+      invalidatesTags: ['Voucher']
+    }),
+
+    listVoucher: builder.query({
+      query: (id) => {`voucher/list-system/${id}`},
+      providesTags: ['Voucher']
     }),
 
     voucherCourse: builder.mutation({
@@ -39,10 +44,6 @@ export const paymentApi = createApi({
         body: data
       }),
       invalidatesTags: ['Voucher']
-    }),
-    listVoucher: builder.query({
-      query: (id) => {`voucher/list-system/${id}`},
-      providesTags: ['Voucher']
     }),
     convertVoucher: builder.mutation({
       query: (data) => ({
@@ -58,4 +59,4 @@ export const paymentApi = createApi({
   })
 });
 
-export const { usePaymentCourseMutation, useVoucherCourseMutation, useGetStatusPaymentQuery, useListVoucherQuery ,useConvertVoucherMutation, usePaymentCourseTransferMutation } = paymentApi;
+export const { usePaymentCourseMutation, useVoucherCourseMutation, useListVoucherQuery ,useConvertVoucherMutation, usePaymentCourseTransferMutation } = paymentApi;

@@ -88,6 +88,11 @@ export const courseApi = createApi({
       }),
       invalidatesTags: ['Courses']
     })),
+
+    getMyCourse: builder.query({
+      query: () => `course/my-course/`,
+      providesTags: ['Courses']
+    }),
   })
 });
 
@@ -95,6 +100,7 @@ export const {
   useGetCoursesQuery,
   useGetCategoryQuery,
   useGetCourseQuery,
+  useGetMyCourseQuery,
   useGetLessonsQuery,
   useSubcribeCourseMutation,
   useSaveHistoryCourseMutation,

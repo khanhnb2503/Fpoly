@@ -83,6 +83,8 @@
     h5 {
       font-size: 30px;
       margin-bottom: 15px;
+      margin-left: 20px;
+      font-weight: bold;
     }
   }
 
@@ -101,9 +103,24 @@
       font-size: 20px;
     }
   }
+  .course--my1 {
+    margin-top: 30px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, .1), 0 0 1px 0 rgba(0, 0, 0, .1);
+    margin-bottom: 20px;
+    padding: 18px 20px;
+    word-break: break-word;
+
+    h5 {
+      text-transform: uppercase;
+      color: #063e7e;
+      font-size: 20px;
+    }
+  }
 
   .list-course {
-    width: 60%;
+    width: 80%;
     background-color: #fff;
     box-shadow: 0 0 5px 0 rgba(0, 0, 0, .1), 0 0 1px 0 rgba(0, 0, 0, .1);
     padding: 10px 0;
