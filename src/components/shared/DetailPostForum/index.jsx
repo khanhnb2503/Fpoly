@@ -133,7 +133,7 @@ const DetailPostForum = () => {
   const handleCommentPost = async () => {
     try {
       if (titleModal === "Bình luận") {
-        const {data} = await addComment({content: dataCKEditor, post_id: id})
+        const {data} = await addComment({content: dataCKEditor, post_id: id, user_id: user.id})
         if (data.status) {
           openNotificationWithIcon('success', `Bình luận  thành công!!`, 'Bình luận bài viết')
         }
@@ -166,6 +166,7 @@ const DetailPostForum = () => {
   const handleCountStar = async (star) => {
     const {data} = await addStarPost({id: id})
     if (data.code === 200) {
+      setDisable(true)
       openNotificationWithIcon('success', `Bạn đã đánh giá ${star} sao cho bài viết này!`, 'Đánh giá bài viết')
     }
   }

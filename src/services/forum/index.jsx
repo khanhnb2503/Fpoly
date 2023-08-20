@@ -16,6 +16,14 @@ export const forumApi = createApi({
       },
       providesTags: ['Posts']
     }),
+    getPostsByUser: builder.query({
+      query: () => {
+        return {
+          url: `postforum/user-is-posts`,
+        }
+      },
+      providesTags: ['Posts']
+    }),
     getPostsLatest: builder.query({
       query: () => {
         return {
@@ -189,6 +197,7 @@ export const forumApi = createApi({
 export const {
   useGetPostsQuery,
   useGetPostQuery,
+  useGetPostsByUserQuery,
   useGetPostsLatestQuery,
   useGetPostsTrendingQuery,
   useAddPostMutation,

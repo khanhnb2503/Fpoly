@@ -24,7 +24,7 @@ function ListVoucher() {
   }, [isLoading])
   const [convertVoucher] = useConvertVoucherMutation()
   const confirmConvert = async (idVoucher) => {
-    const { data } = await convertVoucher({ user_id: user.id, exchange_rate: idVoucher })
+    const {data} = await convertVoucher({exchange_rate: idVoucher})
     const messageResponse = data?.message
     if (!data.status) {
       message.error(messageResponse);

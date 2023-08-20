@@ -293,13 +293,6 @@ function ForumPage() {
                           {feedbacks?.data && feedbacks?.data.length}
                         </Text>
                       </Col>
-                      <Col span={3} style={{textAlign: "center"}}>
-                        <div style={{opacity: "60%"}}>
-                          Comments
-                        </div>
-                        <Text>
-                        </Text>
-                      </Col>
                       <Col span={9}>
                         <Row gutter={10}>
                           <Col span={4}>
