@@ -21,6 +21,11 @@ export const queryVideo = (video_id) => {
   return instance.get(video_id)
 };
 
+export const subcribeCourseConfig = (data, token) => {
+  config.defaults.headers.common['Authorization'] = `Bearer ${token} `;
+  return config.post('course/register-course', data)
+}
+
 export const getHistoryCourse = (course_id) => {
   return config.get(`course/historyCourse?course_id=${course_id}`)
 }
