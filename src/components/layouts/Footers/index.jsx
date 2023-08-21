@@ -1,6 +1,6 @@
 import { Col, Row } from 'antd';
 import { Link } from 'react-router-dom';
-import Logo from '../../../../public/images/logo_ong_vang.jpg';
+import Logo from '../../../../public/images/beesquad-logo.png';
 
 function Footers() {
   return (
