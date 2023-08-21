@@ -19,6 +19,7 @@ import {
 } from '../../../services/courses/index.jsx';
 import { useProfileQuery } from '../../../services/users/index.jsx';
 import DrawerComment from '../DrawerComment/index.jsx';
+import SlideViewer from '../SlideViewer';
 
 function Lessons() {
   const { id } = useParams();
@@ -43,6 +44,7 @@ function Lessons() {
   const [currentTimeVideo, setCurrentTimeVideo] = useState();
   const [showQuiz, setShowQuiz] = useState(false)
   const [completeRate, setCompleteRate] = useState();
+  const [filePdf, setFilePdf] = useState('');
 
   if (!isFetching) {
     if (!users?.id) return navigate('/login');
@@ -57,7 +59,7 @@ function Lessons() {
         if ((id == lastTime) && (currentTimeVideo === time)) {
           setShowQuiz(true)
         }
-        currentTime = (listener?.data?.percent).toFixed(1);
+        currentTime = (listener?.data?.percent)?.toFixed(1);
       };
 
       if (currentTime >= 0.9) {
@@ -71,6 +73,7 @@ function Lessons() {
       try {
         if (lessons) {
           const { data } = await queryVideo(lessons?.data?.video_id);
+          setFilePdf(lessons?.data?.document)
           let quizs = lessons?.data?.course?.quiz[0];
           !quizs ? setQuizs([]) : setQuizs(quizs);
 
@@ -140,16 +143,16 @@ function Lessons() {
             let index = lessonIds[nextLesson.length];
             setChecked((state) => state.includes(Number(id)) ? [...state, index] : [...state])
           }
-          // const resHistory = await saveHistoryCourse({ course_id: course_id, lesson_id: id, status: status });
-          // setCompleteRate(resHistory.data.complete_rate)
+          const resHistory = await saveHistoryCourse({ course_id: course_id, lesson_id: id, status: status });
+          setCompleteRate(resHistory.data.complete_rate)
           return
         };
 
         setCompleteCourse((state) => !state.includes(Number(id)) ? [...state, Number(id)] : [...state]);
         let index = lessonIds[nextLesson.length];
         setChecked((state) => state.includes(Number(id)) ? [...state, index] : [...state]);
-        // const historyNew = await saveHistoryCourse({ course_id: course_id, lesson_id: id, status: 1 });
-        // setCompleteRate(historyNew.data.complete_rate)
+        const historyNew = await saveHistoryCourse({ course_id: course_id, lesson_id: id, status: 1 });
+        setCompleteRate(historyNew.data.complete_rate)
         return;
       }
     })()
@@ -299,7 +302,7 @@ function Lessons() {
                 <Col xl={6} className='side-right-box'>
                   <div className='carousel-theory'>
                     <h4>Lý thuyết</h4>
-                    {/* <SlideViewer pdfUrl={filePdf} /> */}
+                    <SlideViewer pdfUrl={filePdf} />
                   </div>
                   <div className='content-lesson'>
                     <h4>Nội dung bài học</h4>
@@ -347,7 +350,7 @@ function Lessons() {
                                     </Col>
                                     <Col>
                                       {(completeCourse.includes(item.id))
-                                        ? <AiFillCheckSquare style={{ color: '#06ac33' }} size={20} />
+                                        ? <AiFillCheckSquare style={{ color: '#06ac33', borderRadius: '50%' }} size={20} />
                                         : <AiOutlineLock
                                           className={`
                                           ${id == item.id ? 'hide-lock' : ''} ${checked.includes(item.id) ? 'checked-hand' : ''}
