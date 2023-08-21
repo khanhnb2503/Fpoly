@@ -18,10 +18,12 @@ import ListNotifications from "../components/shared/ListNotification/ListNotific
 import ListFeedback from "../components/shared/ListFeedbacks/ListFeedbacks.jsx";
 import DetailFeedback from "../components/shared/DetailFeedback/DetailFeedback.jsx";
 import ListVoucher from "../components/shared/ListVoucher/ListVoucher.jsx";
+import ForgotPassword from "../views/auth-views/components/ForgotPassword.jsx";
 // List routes
 export const RoutesConstant = {
   LOGIN: '/login',
   REGISTER: '/register',
+  FORGOTPASSWORD: '/forgotPassword'
 };
 
 export const DefaultLayout = [
@@ -33,6 +35,7 @@ export const DefaultLayout = [
   { path: '/listVoucher', component: ListVoucher, layout: null },
   { path: "/login", component: Login, layout: null },
   { path: "/register", component: Register, layout: null },
+  { path: "/forgotPassword", component: ForgotPassword, layout: null },
   { path: '/forum', component: ForumPage },
   { path: '/forum/detailPost/:id', component: DetailPostForum },
   { path: '/payment/:id', component: Payment },

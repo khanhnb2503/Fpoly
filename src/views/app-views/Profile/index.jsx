@@ -9,6 +9,7 @@ import {useGetMyCourseQuery} from "../../../services/courses/index.jsx";
 import {imageUrl} from "../../../common/imageUrl.jsx";
 import {useGetPostsByUserQuery} from "../../../services/forum/index.jsx";
 import {handleDisplayCkeditor} from "../../../common/handleDisplayCkeditor.jsx";
+import {CommentOutlined, EyeOutlined, HeartOutlined} from "@ant-design/icons";
 
 const {Text, Title, Paragraph,} = Typography
 
@@ -71,14 +72,14 @@ function Profile() {
           <h5 style={{marginBottom: 10}}>Các khóa học đã tham gia</h5>
           {data && data.courses.map((course, index) => {
             return (
-              <div key={index}>
-                <Row justify='start' align='start' gutter={[20, 50]}>
-                  {course.studies.map(item => {
-                    const status = item?.status === 0 ? "Đang học" : "Đã hoàn thành"
-                    const color = item?.status === 0 ? "pink" : "green"
-                    return (
-                      <Badge.Ribbon text={status} color={color}>
-                        <Card type="inner" title={course?.name} hoverable>
+              <div>
+                {course.studies.map(item => {
+                  const status = item?.status === 0 ? "Đang học" : "Đã hoàn thành"
+                  const color = item?.status === 0 ? "pink" : "green"
+                  return (
+                    <Badge.Ribbon text={status} color={color}>
+                      {/*<Link to={`/courses/${course.id}`}>*/}
+                        <Card style={{marginBottom: 20}} type="inner" title={course?.name} hoverable>
                           <Row gutter={20}>
                             <Col span={15}>
                               <Paragraph
@@ -94,25 +95,37 @@ function Profile() {
                             </Col>
                           </Row>
                         </Card>
-                      </Badge.Ribbon>
-                    )
-                  })}
-                </Row>
+                      {/*</Link>*/}
+                    </Badge.Ribbon>
+                  )
+                })}
               </div>
             )
           })}
         </div>
         <div className="course--my1">
-          <h5 style={{marginBottom: 10}}>Các bài viết của bạn</h5>
+          <h5 style={{marginBottom: 20}}>Các bài viết của bạn</h5>
           {posts && posts.map(post => {
             return (
               <div key={post.id}>
-                <Card type="inner" title={post.title} hoverable>
+                <Link to={`/forum/detailPost/${post.id}`}>
+                  <Card style={{marginBottom: 10}} type="inner" title={post.title} hoverable extra={
+                    <Row>
+                      <Col span={12} style={{display: "flex", alignItems: "center"}}>
+                        <HeartOutlined style={{fontSize: 20}}/>
+                        <span style={{marginLeft: 5}}>{post.star}</span>
+                      </Col>
+                      {/*<Col span={12} style={{display: "flex", alignItems: "center"}}>*/}
+                      {/*  <CommentOutlined style={{fontSize: 20}}/>*/}
+                      {/*  <span style={{marginLeft: 5}}>{post.comments.length}</span>*/}
+                      {/*</Col>*/}
+                    </Row>}>
                   <span
                     style={{lineHeight: 2.5, fontWeight: 500, fontSize: 20}}
                     dangerouslySetInnerHTML={{__html: handleDisplayCkeditor(post?.content)}}
                   ></span>
-                </Card>
+                  </Card>
+                </Link>
               </div>
             )
           })}

@@ -37,6 +37,7 @@ import {FaEdit} from "react-icons/fa";
 import {CKEditor} from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import {useProfileQuery} from "../../../services/users/index.jsx";
+import {handleDisplayCkeditor} from "../../../common/handleDisplayCkeditor.jsx";
 
 const ListFeedback = () => {
   const [pageNumber, setPageNumber] = useState(1);
@@ -216,7 +217,11 @@ const ListFeedback = () => {
                       </div>
                       <div>
                         <Text ellipsis={true} style={{marginLeft: 10, fontSize: 18, marginTop: 10}}>
-                          {data.content}
+                          <span
+                            style={{fontSize: 20, fontWeight: 500}}
+                            dangerouslySetInnerHTML={{__html: handleDisplayCkeditor(data.content)}}
+                          >
+                           </span>
                         </Text>
                       </div>
                     </Card>

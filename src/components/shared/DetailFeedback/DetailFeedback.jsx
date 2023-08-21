@@ -279,12 +279,6 @@ const DetailFeedback = () => {
                       <FaUserCheck size={20} color="#009DA6"/>
                       <span style={{marginLeft: 10}}>Có dangthais, khanhnb và 20 người khác đã xem</span>
                     </div>
-                    <div style={{alignItems: "center"}}>
-                      <Text>Trung bình đánh giá</Text>
-                      <div>
-                        <Rate disabled allowHalf defaultValue={4.5}/>
-                      </div>
-                    </div>
                   </div>
                 </Card>
               </div>

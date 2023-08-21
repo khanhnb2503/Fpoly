@@ -103,6 +103,9 @@ function Login() {
                   <div className='message-error'>
                     {message && <span>{message}</span>}
                   </div>
+                  <Text className='text-primary ms-1'>
+                    <Link to={RoutesConstant.FORGOTPASSWORD}>Quên mật khẩu</Link>
+                  </Text>
                   <Form.Item className='text-center'>
                     <Button type="primary" shape='round' size='large' htmlType="submit">
                       Đăng nhập
