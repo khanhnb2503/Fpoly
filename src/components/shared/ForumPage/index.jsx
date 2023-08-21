@@ -14,7 +14,7 @@ import {
   Space,
   Tag,
   Typography,
-  notification
+  notification, AutoComplete
 } from "antd";
 import {useEffect, useState} from "react";
 import {CardForum} from "../CardForum/index.jsx";
@@ -28,7 +28,7 @@ import {
   useGetPostsCateQuery,
   useGetPostsLatestQuery,
   useGetPostsQuery,
-  useGetPostsTrendingQuery
+  useGetPostsTrendingQuery, useSearchPostQuery
 } from "../../../services/forum/index.jsx";
 import {useGetCategoryQuery} from "../../../services/courses/index.jsx";
 import {FieldTimeOutlined, FolderOpenOutlined, HomeOutlined} from "@ant-design/icons";
@@ -36,6 +36,7 @@ import moment from "moment";
 import {Link, useNavigate} from "react-router-dom"
 import CateHomePage from "../CateHomePage/CateHomePage.jsx";
 import {useProfileQuery} from "../../../services/users/index.jsx";
+import Loading from "../Spin/index.jsx";
 
 function ForumPage() {
   const { Title, Text } = Typography;
@@ -45,6 +46,8 @@ function ForumPage() {
   const [titlePost, setTitlePost] = useState('')
   const [idType, setIdType] = useState(1);
   const [idCategory, setIdCategory] = useState(1);
+  const [keyword, setKeyword] = useState('');
+
   const [api, contextHolder] = notification.useNotification();
 
   const {data: posts, isLoading} = useGetPostsQuery(pageNumber)
@@ -64,6 +67,8 @@ function ForumPage() {
   const {data: getPostsByCate} = useGetPostsCateQuery()
 
   const {data: feedbacks} = useGetFeedbacksQuery()
+  const {data: dataSearch} = useSearchPostQuery(keyword);
+
 
   const navigate = useNavigate()
   const showModal = () => {
@@ -131,15 +136,41 @@ function ForumPage() {
     <div style={{ marginTop: 10 }}>
       <div className="header_forum">
         <div className="header_search">
-          <Input.Search
-            placeholder="Tìm kiếm bài viết"
-            allowClear
-            size="large"
-            onSearch={() => {
+          <AutoComplete
+            options={[{
+              label: (
+                <Loading loading={isLoading} size='small'>
+                  <div>
+                    {dataSearch?.search_results.length < 0
+                      ? <span>Nhập để tìm kiếm!</span>
+                      : (
+                        <div className='list-content-search'>
+                          {dataSearch?.search_results && (
+                            <>
+                              {dataSearch.search_results.map((post, index) => (
+                                <div key={index} style={{padding: 10, borderBottom: 2, border: 1}}>
+                                  <Row>
+                                    <Col>
+                                      <Link to={`/forum/detailPost/${post.id}`}>
+                                        <div>{post.title}</div>
+                                      </Link>
+                                    </Col>
+                                  </Row>
+                                </div>
+                              ))}
+                            </>
+                          )}
+                        </div>
+                      )}
+                  </div>
+                </Loading>
+              )
+            }]}
+            style={{width: 600}}
+            onSearch={(value) => {
+              setKeyword(value)
             }}
-            style={{
-              width: 600,
-            }}
+            placeholder="Tìm kiếm bài viết..."
           />
           <Title style={{ marginLeft: 50, marginTop: 10 }} level={5}>Tìm kiếm phổ biến : Backend, Frontend </Title>
         </div>

@@ -27,10 +27,10 @@ function Headers() {
 
   const { data: dataSearch, isLoading } = useSearchQuery(keyword);
 
-  const url = window.location.href ==
+  const url = !!(window.location.href ===
     'http://localhost:4000/forum' &&
     'http://localhost:4000/forum/detailPost' &&
-    'http://localhost:4000/forum/detailPostforum/listPosts' ? true : false;
+    'http://localhost:4000/forum/detailPostforum/listPosts');
 
   useEffect(() => {
     if (notifications !== undefined) {

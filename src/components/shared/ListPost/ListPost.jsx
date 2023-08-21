@@ -141,10 +141,11 @@ const ListPosts = () => {
                       <Row gutter={10} style={{alignItems: "center"}}>
                         <Col span={3}>
                           <Avatar src={data?.user_id.avatar || ""} size={35} alt='avatar'/>
+                          <div>{data?.user_id.user}</div>
                         </Col>
-                        <Col span={12}>
+                        <Col span={14}>
                           <Link to={`/forum/detailPost/${data.id}`}>
-                            <Text ellipsis={true} className="title">{data.title}</Text>
+                            <Text ellipsis={true} style={{fontWeight: "bold"}} className="title">{data.title}</Text>
                           </Link>
                           <div>
                             <Tag color={color}>
@@ -154,7 +155,7 @@ const ListPosts = () => {
                           </div>
                         </Col>
                         <Col span={7}>
-                          <Row gutter={[0, 20]}>
+                          <Row gutter={[0, 10]}>
                             <Col span={8} style={{display: "flex", alignItems: "center"}}>
                               <HeartOutlined style={{fontSize: 20}}/>
                               <span style={{marginLeft: 5}}>{data.star}</span>
@@ -167,11 +168,8 @@ const ListPosts = () => {
                               <EyeOutlined style={{fontSize: 20}}/>
                               <span style={{marginLeft: 5}}>{data.view}</span>
                             </Col>
-
                           </Row>
-
                         </Col>
-
                       </Row>
                     </Card>
                     <div>
@@ -199,7 +197,7 @@ const ListPosts = () => {
                             </Col>
                             <Col span={19}>
                               <Link to={`/forum/detailPost/${data.id}`}>
-                                <Text ellipsis={true} className="title">{data.title}</Text>
+                                <Text ellipsis={true} style={{fontWeight: "bold"}} className="title">{data.title}</Text>
                               </Link>
                               <div>
                                 <span className="dateTime">{moment(data.created_at).format('LLL')}</span>
@@ -232,7 +230,7 @@ const ListPosts = () => {
                             </Col>
                             <Col span={19}>
                               <Link to={`/forum/detailPost/${data.id}`}>
-                                <Text ellipsis={true} className="title">{data.title}</Text>
+                                <Text ellipsis={true} style={{fontWeight: "bold"}} className="title">{data.title}</Text>
                               </Link>
                               <div>
                                 <span className="dateTime">{moment(data.created_at).format('LLL')}</span>
