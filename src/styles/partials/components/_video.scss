@@ -32,6 +32,14 @@
     width: 100%;
   }
 
+  .thumbnail-link {
+    h6 {
+        &:hover {
+          color: $text-primary !important;
+        }
+      }
+  }
+
   .overlay-vd {
     @extend .overlay-visible;
   }
