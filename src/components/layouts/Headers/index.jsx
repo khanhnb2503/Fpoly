@@ -47,14 +47,12 @@ function Headers() {
       if (!isFetching) {
         if ((!users?.id)) return setFilterHistory(courses);
       }
-      ;
 
       if (users) {
         const { histories } = users;
         if (histories.length <= 0) {
           return setFilterHistory(courses)
-        }
-        ;
+        };
 
         let filterCourse = histories.reduce((accumulator, currentValue) => {
           let existCourseId = accumulator.find((item) => item.course_id == currentValue.course_id);
@@ -78,15 +76,12 @@ function Headers() {
 
         const mapHistory = new Map(historyNew.map((item) => [item.courseId, item]));
         let newCourse = courses.map((items) => {
-          let arrCourse = [];
           let existLesson = items;
           const checkExistCourseId = mapHistory.get(items.id);
           if (checkExistCourseId) {
             existLesson = { ...items, completed: checkExistCourseId.lessonId }
           }
-          ;
-          arrCourse.push(existLesson)
-          return arrCourse
+          return existLesson
         });
         setFilterHistory(newCourse)
       }
@@ -186,16 +181,18 @@ function Headers() {
                                 </>
                               )}
                               <h4>Khóa học</h4>
-                              {dataSearch?.data?.courses?.length > 0 && (
+                              {filterHistory?.length > 0 && (
                                 <>
-                                  {dataSearch.data.courses.map((course, index) => (
+                                  {filterHistory.map((course, index) => (
                                     <div key={index}>
                                       <Row justify='start' align='middle' gutter={[5, 20]}>
                                         <Col>
                                           <Avatar src={`${imageUrl}${course.image}`} />
                                         </Col>
                                         <Col>
-                                          <p><Link to={`courses/${course.id}`}>{course.name}</Link></p>
+                                          <p><Link to={
+                                            course?.completed ? `/lessons/${course.completed}` : `courses/${course.id}`}
+                                          >{course.name}</Link></p>
                                         </Col>
                                       </Row>
                                     </div>
