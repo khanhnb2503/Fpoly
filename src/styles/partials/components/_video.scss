@@ -25,33 +25,22 @@
     }
   }
 
-  .thumbnail-video {
-    display: block;
-    object-fit: cover;
-    position: relative;
-    width: 100%;
+
+  .overlay {
+    @extend .overlay-visible-video;
   }
 
-  .thumbnail-link {
-    h6 {
-        &:hover {
-          color: $text-primary !important;
-        }
-      }
-  }
-
-  .overlay-vd {
-    @extend .overlay-visible;
-  }
-
-  .thumbnail-video:hover .overlay-vd {
+  .thumbnail-link:hover .overlay {
     top: 0;
     height: 100%;
     overflow: visible;
   }
 
   .btn-action-views {
-    @extend .btn-hover-visible;
+    background-color: white;
+    padding: 5px 15px;
+    border-radius: 20px;
+    @extend .btn-hover-video;
   }
 
   .video-status {

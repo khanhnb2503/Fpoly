@@ -1,4 +1,4 @@
-import { Col, Row } from "antd";
+import { Button, Col, Row } from "antd";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
@@ -44,6 +44,15 @@ function Videos() {
                 <div
                   dangerouslySetInnerHTML={{ __html: item.image }}
                 ></div>
+                <div className="overlay">
+                  <Button
+                    shape="round"
+                    className="btn-action-views"
+                    navigate={`/courses/${item.course_id}`}
+                    onClick={() => dispatch(setVideoTrial({ videoIframe: item.image, isCompleted: true }))}
+                  >Xem video
+                  </Button>
+                </div>
               </Link>
               <h6>
                 <Link
