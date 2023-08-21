@@ -21,9 +21,6 @@ function Banner() {
             <Col xl={10} className='slide-show-left'>
               <h3>HTML-CSS</h3>
               <p>Khóa học HTML-CSS miễn phí</p>
-              <div>
-                <Link to='/'>Đăng kí học</Link>
-              </div>
             </Col>
             <Col xl={14} className='slide-show-right'>
               <Row justify='end'>
