@@ -4,10 +4,11 @@ import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
 async function extractPdfPagesToImages(pdfUrl) {
-  const pdf = await pdfjs.getDocument().promise;
+  const fileNamePdf = `http://143.198.91.100/${pdfUrl}`;
+  const pdf = await pdfjs?.getDocument(fileNamePdf).promise;
   const images = [];
 
-  for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber++) {
+  for (let pageNumber = 1; pageNumber <= pdf?.numPages; pageNumber++) {
     const page = await pdf.getPage(pageNumber);
     const viewport = page.getViewport({ scale: 1.0 });
     const canvas = document.createElement('canvas');
