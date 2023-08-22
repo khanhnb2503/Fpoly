@@ -10,6 +10,7 @@ import { Rules } from '../../../common/validator';
 import Loading from '../../../components/shared/Spin';
 import { RoutesConstant } from '../../../routes';
 import { useAuthLoginMutation } from '../../../services/authentication/auth';
+import { subcribeCourseConfig } from '../../../services/base/baseQuery';
 import { getLocalStorage, removeLocalStorage, setLocalStorage } from '../../../services/base/useLocalStorage';
 import { useSubcribeCourseMutation } from '../../../services/courses';
 const { Title, Text } = Typography;
@@ -39,6 +40,18 @@ function Login() {
       const { access_token, refresh_token } = data;
       setLocalStorage('access_token', access_token);
       setLocalStorage('refresh_token', refresh_token);
+
+      if (courses && (courses?.is_free == 1)) {
+        const data = { course_id: courses?.id }
+        const res = await subcribeCourseConfig(data, access_token)
+        setTimeout(() => {
+          let lesson_id = courses?.modules[0]?.lessons[0]?.id
+          navigate(`/lessons/${lesson_id}`)
+          removeLocalStorage('hd-course')
+          location.reload()
+        }, 3000);
+        return;
+      };
     };
 
     if (!courses) {
@@ -46,17 +59,6 @@ function Login() {
         navigate('/')
         location.reload();
       }, 3000)
-      return;
-    };
-
-    if (courses && (courses?.is_free == 1)) {
-      const response = await subcribeCourse({ course_id: courses?.id });
-      setTimeout(() => {
-        let lesson_id = courses?.modules[0]?.lessons[0]?.id
-        navigate(`/lessons/${lesson_id}`)
-        removeLocalStorage('hd-course')
-        location.reload()
-      }, 3000);
       return;
     };
 

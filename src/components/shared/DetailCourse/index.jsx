@@ -172,9 +172,6 @@ function DetailCourse() {
                     ))}
                   </Collapse>
                 </Row>
-                <Row justify='center'>
-                  <Community />
-                </Row>
               </div>
             </Col>
             <Col xl={9} className='thumbnail'>

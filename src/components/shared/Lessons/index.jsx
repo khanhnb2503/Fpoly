@@ -214,7 +214,10 @@ function Lessons() {
             <div className="header">
               <Row justify='space-between' align='middle'>
                 <Col xl={12}>
-                  <Button type='link' onClick={() => navigate('/')} className='btn-come-back'>
+                  <Button type='link' onClick={() => {
+                    navigate('/')
+                    location.reload()
+                  }} className='btn-come-back'>
                     <AiOutlineLeft size={20} /><span>Quay lại</span>
                   </Button>
                 </Col>
@@ -231,12 +234,12 @@ function Lessons() {
             <div>
               <Row>
                 <Col xl={18}>
-                  {showQuiz
+                  {showQuiz && quizs?.questions?.length > 0
                     ? (
                       <div className='quiz-content'>
                         <div className='box-large'>
                           <h4>{quizs.name}</h4>
-                          {quizs?.questions.map((item, index) => (
+                          {quizs?.questions?.map((item, index) => (
                             <Card
                               title={`${index + 1}.${item.name}`}
                               key={item.id}
