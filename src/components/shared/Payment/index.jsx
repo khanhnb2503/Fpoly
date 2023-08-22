@@ -9,7 +9,6 @@ import {
   useVoucherCourseMutation
 } from "../../../services/payment/index.jsx";
 import { useProfileQuery } from "../../../services/users/index.jsx";
-import Community from "../Community";
 import PaymentForm from "../PaymentForm";
 const Payment = () => {
   const { Title, Text } = Typography
@@ -174,7 +173,6 @@ const Payment = () => {
               </Card>
             </Col>
           </Row>
-          <Community />
         </>
       )}
     </div>
