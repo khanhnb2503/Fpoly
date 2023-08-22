@@ -4,11 +4,11 @@ import { ImHistory, ImTelegram } from "react-icons/im";
 import { Link } from "react-router-dom";
 import { useAddViewPostMutation, useGetPostsTrendingQuery } from '../../../services/forum';
 
-import AvatarForum1 from '../../../../public/images/blog 11.png';
+import AvatarForum5 from '../../../../public/images/blog 11.png';
 import AvatarForum2 from '../../../../public/images/blog 12.png';
-import AvatarForum3 from '../../../../public/images/blog 13.png';
-import AvatarForum4 from '../../../../public/images/blog 14.png';
-import AvatarForum5 from '../../../../public/images/blog 9.png';
+import AvatarForum4 from '../../../../public/images/blog 13.png';
+import AvatarForum3 from '../../../../public/images/blog 14.png';
+import AvatarForum1 from '../../../../public/images/blog 9.png';
 import { useEffect, useState } from "react";
 
 
