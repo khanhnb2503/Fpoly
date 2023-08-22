@@ -16,6 +16,10 @@
 
 		.ant-card-meta-title {
 			color: #10114c !important;
+
+			&:hover {
+				color: $text-primary !important;
+			}
 		}
 	}
 }

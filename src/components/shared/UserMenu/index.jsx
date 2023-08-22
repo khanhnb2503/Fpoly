@@ -1,7 +1,7 @@
 import { Avatar, Col, Row } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 
-import avatar from '../../../../public/images/logo_ong_vang.jpg';
+import AvatarProfile from '../../../../public/images/logo_ong_vang.jpg';
 import { removeLocalStorage } from "../../../services/base/useLocalStorage";
 import { useProfileQuery } from '../../../services/users';
 
@@ -21,7 +21,7 @@ function UserMenu() {
       {isSuccess && user && (
         <Row justify='start' align='middle' className='menu-header'>
           <Col>
-            <Avatar src={avatar} size={47} />
+            <Avatar src='../../../../public/images/logo_ong_vang.jpg' size={47} />
           </Col>
           <Col className='user-info'>
             <h5>{user.name}</h5>
