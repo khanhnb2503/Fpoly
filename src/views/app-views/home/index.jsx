@@ -18,7 +18,7 @@ function HomePage() {
           <Videos />
         </div>
         <div className="blogs-title">
-          <h5>Forum nổi bật </h5>
+          <h5>Bài viết nổi bật </h5>
           <Blogs />
         </div>
       </div>

@@ -23,7 +23,7 @@ import {Link, useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {
   useAddCommentMutation,
-  useAddStarPostMutation,
+  useAddStarPostMutation, useAddViewPostMutation,
   useGetPostQuery, useGetPostsLatestQuery,
   useRemoveCommentMutation, useRemovePostMutation,
   useReplyCommentMutation, useSearchPostQuery,
@@ -75,6 +75,8 @@ const DetailPostForum = () => {
 
   const [updatePost] = useUpdatePostMutation()
 
+  const [addViewPost] = useAddViewPostMutation()
+
   const routes = [{
     path: '/', breadcrumbName: (<Link to={"/forum"}>
       <div style={{display: "flex", alignItems: "center"}}>
@@ -120,10 +122,14 @@ const DetailPostForum = () => {
       message: message, description: description,
     });
   };
+  const handleAddView = (id) => {
+    const {data} = addViewPost({post_id : id})
+  }
+
   const showModal = (title) => {
     setTitleModal(title)
     if (title === "Sửa bài viết") {
-      setDataCKEditor(postData?.data?.content)
+      setDataCKEditor(post?.content)
     } else {
       setDataCKEditor('')
     }
@@ -151,7 +157,8 @@ const DetailPostForum = () => {
         }
       }
       if (titleModal === "Sửa bài viết") {
-        const {data} = await updatePost({content: dataCKEditor, id: idComment})
+        const {data} = await updatePost({content: dataCKEditor, id: id})
+        console.log(data)
         if (data.status) {
           openNotificationWithIcon('success', `Chỉnh sửa thành công!!`, 'Chỉnh sửa bài viết')
         }
@@ -182,6 +189,7 @@ const DetailPostForum = () => {
       }
       message.success('Xóa thành công');
     };
+
     return (
       <div style={{display: "flex", justifyContent: "space-between"}}>
         <Button
@@ -214,6 +222,12 @@ const DetailPostForum = () => {
   const CommentBox = ({comment}) => {
     const confirm = async () => {
       const {data} = await removeComment(comment?.id)
+      if (data.status) {
+        message.success('Xóa thành công');
+      }
+    };
+    const confirmRemoveReply = async (id) => {
+      const {data} = await removeComment(id)
       if (data.status) {
         message.success('Xóa thành công');
       }
@@ -289,7 +303,7 @@ const DetailPostForum = () => {
             {
               comment.chillden && comment.chillden.map(reply => {
                 return (
-                  <Row gutter={10} style={{alignItems: "center", justifyContent: "space-between", marginTop: 15}}>
+                  <Row key={reply.id} gutter={10} style={{alignItems: "center", justifyContent: "space-between", marginTop: 15}}>
                     <Col span={2}>
                       <div style={{textAlign: "center"}}>
                         <Avatar src={Logo} size={35} alt='avatar'/>
@@ -307,38 +321,39 @@ const DetailPostForum = () => {
                       <Row>
                         {user?.id === reply.user_id ? (
                           <>
-                          <Col span={14}>
-                            <Button
-                              size="small"
-                              type="primary"
-                              icon={<FaEdit/>}
-                              onClick={() => {
-                                showModal("Chỉnh sửa")
-                                setIdComment(comment.id)
-                              }}
-                            >
-                              Chỉnh sửa
-                            </Button>
-                          </Col>
-                          <Col span={5}>
-                            <Popconfirm
-                              title="Xóa bình luận"
-                              description="Bạn có chắc chắn muốn xóa bình luận này?"
-                              onConfirm={confirm}
-                              okText="Xóa"
-                              cancelText="Hủy"
-                            >
+                            <Col span={14}>
                               <Button
+                                loading={isLoading}
                                 size="small"
                                 type="primary"
-                                danger
                                 icon={<FaEdit/>}
+                                onClick={() => {
+                                  showModal("Chỉnh sửa")
+                                  setIdComment(reply.id)
+                                }}
                               >
-                                Delete
+                                Chỉnh sửa
                               </Button>
-                            </Popconfirm>
-                          </Col>
-                        </>) : (<>
+                            </Col>
+                            <Col span={5}>
+                              <Popconfirm
+                                title="Xóa bình luận"
+                                description="Bạn có chắc chắn muốn xóa bình luận này?"
+                                onConfirm={() => confirmRemoveReply(reply.id)}
+                                okText="Xóa"
+                                cancelText="Hủy"
+                              >
+                                <Button
+                                  size="small"
+                                  type="primary"
+                                  danger
+                                  icon={<FaEdit/>}
+                                >
+                                  Delete
+                                </Button>
+                              </Popconfirm>
+                            </Col>
+                          </>) : (<>
                           <Button
                             size="small"
                             type="primary"
@@ -456,9 +471,15 @@ const DetailPostForum = () => {
                         dangerouslySetInnerHTML={{__html: handleDisplayCkeditor(post?.content)}}
                       ></span>
                       <div style={{display: "flex", justifyContent: "space-between"}}>
-                        <Title level={3}>
-                          Đánh giá bài viết
-                        </Title>
+                        {user?.id !== postData.user.id && (
+                          <div>
+                            <Title level={3}>
+                              Đánh giá bài viết
+                            </Title>
+                            <Rate disabled={disable} onChange={(item) => handleCountStar(item)} allowHalf
+                                  defaultValue={2.5}/>
+                          </div>
+                        )}
                         <div style={{marginTop: 10}}>
                           {user?.id && (
                             <Button
@@ -470,7 +491,6 @@ const DetailPostForum = () => {
                               Comment
                             </Button>
                           )}
-
                           <Modal style={{zIndex: 10}} width={"50%"} title={titleModal} onOk={() => handleCommentPost()}
                                  onCancel={() => setIsModalOpen(false)} open={isModalOpen}>
                             <CKEditor
@@ -484,10 +504,7 @@ const DetailPostForum = () => {
                           </Modal>
                         </div>
                       </div>
-                      <div>
-                        <Rate disabled={disable} onChange={(item) => handleCountStar(item)} allowHalf
-                              defaultValue={2.5}/>
-                      </div>
+
                     </Col>
                   </Row>
                   <Divider>Lượt xem</Divider>
@@ -534,7 +551,7 @@ const DetailPostForum = () => {
                         </Col>
                         <Col span={19}>
                           <Link to={`/forum/detailPost/${data.id}`}>
-                            <Text ellipsis={true} className="title">{data.title}</Text>
+                            <Text onClick={() => handleAddView(data.id)} ellipsis={true} className="title">{data.title}</Text>
                           </Link>
                           <div>
                             <Tag color={color}>
@@ -561,7 +578,7 @@ const DetailPostForum = () => {
                       </div>
                     )
                   })}
-                  <div style={{marginTop: 20}}>
+                  <div style={{marginTop: 20, marginBottom: 20}}>
                     <Title level={3}>Tags</Title>
                     <Space size={[0, 8]} wrap>
                       {options && options.map((item, index) => {
@@ -581,7 +598,6 @@ const DetailPostForum = () => {
           </Row>)}
       </div>
     </div>
-
   )
 }
 

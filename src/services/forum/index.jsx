@@ -1,5 +1,5 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import {baseQuery, baseQueryWithReauth} from '../base/baseQuery';
+import {baseQuery} from '../base/baseQuery';
 
 export const forumApi = createApi({
   reducerPath: 'forumApi',
@@ -68,7 +68,7 @@ export const forumApi = createApi({
     updatePost: builder.mutation({
       query: (data) => ({
         url: `postforum/updatepost/${data.id}`,
-        method: 'PUT',
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -83,9 +83,19 @@ export const forumApi = createApi({
       }),
       invalidatesTags: ['Posts']
     }),
+
     addStarPost: builder.mutation({
       query: (id) => ({
         url: `postforum/clickstar`,
+        method: 'POST',
+        body: id
+      }),
+      invalidatesTags: ['Posts']
+    }),
+
+    addViewPost: builder.mutation({
+      query: (id) => ({
+        url: `postforum/addview`,
         method: 'POST',
         body: id
       }),
@@ -207,6 +217,7 @@ export const {
   useGetPostsCateQuery,
   useSearchPostQuery,
   useGetNotificationsQuery,
+  useAddViewPostMutation,
 
   useAddCommentMutation,
   useReplyCommentMutation,
