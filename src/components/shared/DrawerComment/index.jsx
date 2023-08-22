@@ -1,16 +1,15 @@
 import { Avatar, Button, Col, Drawer, Form, Input, Row } from 'antd';
-const { TextArea } = Input;
-import { MdSend } from 'react-icons/md';
+import { FiDelete } from 'react-icons/fi';
 import { useDispatch, useSelector } from 'react-redux';
 import { useCommentsCourseMutation, useGetListCommentQuery } from '../../../services/courses';
 import { useProfileQuery } from '../../../services/users/index.jsx';
-import { FiDelete } from 'react-icons/fi'
+const { TextArea } = Input;
 
 import { useEffect, useState } from 'react';
 import avatar1 from '../../../../public/images/images.jfif';
 import { onClose, replyComment } from '../../../redux/features/comment/commentSlice';
 
-function DrawerComment({ course_id }) {
+function DrawerComment({ courseId }) {
   const dispatch = useDispatch();
   const { isCompleted, username, commentId } = useSelector((state) => state.commentState);
   const { data: users, isFetching } = useProfileQuery();
@@ -26,7 +25,7 @@ function DrawerComment({ course_id }) {
       if (comments?.comments?.length == 0) return setFilterComment([]);
       comments?.comments.map((items) => {
         let course_id = items.course.id;
-        if (course_id == course_id) {
+        if (course_id == courseId) {
           filterByIdComment.push(items)
         }
       });
@@ -37,11 +36,11 @@ function DrawerComment({ course_id }) {
 
   const sendComment = async (data) => {
     const res = await commentsCourse({
-      course_id: course_id,
+      course_id: courseId,
       user_id: users?.id,
       content: data.content,
       comment_id: commentId ? commentId : null
-    })
+    });
   };
 
   return (
@@ -63,7 +62,7 @@ function DrawerComment({ course_id }) {
                         <p className='reply-comment-user'>
                           Bạn trả lời: <span>{username}</span>
                         </p>
-                        <Button 
+                        <Button
                           type='text'
                           onClick={() => dispatch(replyComment({
                             username: '',

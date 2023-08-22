@@ -1,5 +1,6 @@
-import { Button, Card, Col, Collapse, List, Progress, 
-  Radio, Row, Space, Tag, message, notification 
+import {
+  Button, Card, Col, Collapse, List, Progress,
+  Radio, Row, Space, Tag, message, notification
 } from 'antd';
 import { useEffect, useState } from 'react';
 import {
@@ -49,8 +50,9 @@ function Lessons() {
 
   if (!isFetching) {
     if (!users?.id) return navigate('/login');
-    
+
   };
+
 
   window.addEventListener('message', async (e) => {
     if (!e.data?.source) {
