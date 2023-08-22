@@ -2,12 +2,17 @@ import { Card, Col, Row, Tag } from "antd";
 import moment from "moment";
 import { ImHistory } from "react-icons/im";
 import { Link } from "react-router-dom";
-import { useGetPostsTrendingQuery } from '../../../services/forum';
+import {useAddViewPostMutation, useGetPostsTrendingQuery} from '../../../services/forum';
 
 const { Meta } = Card;
 
 function Blogs() {
 	const { data: forums, isSuccess } = useGetPostsTrendingQuery();
+	const [addViewPost] = useAddViewPostMutation()
+
+	const handleAddView = (id) => {
+		const {data} = addViewPost({post_id : id})
+	}
 
 	return (
 		<div className="wrapper__blogs">
@@ -37,7 +42,9 @@ function Blogs() {
 										</Col>
 									</Row>
 									<Link to={`forum/detailPost/${item.id}`}>
-										<Meta title={item.title} className="title-forums" />
+										<div onClick={() => handleAddView(item.id)}>
+											<Meta title={item.title} className="title-forums" />
+										</div>
 									</Link>
 								</Card>
 							</Col>

@@ -1,5 +1,6 @@
 import {Link, useParams} from "react-router-dom";
 import {
+  useAddViewPostMutation,
   useGetPostsCateQuery,
   useGetPostsLatestQuery,
   useGetPostsQuery,
@@ -25,10 +26,11 @@ const ListPosts = () => {
   const {id} = useParams()
   const {data: posts, isLoading} = useGetPostsQuery(pageNumber)
   const {data: categories} = useGetCategoryQuery()
-  const {data: postCate} = useGetPostsCateQuery()
   const {data: postTrending} = useGetPostsTrendingQuery()
   const {data: postLatest} = useGetPostsLatestQuery()
   const {data: getPostsByCate} = useGetPostsCateQuery()
+  const [addViewPost] = useAddViewPostMutation()
+
 
   const onChangePage = (page) => {
     console.log(page)
@@ -48,6 +50,10 @@ const ListPosts = () => {
       <span style={{marginLeft: 5}}>ListPost</span>
     </div>),
   },];
+
+  const handleAddView = (id) => {
+    const {data} = addViewPost({post_id : id})
+  }
 
   const options = [
     {
@@ -134,6 +140,7 @@ const ListPosts = () => {
           <Col span={13}>
             <Card type="inner" title={getPostsByCate?.data[id - 1]?.category.name}>
               {getPostsByCate && getPostsByCate?.data[id - 1]?.posts?.map((data, index) => {
+                console.log(data)
                 const color = data?.type.type === "Thắc mắc" ? "#2db7f5" : data?.type.type === "Câu hỏi" ? "#f50" : data?.type.type === "Thảo luận" ? "#108ee9" : "#87d068"
                 return (
                   <div key={index} style={{marginTop: 20, marginBottom: 20}}>
@@ -145,7 +152,7 @@ const ListPosts = () => {
                         </Col>
                         <Col span={14}>
                           <Link to={`/forum/detailPost/${data.id}`}>
-                            <Text ellipsis={true} style={{fontWeight: "bold"}} className="title">{data.title}</Text>
+                            <Text onClick={() => handleAddView(data?.id)} ellipsis={true} style={{fontWeight: "bold"}} className="title">{data.title}</Text>
                           </Link>
                           <div>
                             <Tag color={color}>
@@ -197,7 +204,7 @@ const ListPosts = () => {
                             </Col>
                             <Col span={19}>
                               <Link to={`/forum/detailPost/${data.id}`}>
-                                <Text ellipsis={true} style={{fontWeight: "bold"}} className="title">{data.title}</Text>
+                                <Text onClick={() => handleAddView(data?.id)} ellipsis={true} style={{fontWeight: "bold"}} className="title">{data.title}</Text>
                               </Link>
                               <div>
                                 <span className="dateTime">{moment(data.created_at).format('LLL')}</span>
@@ -218,9 +225,8 @@ const ListPosts = () => {
               </Col>
               <Col span={24}>
                 <Card type="inner" title="Bài viết nổi bật">
-                  {postLatest && postLatest.map((data, index) => {
+                  {postTrending && postTrending.map((data, index) => {
                     const color = data?.type.type === "Thắc mắc" ? "#2db7f5" : data?.type.type === "Câu hỏi" ? "#f50" : data?.type.type === "Thảo luận" ? "#108ee9" : "#87d068"
-
                     return (
                       <div key={index} style={{marginTop: 20, marginBottom: 20}}>
                         <Card>
@@ -230,7 +236,7 @@ const ListPosts = () => {
                             </Col>
                             <Col span={19}>
                               <Link to={`/forum/detailPost/${data.id}`}>
-                                <Text ellipsis={true} style={{fontWeight: "bold"}} className="title">{data.title}</Text>
+                                <Text onClick={() => handleAddView(data?.id)} ellipsis={true} style={{fontWeight: "bold"}} className="title">{data.title}</Text>
                               </Link>
                               <div>
                                 <span className="dateTime">{moment(data.created_at).format('LLL')}</span>

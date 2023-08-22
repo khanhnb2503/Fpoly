@@ -1,8 +1,8 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import {baseQuery, baseQueryWithReauth} from "../base/baseQuery.jsx";
+import {baseQuery} from "../base/baseQuery.jsx";
 export const paymentApi = createApi({
   reducerPath: 'paymentApi',
-  baseQuery: baseQueryWithReauth,
+  baseQuery: baseQuery,
   tagTypes: ['Payment', "Voucher"],
   endpoints: (builder) => ({
     paymentCourse: builder.mutation({
