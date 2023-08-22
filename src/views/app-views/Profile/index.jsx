@@ -13,7 +13,7 @@ import { useProfileQuery } from "../../../services/users/index.jsx";
 
 import ProfileAvatar from '../../../../public/images/logo_ong_vang.jpg';
 
-const { Text, Title, Paragraph, } = Typography
+const { Paragraph, } = Typography
 
 function Profile() {
   const { data: user } = useProfileQuery()
