@@ -572,9 +572,11 @@ const DetailPostForum = () => {
                   {categories && categories.data.map((item, index) => {
                     return (
                       <div key={index}>
-                        <Tag style={{padding: 10}} color="#55acee">
-                          {item.name}
-                        </Tag>
+                        <Link to={`/forum/listPosts/${item.id}`}>
+                          <Tag style={{padding: 10}} color="#55acee">
+                            {item.name}
+                          </Tag>
+                        </Link>
                       </div>
                     )
                   })}

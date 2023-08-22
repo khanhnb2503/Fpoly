@@ -76,7 +76,7 @@ function Courses() {
         {loading && filterHistory.map((course) => (
           <div key={course.id} className="course-body">
             {course?.courses?.length > 0 && <>
-              <h3>{course.name}</h3>
+              <h3 className="course-name">{course.name}</h3>
               <Row justify='start' align='middle' gutter={[40, 30]}>
                 {course?.courses?.map((item) => (
                   <Col key={item.id} xl={6} md={6} className="less-item">

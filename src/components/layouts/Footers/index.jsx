@@ -13,7 +13,7 @@ function Footers() {
             </Link>
           </Row>
           <Row justify="start" align="middle" className='footer-description'>
-            <h1>Lĩnh vực: Công nghệ, giáo dục, lập trình. F8 xây dựng và phát triển những sản phẩm mang lại giá trị cho cộng đồng.</h1>
+            <h1>Lĩnh vực: Công nghệ, giáo dục, lập trình. BeeSquad xây dựng và phát triển những sản phẩm mang lại giá trị cho cộng đồng.</h1>
           </Row>
         </Col>
         <Col sm={8} md={8} xl={8}>
@@ -23,7 +23,7 @@ function Footers() {
           <Row justify="start" className='footer-listTools'>
             <ul>
               <Link to='/'>
-                <li>Tạo CV xin việc</li>
+                <li>Tham gia forum</li>
               </Link>
               <Link to='/'>
                 <li>Ruts gọn liên kết</li>

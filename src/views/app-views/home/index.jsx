@@ -7,7 +7,6 @@ import { removeLocalStorage } from "../../../services/base/useLocalStorage";
 
 function HomePage() {
   removeLocalStorage('hd-course');
-
   return (
     <div className='wrapper__homepage'>
       <Banner />

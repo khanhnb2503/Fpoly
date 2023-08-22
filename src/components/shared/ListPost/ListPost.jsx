@@ -1,4 +1,5 @@
 import {Link, useParams} from "react-router-dom";
+import Logo from '../../../../public/images/logo_ong_vang.jpg';
 import {
   useAddViewPostMutation,
   useGetPostsCateQuery,
@@ -115,9 +116,11 @@ const ListPosts = () => {
               {categories && categories.data.map((item, index) => {
                 return (
                   <div key={index}>
-                    <Tag style={{padding: 10}} color="#55acee">
-                      {item.name}
-                    </Tag>
+                    <Link to={`/forum/listPosts/${item.id}`}>
+                      <Tag style={{padding: 10}} color="#55acee">
+                        {item.name}
+                      </Tag>
+                    </Link>
                   </div>
                 )
               })}
@@ -140,7 +143,6 @@ const ListPosts = () => {
           <Col span={13}>
             <Card type="inner" title={getPostsByCate?.data[id - 1]?.category.name}>
               {getPostsByCate && getPostsByCate?.data[id - 1]?.posts?.map((data, index) => {
-                console.log(data)
                 const color = data?.type.type === "Thắc mắc" ? "#2db7f5" : data?.type.type === "Câu hỏi" ? "#f50" : data?.type.type === "Thảo luận" ? "#108ee9" : "#87d068"
                 return (
                   <div key={index} style={{marginTop: 20, marginBottom: 20}}>
@@ -200,7 +202,8 @@ const ListPosts = () => {
                         <Card>
                           <Row gutter={10}>
                             <Col span={5}>
-                              <Avatar src={data.user.avatar} size={20} alt='avatar'/>
+                              <Avatar src={data.user.avatar || Logo} size={35} alt='avatar'/>
+                              <Text style={{fontSize: 13}}>{data.user.name}</Text>
                             </Col>
                             <Col span={19}>
                               <Link to={`/forum/detailPost/${data.id}`}>
@@ -232,7 +235,8 @@ const ListPosts = () => {
                         <Card>
                           <Row gutter={10}>
                             <Col span={5}>
-                              <Avatar src={data.user.avatar} size={35} alt='avatar'/>
+                              <Avatar src={data.user.avatar || Logo} size={35} alt='avatar'/>
+                              <Text style={{fontSize: 13}}>{data.user.name}</Text>
                             </Col>
                             <Col span={19}>
                               <Link to={`/forum/detailPost/${data.id}`}>
