@@ -29,7 +29,14 @@ import {
   useReplyCommentMutation, useSearchPostQuery,
   useUpdateCommentMutation, useUpdatePostMutation
 } from "../../../services/forum/index.jsx";
-import {FieldTimeOutlined, FileOutlined, HomeOutlined, MoreOutlined, UserOutlined} from "@ant-design/icons";
+import {
+  FieldTimeOutlined,
+  FileOutlined,
+  HeartOutlined,
+  HomeOutlined,
+  MoreOutlined,
+  UserOutlined
+} from "@ant-design/icons";
 import moment from "moment";
 import {handleDisplayCkeditor} from "../../../common/handleDisplayCkeditor.jsx";
 import {useProfileQuery} from "../../../services/users/index.jsx";
@@ -48,6 +55,7 @@ const DetailPostForum = () => {
   const [pageNumber, setPageNumber] = useState(1);
   const [openOptions, setOpenOptions] = useState(false)
   const [keyword, setKeyword] = useState('');
+  const [isColor, setIsColor] = useState(false);
 
   const {id} = useParams()
   const {data: post, isLoading} = useGetPostQuery(id)
@@ -170,11 +178,12 @@ const DetailPostForum = () => {
       setDataCKEditor('')
     }
   }
-  const handleCountStar = async (star) => {
+  const handleCountStar = async () => {
     const {data} = await addStarPost({id: id})
+    setIsColor(true)
     if (data.code === 200) {
       setDisable(true)
-      openNotificationWithIcon('success', `Bạn đã đánh giá ${star} sao cho bài viết này!`, 'Đánh giá bài viết')
+      openNotificationWithIcon('success', `Bạn đã thả tim cho sao cho bài viết này!`, 'Đánh giá bài viết')
     }
   }
   const onChangePage = (page) => {
@@ -476,8 +485,9 @@ const DetailPostForum = () => {
                             <Title level={3}>
                               Đánh giá bài viết
                             </Title>
-                            <Rate disabled={disable} onChange={(item) => handleCountStar(item)} allowHalf
-                                  defaultValue={2.5}/>
+                            {/*<Rate disabled={disable} onChange={(item) => handleCountStar(item)} allowHalf*/}
+                            {/*      defaultValue={2.5}/>*/}
+                            <HeartOutlined style={{fontSize: 30, marginLeft: "40%", color: isColor ? "red" : "black"}} onClick={() => handleCountStar()}/>
                           </div>
                         )}
                         <div style={{marginTop: 10}}>
