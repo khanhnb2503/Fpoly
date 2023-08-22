@@ -26,7 +26,7 @@ function Blogs() {
 									cover={
 										<img
 											alt="example"
-											src={`public/images/blog ${item.id}.jpg`}
+											src={`/public/images/blog ${item.id}.jpg`}
 										/>
 									}
 									className="item-forums"
