@@ -58,10 +58,16 @@
     border-radius: 20px 0 0 20px !important;
   }
 
-  .btn-send-comment {
-    height: 42px;
-    border-radius: 0 20px 20px 0 !important;
+  .reply-comment-user {
+    color: #a29a9a;
+
+    span {
+      font-weight: 600;
+      font-size:17px;
+      color: black;
+    }
   }
+
 }
 
 .reply-comment-children {

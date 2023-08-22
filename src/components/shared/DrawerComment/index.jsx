@@ -1,22 +1,23 @@
 import { Avatar, Button, Col, Drawer, Form, Input, Row } from 'antd';
+const { TextArea } = Input;
 import { MdSend } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
 import { useCommentsCourseMutation, useGetListCommentQuery } from '../../../services/courses';
 import { useProfileQuery } from '../../../services/users/index.jsx';
+import { FiDelete } from 'react-icons/fi'
 
 import { useEffect, useState } from 'react';
 import avatar1 from '../../../../public/images/images.jfif';
-import { onClose } from '../../../redux/features/comment/commentSlice';
+import { onClose, replyComment } from '../../../redux/features/comment/commentSlice';
 
-function DrawerComment({ courseId }) {
+function DrawerComment({ course_id }) {
   const dispatch = useDispatch();
-  const { isCompleted } = useSelector((state) => state.commentState);
+  const { isCompleted, username, commentId } = useSelector((state) => state.commentState);
   const { data: users, isFetching } = useProfileQuery();
   const { data: comments, isLoading } = useGetListCommentQuery();
   const [commentsCourse] = useCommentsCourseMutation();
 
   const [filterComment, setFilterComment] = useState([]);
-  const [replyComment, setReplyComment] = useState();
 
   useEffect(() => {
     if (!isLoading) {
@@ -25,7 +26,7 @@ function DrawerComment({ courseId }) {
       if (comments?.comments?.length == 0) return setFilterComment([]);
       comments?.comments.map((items) => {
         let course_id = items.course.id;
-        if (course_id == courseId) {
+        if (course_id == course_id) {
           filterByIdComment.push(items)
         }
       });
@@ -36,10 +37,10 @@ function DrawerComment({ courseId }) {
 
   const sendComment = async (data) => {
     const res = await commentsCourse({
-      course_id: courseId,
+      course_id: course_id,
       user_id: users?.id,
       content: data.content,
-      comment_id: null
+      comment_id: commentId ? commentId : null
     })
   };
 
@@ -55,22 +56,29 @@ function DrawerComment({ courseId }) {
           <div className="wrapper__input--comment">
             <Form onFinish={sendComment}>
               <Row>
-                <Col xl={20}>
-                  <Form.Item
-                    rules={[{
-                      required: true,
-                      message: 'Nhập nội dung bình luận!'
-                    }]}
-                    // initialValue={replyComment ? replyComment : ''}
-                    name='content'
-                  >
-                    <Input
-                      className='comment-groups'
-                      placeholder='Nhập bình luận...'
-                    />
+                <Col xl={24}>
+                  {username &&
+                    (
+                      <>
+                        <p className='reply-comment-user'>
+                          Bạn trả lời: <span>{username}</span>
+                        </p>
+                        <Button 
+                          type='text'
+                          onClick={() => dispatch(replyComment({
+                            username: '',
+                            commentId: ''
+                          }))}
+                        ><FiDelete />
+                        </Button>
+                      </>
+                    )
+                  }
+                  <Form.Item name='content' rules={[{ required: true, message: 'Nhập bình luận...' }]}>
+                    <TextArea rows={4} placeholder="Nhập bình luận..." />
                   </Form.Item>
                 </Col>
-                <Col xl={4}>
+                <Col xl={1}>
                   <Form.Item>
                     <Button
                       type="primary"
@@ -78,7 +86,7 @@ function DrawerComment({ courseId }) {
                       className='btn-send-comment'
                       htmlType='submit'
                     >
-                      <MdSend size={35} style={{ paddingBottom: 4 }} />
+                      Gửi bình luận
                     </Button>
                   </Form.Item>
                 </Col>
@@ -104,7 +112,10 @@ function DrawerComment({ courseId }) {
               <div className='reply-comment'>
                 <Button
                   type='text'
-                  onClick={() => setReplyComment(comment?.user?.name)}
+                  onClick={() => dispatch(replyComment({
+                    username: comment?.user?.name,
+                    commentId: comment.id
+                  }))}
                 >Trả lời
                 </Button>
               </div>
@@ -125,7 +136,10 @@ function DrawerComment({ courseId }) {
                     <div className='reply-comment-children'>
                       <Button
                         type='text'
-                        onClick={() => setReplyComment(comment?.user?.name)}
+                        onClick={() => dispatch(replyComment({
+                          username: comment?.user?.name,
+                          commentId: comment.id
+                        }))}
                       >Trả lời
                       </Button>
                     </div>
