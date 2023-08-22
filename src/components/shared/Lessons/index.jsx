@@ -1,4 +1,7 @@
-import { Button, Card, Col, Collapse, List, Progress, Radio, Row, Space, Tag, message, notification } from 'antd';
+import {
+  Button, Card, Col, Collapse, List, Progress,
+  Radio, Row, Space, Tag, message, notification
+} from 'antd';
 import { useEffect, useState } from 'react';
 import {
   AiFillCheckSquare,
@@ -19,7 +22,6 @@ import {
 } from '../../../services/courses/index.jsx';
 import { useProfileQuery } from '../../../services/users/index.jsx';
 import DrawerComment from '../DrawerComment/index.jsx';
-import SlideViewer from '../SlideViewer';
 
 function Lessons() {
   const { id } = useParams();
@@ -48,7 +50,9 @@ function Lessons() {
 
   if (!isFetching) {
     if (!users?.id) return navigate('/login');
+
   };
+
 
   window.addEventListener('message', async (e) => {
     if (!e.data?.source) {
@@ -101,6 +105,7 @@ function Lessons() {
       }
     })()
   }, [checked]);
+
 
   useEffect(() => {
     (async () => {
@@ -305,7 +310,7 @@ function Lessons() {
                 <Col xl={6} className='side-right-box'>
                   <div className='carousel-theory'>
                     <h4>Lý thuyết</h4>
-                    <SlideViewer pdfUrl={filePdf} />
+                    {/* <SlideViewer pdfUrl={filePdf} /> */}
                   </div>
                   <div className='content-lesson'>
                     <h4>Nội dung bài học</h4>
@@ -373,11 +378,6 @@ function Lessons() {
               </Row>
             </div>
           </div>
-          {/* <Modal title="Basic Modal" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-            <p>Some contents...</p>
-            <p>Some contents...</p>
-            <p>Some contents...</p>
-          </Modal> */}
         </>
       )}
     </>

@@ -46,4 +46,12 @@
   .video-status {
     color: $text-gray;
   }
+
+  .info-title-video {
+    a {
+      &:hover {
+        color: $text-primary;
+      }
+    }
+  }
 }

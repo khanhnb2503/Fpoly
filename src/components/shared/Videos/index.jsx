@@ -54,7 +54,7 @@ function Videos() {
                   </Button>
                 </div>
               </Link>
-              <h6>
+              <h6 className="info-title-video">
                 <Link
                   to={`/courses/${item.course_id}`}
                   onClick={() => dispatch(setVideoTrial({ videoIframe: item.image, isCompleted: true }))}

@@ -23,7 +23,12 @@ function Blogs() {
 							<Col key={item.id} xl={6} className="blog-item">
 								<Card
 									hoverable
-									cover={<img alt="example" src={`./public/images/blog ${item.id}.jpg`} />}
+									cover={
+									<img 
+										alt="example" 
+										src={`../../../../public/images/blog ${item.id}.jpg`} 
+									/>
+								  }
 									className="item-forums"
 								>
 									<Row justify='space-between' align='middle'>

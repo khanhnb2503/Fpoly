@@ -13,7 +13,12 @@ function Footers() {
             </Link>
           </Row>
           <Row justify="start" align="middle" className='footer-description'>
-            <h1>Lĩnh vực: Công nghệ, giáo dục, lập trình. BeeSquad xây dựng và phát triển những sản phẩm mang lại giá trị cho cộng đồng.</h1>
+
+            <h1>
+              Lĩnh vực: Công nghệ, giáo dục, lập trình. 
+              BeeSquad xây dựng và phát triển những sản phẩm mang lại giá trị cho cộng đồng.
+              Giúp cho lập trình viên năng cao kiến thức, hiểu biết vê công nghệ.
+            </h1>
           </Row>
         </Col>
         <Col sm={8} md={8} xl={8}>
