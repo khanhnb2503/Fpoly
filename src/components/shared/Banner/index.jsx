@@ -1,6 +1,7 @@
 import { Col, Row } from 'antd';
 import Carousel from 'nuka-carousel';
 import { Link } from 'react-router-dom';
+import BannerBackground from '../../../../public/images/background1.jpg'
 
 import { useGetAllBannerQuery } from '../../../services/banners';
 
@@ -28,7 +29,7 @@ function Banner() {
             <Col xl={14} className='slide-show-right'>
               <Row justify='end'>
                 <Col xl={24}>
-                  <img className='image-background' src='../../../../public/images/background1.jpg' />
+                  <img className='image-background' src={BannerBackground} />
                 </Col>
               </Row>
             </Col>
