@@ -1,30 +1,35 @@
 import {Button, Col, Form, Input, Row, Typography, notification} from 'antd';
-import { AiOutlineMail} from 'react-icons/ai';
+import {AiOutlineLock, AiOutlineMail} from 'react-icons/ai';
 import {Link, useNavigate} from 'react-router-dom';
 
 import BackgroundAuth from '../../../../public/images/auth.jpg';
 import {Rules} from '../../../common/validator';
 import Loading from '../../../components/shared/Spin';
 import {RoutesConstant} from '../../../routes';
-import {useForgotPasswordMutation} from "../../../services/users/index.jsx";
+import {useForgotPasswordMutation, useResetPasswordMutation} from "../../../services/users/index.jsx";
 
 const {Title, Text} = Typography;
 
-function ForgotPassword() {
+function ConfirmPassword() {
   const navigate = useNavigate();
   const [api, contextHolder] = notification.useNotification();
 
-  const [forgotPassword, { isLoading }] = useForgotPasswordMutation()
+  const [resetPassword, { isLoading }] = useResetPasswordMutation()
+
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  const product = urlParams.get('token')
   const handleForgotPassword = async (values) => {
-    const { data } = await forgotPassword(values);
+    console.log({...values, token: product})
+    const { data } = await resetPassword({...values, token: product});
     if (!data) {
       api.error({
         description: 'Email không tồn tại, vui lòng thử lại',
       });
     }
-    if (data?.status === 'passwords.sent') {
+    if (data?.message) {
       api.success({
-        description: 'Quên mật khẩu thành công, vui lòng xem mật khẩu mới ở Mail của bạn',
+        description: 'Đổi mật khẩu thành công',
       });
       navigate('/login')
     };
@@ -48,6 +53,22 @@ function ForgotPassword() {
                       className='text-secondary'
                       placeholder='Nhập email...'
                       prefix={<AiOutlineMail/>}
+                    />
+                  </Form.Item>
+                  <Form.Item name="password" rules={Rules.PASSWORD} >
+                    <Input.Password
+                      size='large'
+                      className='text-secondary'
+                      placeholder='Nhập mật khẩu...'
+                      prefix={<AiOutlineLock />}
+                    />
+                  </Form.Item>
+                  <Form.Item name="password_confirmation" rules={Rules.CONFIRM} >
+                    <Input.Password
+                      size='large'
+                      className='text-secondary'
+                      placeholder='Xác nhận mật khẩu...'
+                      prefix={<AiOutlineLock />}
                     />
                   </Form.Item>
                   <Form.Item className='text-center'>
@@ -85,4 +106,4 @@ const backgroundStyles = {
   minHeight: '100vh'
 }
 
-export default ForgotPassword;
+export default ConfirmPassword;

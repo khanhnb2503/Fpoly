@@ -10,8 +10,31 @@ export const userApi = createApi({
     profile: builder.query({
       query: () => 'user',
       providesTags: ['Users']
+    }),
+    forgotPassword: builder.mutation({
+      query: (data) => ({
+        url: "forgot-password",
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: data
+      }),
+      providesTags: ['Users']
+    }),
+    resetPassword: builder.mutation({
+      query: (data) => ({
+        url: "reset-password",
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: data
+      }),
+      providesTags: ['Users']
     })
+
   })
 });
 
-export const { useProfileQuery } = userApi;
+export const { useProfileQuery, useForgotPasswordMutation, useResetPasswordMutation } = userApi;

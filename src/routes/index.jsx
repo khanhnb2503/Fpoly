@@ -19,11 +19,13 @@ import ListFeedback from "../components/shared/ListFeedbacks/ListFeedbacks.jsx";
 import DetailFeedback from "../components/shared/DetailFeedback/DetailFeedback.jsx";
 import ListVoucher from "../components/shared/ListVoucher/ListVoucher.jsx";
 import ForgotPassword from "../views/auth-views/components/ForgotPassword.jsx";
+import ConfirmPassword from "../views/auth-views/components/ConfirmPassword.jsx";
 // List routes
 export const RoutesConstant = {
   LOGIN: '/login',
   REGISTER: '/register',
-  FORGOTPASSWORD: '/forgotPassword'
+  FORGOTPASSWORD: '/forgotPassword',
+  RESETPASSWORD: '/reset-pasword'
 };
 
 export const DefaultLayout = [
@@ -32,12 +34,13 @@ export const DefaultLayout = [
   { path: '/courses/:id', component: DetailCourse },
   { path: '/lessons/:id', component: Lessons, layout: null },
   { path: '/profile', component: Profile, layout: null },
-  { path: '/listVoucher', component: ListVoucher, layout: null },
   { path: "/login", component: Login, layout: null },
+  { path: '/listVoucher', component: ListVoucher, layout: null },
   { path: "/register", component: Register, layout: null },
-  { path: "/forgotPassword", component: ForgotPassword, layout: null },
   { path: '/forum', component: ForumPage },
+  { path: "/forgotPassword", component: ForgotPassword, layout: null },
   { path: '/forum/detailPost/:id', component: DetailPostForum },
+  { path: "/reset-password", component: ConfirmPassword, layout: null },
   { path: '/payment/:id', component: Payment },
   { path: '/paymentSuccess', component: PaymentSuccess },
   { path: '/forum/listPosts/:id', component: ListPosts },
