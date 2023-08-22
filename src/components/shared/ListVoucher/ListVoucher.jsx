@@ -3,7 +3,8 @@ import { Avatar, Button, Card, Col, List, message, Popconfirm, Popover, Row, Typ
 import moment from "moment";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import Logo from '../../../../public/images/logo_ong_vang.jpg';
+import Logo from '../../../../public/images/beesquad-logo.png';
+import LogoProfile from '../../../../public/images/logo_ong_vang.jpg';
 import profile from '../../../../public/images/profile.png';
 import { getVoucher } from "../../../services/base/baseQuery.jsx";
 import { useConvertVoucherMutation } from "../../../services/payment/index.jsx";
@@ -24,7 +25,7 @@ function ListVoucher() {
   }, [isLoading])
   const [convertVoucher] = useConvertVoucherMutation()
   const confirmConvert = async (idVoucher) => {
-    const {data} = await convertVoucher({exchange_rate: idVoucher})
+    const { data } = await convertVoucher({ exchange_rate: idVoucher })
     const messageResponse = data?.message
     if (!data.status) {
       message.error(messageResponse);
@@ -60,7 +61,7 @@ function ListVoucher() {
               <Link to='/'>
                 <img src={Logo} alt='logo' />
               </Link>
-              <h4>FptPolytechnic</h4>
+              <h4>BeeSquad</h4>
             </Row>
           </Col>
           <Col sm={4} md={6} lg={12} xl={12}>
@@ -75,7 +76,7 @@ function ListVoucher() {
                     content={<UserMenu />}
                     trigger="click"
                   >
-                    <Avatar src={user?.avatar || Logo} size={35} alt='avatar' />
+                    <Avatar src={user?.avatar || LogoProfile} size={35} alt='avatar' />
                   </Popover>
                 </Col>
               </>
@@ -85,9 +86,9 @@ function ListVoucher() {
       </div>
       <div className="profile--content">
         <div className="background-profile" style={backgroundProfile}>
-          <Row justify='space-between' align='bottom' className="info-my">
-            <Col xl={9} className="avatar-user">
-              <Avatar src={user?.avatar || Logo} size={156} alt='avatar' />
+          <Row justify='space-between' align='bottom' className="info-my" style={{ width: '44%' }}>
+            <Col xl={10} className="avatar-user">
+              <Avatar src={user?.avatar || LogoProfile} size={156} alt='avatar' />
             </Col>
             <Col xl={14} className="info--text">
               <h5>{user?.name}</h5>
