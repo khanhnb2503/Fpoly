@@ -1,25 +1,24 @@
-import {Avatar, Badge, Card, Col, Image, Popover, Row, Typography} from "antd";
-import {IoMdNotifications} from 'react-icons/io';
-import {Link} from "react-router-dom";
+import { HeartOutlined } from "@ant-design/icons";
+import { Avatar, Badge, Card, Col, Image, Popover, Row, Typography } from "antd";
+import { IoMdNotifications } from 'react-icons/io';
+import { Link } from "react-router-dom";
 import Logo from '../../../../public/images/beesquad-logo.png';
 import profile from '../../../../public/images/profile.png';
+import { handleDisplayCkeditor } from "../../../common/handleDisplayCkeditor.jsx";
+import { imageUrl } from "../../../common/imageUrl.jsx";
 import UserMenu from '../../../components/shared/UserMenu';
-import {useProfileQuery} from "../../../services/users/index.jsx";
-import {useGetMyCourseQuery} from "../../../services/courses/index.jsx";
-import {imageUrl} from "../../../common/imageUrl.jsx";
-import {useGetPostsByUserQuery} from "../../../services/forum/index.jsx";
-import {handleDisplayCkeditor} from "../../../common/handleDisplayCkeditor.jsx";
-import {CommentOutlined, EyeOutlined, HeartOutlined} from "@ant-design/icons";
+import { useGetMyCourseQuery } from "../../../services/courses/index.jsx";
+import { useGetPostsByUserQuery } from "../../../services/forum/index.jsx";
+import { useProfileQuery } from "../../../services/users/index.jsx";
 
-import ProfileAvatar from '../../../../public/images/logo_ong_vang.jpg'
+import ProfileAvatar from '../../../../public/images/logo_ong_vang.jpg';
 
-const {Text, Title, Paragraph,} = Typography
+const { Paragraph, } = Typography
 
 function Profile() {
-  const {data: user} = useProfileQuery()
-  const {data} = useGetMyCourseQuery()
-  const {data: posts} = useGetPostsByUserQuery()
-  console.log(data)
+  const { data: user } = useProfileQuery()
+  const { data } = useGetMyCourseQuery()
+  const { data: posts } = useGetPostsByUserQuery()
   return (
     <div className="wrapper__profile">
       <div className="profile--header">
@@ -27,7 +26,7 @@ function Profile() {
           <Col sm={4} md={6} lg={12} xl={12}>
             <Row justify="start" align="middle" className='navbar-logo'>
               <Link to='/'>
-                <img src={Logo} alt='logo'/>
+                <img src={Logo} alt='logo' />
               </Link>
               <h4>BeeSquad</h4>
             </Row>
@@ -42,17 +41,17 @@ function Profile() {
                     trigger="click"
                   >
                     <Badge count={2} size="small">
-                      <IoMdNotifications size='2em' className='icon-light'/>
+                      <IoMdNotifications size='2em' className='icon-light' />
                     </Badge>
                   </Popover>
                 </Col>
                 <Col flex='35px' className='avatar'>
                   <Popover
                     placement="bottomRight"
-                    content={<UserMenu/>}
+                    content={<UserMenu />}
                     trigger="click"
                   >
-                    <Avatar src={user?.image || Logo} size={35} alt='avatar'/>
+                    <Avatar src={user?.image || ProfileAvatar} size={35} alt='avatar' />
                   </Popover>
                 </Col>
               </>
@@ -64,7 +63,7 @@ function Profile() {
         <div className="background-profile" style={backgroundProfile}>
           <Row justify='space-between' align='bottom' className="info-my">
             <Col xl={9}>
-              <Avatar src={ProfileAvatar} size={156} alt='avatar'/>
+              <Avatar src={ProfileAvatar} size={156} alt='avatar' />
             </Col>
             <Col xl={14} className="info--text">
               <h5>{user?.name}</h5>
@@ -72,7 +71,7 @@ function Profile() {
           </Row>
         </div>
         <div className="course--my">
-          <h5 style={{marginBottom: 10}}>Các khóa học đã tham gia</h5>
+          <h5 style={{ marginBottom: 10 }}>Các khóa học đã tham gia</h5>
           {data && data.courses.map((course, index) => {
             return (
               <div key={index}>
@@ -81,7 +80,7 @@ function Profile() {
                   const color = item?.status === 0 ? "pink" : "green"
                   return (
                     <Badge.Ribbon text={status} color={color}>
-                      <Card style={{marginBottom: 20}} type="inner" title={course?.name || "Bạn chưa tham gia khóa học nào!"} hoverable>
+                      <Card style={{ marginBottom: 20 }} type="inner" title={course?.name || "Bạn chưa tham gia khóa học nào!"} hoverable>
                         <Row gutter={20}>
                           <Col span={15}>
                             <Paragraph
@@ -93,7 +92,7 @@ function Profile() {
                             </Paragraph>
                           </Col>
                           <Col span={9}>
-                            <Image preview={false} src={`${imageUrl}${course?.image}`} height={160} alt='avatar'/>
+                            <Image preview={false} src={`${imageUrl}${course?.image}`} height={160} alt='avatar' />
                           </Col>
                         </Row>
                       </Card>
@@ -105,22 +104,22 @@ function Profile() {
           })}
         </div>
         <div className="course--my1">
-          <h5 style={{marginBottom: 20}}>Các bài viết của bạn</h5>
+          <h5 style={{ marginBottom: 20 }}>Các bài viết của bạn</h5>
           {posts && posts.map(post => {
             return (
               <div key={post.id}>
                 <Link to={`/forum/detailPost/${post.id}`}>
-                  <Card style={{marginBottom: 10}} type="inner" title={post.title || "Bạn chưa viết bài nào!"} hoverable extra={
+                  <Card style={{ marginBottom: 10 }} type="inner" title={post.title || "Bạn chưa viết bài nào!"} hoverable extra={
                     <Row>
-                      <Col span={12} style={{display: "flex", alignItems: "center"}}>
-                        <HeartOutlined style={{fontSize: 20}}/>
-                        <span style={{marginLeft: 5}}>{post.star}</span>
+                      <Col span={12} style={{ display: "flex", alignItems: "center" }}>
+                        <HeartOutlined style={{ fontSize: 20 }} />
+                        <span style={{ marginLeft: 5 }}>{post.star}</span>
                       </Col>
                     </Row>}>
-                  <span
-                    style={{lineHeight: 2.5, fontWeight: 500, fontSize: 20}}
-                    dangerouslySetInnerHTML={{__html: handleDisplayCkeditor(post?.content)}}
-                  ></span>
+                    <span
+                      style={{ lineHeight: 2.5, fontWeight: 500, fontSize: 20 }}
+                      dangerouslySetInnerHTML={{ __html: handleDisplayCkeditor(post?.content) }}
+                    ></span>
                   </Card>
                 </Link>
               </div>

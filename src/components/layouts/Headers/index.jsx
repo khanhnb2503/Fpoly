@@ -191,7 +191,7 @@ function Headers() {
                                         </Col>
                                         <Col>
                                           <p><Link to={
-                                            course?.completed ? `/lessons/${course.completed}` : `courses/${course.id}`}
+                                            course?.completed ? `/lessons/${course.completed}` : `/courses/${course.id}`}
                                           >{course.name}</Link></p>
                                         </Col>
                                       </Row>
