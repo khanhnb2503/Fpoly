@@ -13,6 +13,7 @@ function Footers() {
             </Link>
           </Row>
           <Row justify="start" align="middle" className='footer-description'>
+
             <h1>
               Lĩnh vực: Công nghệ, giáo dục, lập trình. 
               BeeSquad xây dựng và phát triển những sản phẩm mang lại giá trị cho cộng đồng.
@@ -27,7 +28,7 @@ function Footers() {
           <Row justify="start" className='footer-listTools'>
             <ul>
               <Link to='/'>
-                <li>Tạo CV xin việc</li>
+                <li>Tham gia forum</li>
               </Link>
               <Link to='/'>
                 <li>Ruts gọn liên kết</li>

@@ -37,6 +37,7 @@ import {Link, useNavigate} from "react-router-dom"
 import CateHomePage from "../CateHomePage/CateHomePage.jsx";
 import {useProfileQuery} from "../../../services/users/index.jsx";
 import Loading from "../Spin/index.jsx";
+import Logo from "../../../../public/images/logo_ong_vang.jpg";
 
 function ForumPage() {
   const { Title, Text } = Typography;
@@ -270,7 +271,11 @@ function ForumPage() {
                         <div style={{display: "flex", marginTop: 10}}>
                           <FolderOpenOutlined style={{fontSize: 30, color: "#009DA6"}}/>
                           <Link to={`/forum/listNotifications`}>
-                          <Title level={3} style={{marginLeft: 10, color: "#F26F27"}}>Thông báo</Title>
+                          <Title level={3} style={{color: "#F26F27"}}>
+                            <button className='button'>
+                              <span>Thông báo</span>
+                            </button>
+                          </Title>
                           </Link>
                         </div>
                       </Col>
@@ -312,7 +317,11 @@ function ForumPage() {
                         <div style={{display: "flex", marginTop: 10}}>
                           <FolderOpenOutlined style={{fontSize: 30, color: "#009DA6"}}/>
                           <Link to={`/forum/listFeedbacks`}>
-                          <Title level={3} style={{marginLeft: 10, color: "#F26F27"}}>Góp ý</Title>
+                          <div style={{color: "#F26F27"}}>
+                            <button>
+                              <span>Góp ý</span>
+                            </button>
+                          </div>
                           </Link>
                         </div>
                       </Col>
@@ -376,7 +385,7 @@ function ForumPage() {
                           <Card>
                             <Row gutter={10}>
                               <Col span={5}>
-                                <Avatar src={data?.user.avatar} size={35} alt='avatar' />
+                                <Avatar src={data?.user.avatar || Logo} size={35} alt='avatar' />
                               </Col>
                               <Col span={19}>
                                 <Link to={`/forum/detailPost/${data.id}`}>
@@ -408,7 +417,7 @@ function ForumPage() {
                       <Card>
                         <Row gutter={10}>
                           <Col span={5}>
-                            <Avatar src={data.user.avatar} size={35} alt='avatar'/>
+                            <Avatar src={data.user.avatar || Logo} size={35} alt='avatar'/>
                           </Col>
                           <Col span={19}>
                             <Link to={`/forum/detailPost/${data.id}`}>
@@ -427,6 +436,22 @@ function ForumPage() {
                     </div>)
                   })}
                 </Card>
+              </Col>
+              <Col span={24} style={{ marginBottom: 10 }}>
+                <Title level={3}>Tags</Title>
+                <Space size={[0, 8]} wrap>
+                  {categories && categories.data.map((item, index) => {
+                    return (
+                      <div key={index}>
+                        <Link to={`/forum/listPosts/${item.id}`}>
+                          <Tag style={{padding: 10}} color="rgb(255, 85, 0)">
+                            {item.name}
+                          </Tag>
+                        </Link>
+                      </div>
+                    )
+                  })}
+                </Space>
               </Col>
               <Col span={24} style={{ marginBottom: 10 }}>
                 <Title level={3}>Tags</Title>

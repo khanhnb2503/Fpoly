@@ -19,6 +19,7 @@ function Profile() {
   const {data: user} = useProfileQuery()
   const {data} = useGetMyCourseQuery()
   const {data: posts} = useGetPostsByUserQuery()
+  console.log(data)
   return (
     <div className="wrapper__profile">
       <div className="profile--header">
@@ -51,7 +52,7 @@ function Profile() {
                     content={<UserMenu/>}
                     trigger="click"
                   >
-                    <Avatar src={user?.image} size={35} alt='avatar'/>
+                    <Avatar src={user?.image || Logo} size={35} alt='avatar'/>
                   </Popover>
                 </Col>
               </>
@@ -74,30 +75,28 @@ function Profile() {
           <h5 style={{marginBottom: 10}}>Các khóa học đã tham gia</h5>
           {data && data.courses.map((course, index) => {
             return (
-              <div>
+              <div key={index}>
                 {course.studies.map(item => {
                   const status = item?.status === 0 ? "Đang học" : "Đã hoàn thành"
                   const color = item?.status === 0 ? "pink" : "green"
                   return (
                     <Badge.Ribbon text={status} color={color}>
-                      {/*<Link to={`/courses/${course.id}`}>*/}
-                        <Card style={{marginBottom: 20}} type="inner" title={course?.name} hoverable>
-                          <Row gutter={20}>
-                            <Col span={15}>
-                              <Paragraph
-                                ellipsis={{
-                                  rows: 5,
-                                }}
-                              >
-                                {course?.featured}
-                              </Paragraph>
-                            </Col>
-                            <Col span={9}>
-                              <Image preview={false} src={`${imageUrl}${course?.image}`} height={160} alt='avatar'/>
-                            </Col>
-                          </Row>
-                        </Card>
-                      {/*</Link>*/}
+                      <Card style={{marginBottom: 20}} type="inner" title={course?.name || "Bạn chưa tham gia khóa học nào!"} hoverable>
+                        <Row gutter={20}>
+                          <Col span={15}>
+                            <Paragraph
+                              ellipsis={{
+                                rows: 5,
+                              }}
+                            >
+                              {course?.featured}
+                            </Paragraph>
+                          </Col>
+                          <Col span={9}>
+                            <Image preview={false} src={`${imageUrl}${course?.image}`} height={160} alt='avatar'/>
+                          </Col>
+                        </Row>
+                      </Card>
                     </Badge.Ribbon>
                   )
                 })}
@@ -111,16 +110,12 @@ function Profile() {
             return (
               <div key={post.id}>
                 <Link to={`/forum/detailPost/${post.id}`}>
-                  <Card style={{marginBottom: 10}} type="inner" title={post.title} hoverable extra={
+                  <Card style={{marginBottom: 10}} type="inner" title={post.title || "Bạn chưa viết bài nào!"} hoverable extra={
                     <Row>
                       <Col span={12} style={{display: "flex", alignItems: "center"}}>
                         <HeartOutlined style={{fontSize: 20}}/>
                         <span style={{marginLeft: 5}}>{post.star}</span>
                       </Col>
-                      {/*<Col span={12} style={{display: "flex", alignItems: "center"}}>*/}
-                      {/*  <CommentOutlined style={{fontSize: 20}}/>*/}
-                      {/*  <span style={{marginLeft: 5}}>{post.comments.length}</span>*/}
-                      {/*</Col>*/}
                     </Row>}>
                   <span
                     style={{lineHeight: 2.5, fontWeight: 500, fontSize: 20}}
