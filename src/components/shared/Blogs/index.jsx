@@ -45,8 +45,6 @@ function Blogs() {
 		}
 	}, [isSuccess]);
 
-	console.log(filterForum)
-
 
 	return (
 		<div className="wrapper__blogs">
