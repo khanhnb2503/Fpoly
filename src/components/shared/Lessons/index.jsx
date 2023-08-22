@@ -148,16 +148,16 @@ function Lessons() {
             let index = lessonIds[nextLesson.length];
             setChecked((state) => state.includes(Number(id)) ? [...state, index] : [...state])
           }
-          // const resHistory = await saveHistoryCourse({ course_id: course_id, lesson_id: id, status: status });
-          // setCompleteRate(resHistory.data.complete_rate)
+          const resHistory = await saveHistoryCourse({ course_id: course_id, lesson_id: id, status: status });
+          setCompleteRate(resHistory.data.complete_rate)
           return
         };
 
         setCompleteCourse((state) => !state.includes(Number(id)) ? [...state, Number(id)] : [...state]);
         let index = lessonIds[nextLesson.length];
         setChecked((state) => state.includes(Number(id)) ? [...state, index] : [...state]);
-        // const historyNew = await saveHistoryCourse({ course_id: course_id, lesson_id: id, status: 1 });
-        // setCompleteRate(historyNew.data.complete_rate)
+        const historyNew = await saveHistoryCourse({ course_id: course_id, lesson_id: id, status: 1 });
+        setCompleteRate(historyNew.data.complete_rate)
         return;
       }
     })()
@@ -378,11 +378,6 @@ function Lessons() {
               </Row>
             </div>
           </div>
-          {/* <Modal title="Basic Modal" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-            <p>Some contents...</p>
-            <p>Some contents...</p>
-            <p>Some contents...</p>
-          </Modal> */}
         </>
       )}
     </>

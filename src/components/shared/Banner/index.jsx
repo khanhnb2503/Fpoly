@@ -27,8 +27,8 @@ function Banner() {
             </Col>
             <Col xl={14} className='slide-show-right'>
               <Row justify='end'>
-                <Col>
-                  <img src='../../../../public/images/banner.png' />
+                <Col xl={24}>
+                  <img className='image-background' src='../../../../public/images/background1.jpg' />
                 </Col>
               </Row>
             </Col>
