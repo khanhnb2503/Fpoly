@@ -2,7 +2,7 @@ import { Card, Col, Row, Tag } from "antd";
 import moment from "moment";
 import { ImHistory } from "react-icons/im";
 import { Link } from "react-router-dom";
-import {useAddViewPostMutation, useGetPostsTrendingQuery} from '../../../services/forum';
+import { useAddViewPostMutation, useGetPostsTrendingQuery } from '../../../services/forum';
 
 const { Meta } = Card;
 
@@ -11,7 +11,7 @@ function Blogs() {
 	const [addViewPost] = useAddViewPostMutation()
 
 	const handleAddView = (id) => {
-		const {data} = addViewPost({post_id : id})
+		const { data } = addViewPost({ post_id: id })
 	}
 
 	return (
@@ -24,11 +24,11 @@ function Blogs() {
 								<Card
 									hoverable
 									cover={
-									<img 
-										alt="example" 
-										src={`../../../../public/images/blog ${item.id}.jpg`} 
-									/>
-								  }
+										<img
+											alt="example"
+											src={`public/images/blog ${item.id}.jpg`}
+										/>
+									}
 									className="item-forums"
 								>
 									<Row justify='space-between' align='middle'>
