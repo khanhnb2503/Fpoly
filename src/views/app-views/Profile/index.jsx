@@ -1,7 +1,7 @@
 import {Avatar, Badge, Card, Col, Image, Popover, Row, Typography} from "antd";
 import {IoMdNotifications} from 'react-icons/io';
 import {Link} from "react-router-dom";
-import Logo from '../../../../public/images/logo_ong_vang.jpg';
+import Logo from '../../../../public/images/beesquad-logo.png';
 import profile from '../../../../public/images/profile.png';
 import UserMenu from '../../../components/shared/UserMenu';
 import {useProfileQuery} from "../../../services/users/index.jsx";
@@ -10,6 +10,8 @@ import {imageUrl} from "../../../common/imageUrl.jsx";
 import {useGetPostsByUserQuery} from "../../../services/forum/index.jsx";
 import {handleDisplayCkeditor} from "../../../common/handleDisplayCkeditor.jsx";
 import {CommentOutlined, EyeOutlined, HeartOutlined} from "@ant-design/icons";
+
+import ProfileAvatar from '../../../../public/images/logo_ong_vang.jpg'
 
 const {Text, Title, Paragraph,} = Typography
 
@@ -26,7 +28,7 @@ function Profile() {
               <Link to='/'>
                 <img src={Logo} alt='logo'/>
               </Link>
-              <h4>FptPolytechnic</h4>
+              <h4>BeeSquad</h4>
             </Row>
           </Col>
           <Col sm={4} md={6} lg={12} xl={12}>
@@ -61,7 +63,7 @@ function Profile() {
         <div className="background-profile" style={backgroundProfile}>
           <Row justify='space-between' align='bottom' className="info-my">
             <Col xl={9}>
-              <Avatar src={user?.image} size={156} alt='avatar'/>
+              <Avatar src={ProfileAvatar} size={156} alt='avatar'/>
             </Col>
             <Col xl={14} className="info--text">
               <h5>{user?.name}</h5>
