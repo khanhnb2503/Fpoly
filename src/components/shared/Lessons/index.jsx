@@ -1,4 +1,6 @@
-import { Button, Card, Col, Collapse, List, Progress, Radio, Row, Space, Tag, message, notification } from 'antd';
+import { Button, Card, Col, Collapse, List, Progress, 
+  Radio, Row, Space, Tag, message, notification 
+} from 'antd';
 import { useEffect, useState } from 'react';
 import {
   AiFillCheckSquare,
@@ -19,7 +21,6 @@ import {
 } from '../../../services/courses/index.jsx';
 import { useProfileQuery } from '../../../services/users/index.jsx';
 import DrawerComment from '../DrawerComment/index.jsx';
-import SlideViewer from '../SlideViewer';
 
 function Lessons() {
   const { id } = useParams();
@@ -48,6 +49,7 @@ function Lessons() {
 
   if (!isFetching) {
     if (!users?.id) return navigate('/login');
+    
   };
 
   window.addEventListener('message', async (e) => {
@@ -102,6 +104,7 @@ function Lessons() {
     })()
   }, [checked]);
 
+
   useEffect(() => {
     (async () => {
       if (course_id) {
@@ -143,16 +146,16 @@ function Lessons() {
             let index = lessonIds[nextLesson.length];
             setChecked((state) => state.includes(Number(id)) ? [...state, index] : [...state])
           }
-          const resHistory = await saveHistoryCourse({ course_id: course_id, lesson_id: id, status: status });
-          setCompleteRate(resHistory.data.complete_rate)
+          // const resHistory = await saveHistoryCourse({ course_id: course_id, lesson_id: id, status: status });
+          // setCompleteRate(resHistory.data.complete_rate)
           return
         };
 
         setCompleteCourse((state) => !state.includes(Number(id)) ? [...state, Number(id)] : [...state]);
         let index = lessonIds[nextLesson.length];
         setChecked((state) => state.includes(Number(id)) ? [...state, index] : [...state]);
-        const historyNew = await saveHistoryCourse({ course_id: course_id, lesson_id: id, status: 1 });
-        setCompleteRate(historyNew.data.complete_rate)
+        // const historyNew = await saveHistoryCourse({ course_id: course_id, lesson_id: id, status: 1 });
+        // setCompleteRate(historyNew.data.complete_rate)
         return;
       }
     })()
@@ -305,7 +308,7 @@ function Lessons() {
                 <Col xl={6} className='side-right-box'>
                   <div className='carousel-theory'>
                     <h4>Lý thuyết</h4>
-                    <SlideViewer pdfUrl={filePdf} />
+                    {/* <SlideViewer pdfUrl={filePdf} /> */}
                   </div>
                   <div className='content-lesson'>
                     <h4>Nội dung bài học</h4>
