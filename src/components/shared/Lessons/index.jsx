@@ -308,10 +308,6 @@ function Lessons() {
                   }
                 </Col>
                 <Col xl={6} className='side-right-box'>
-                  <div className='carousel-theory'>
-                    <h4>Lý thuyết</h4>
-                    {/* <SlideViewer pdfUrl={filePdf} /> */}
-                  </div>
                   <div className='content-lesson'>
                     <h4>Nội dung bài học</h4>
                     <Collapse
