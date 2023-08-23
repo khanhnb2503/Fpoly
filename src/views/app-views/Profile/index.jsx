@@ -75,11 +75,11 @@ function Profile() {
           {data && data.courses.map((course, index) => {
             return (
               <div key={index}>
-                {course.studies.map(item => {
+                {course.studies.map((item, index) => {
                   const status = item?.status === 0 ? "Đang học" : "Đã hoàn thành"
                   const color = item?.status === 0 ? "pink" : "green"
                   return (
-                    <Badge.Ribbon text={status} color={color}>
+                    <Badge.Ribbon text={status} color={color} key={index}>
                       <Card style={{ marginBottom: 20 }} type="inner" title={course?.name || "Bạn chưa tham gia khóa học nào!"} hoverable>
                         <Row gutter={20}>
                           <Col span={15}>
